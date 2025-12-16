@@ -1,0 +1,461 @@
+{
+    "language": "en",
+    "window_geometry": [
+        5,
+        80,
+        850,
+        700
+    ],
+    "window_maximized": false,
+    "advanced_mode_active": true,
+    "autotyper_text": "",
+    "autotyper_interval": 1000,
+    "autotyper_repetitions": 0,
+    "autotyper_hotkey": {
+        "type": "special",
+        "value": "f9"
+    },
+    "recorder_start_hotkey": {
+        "type": "special",
+        "value": "f10"
+    },
+    "recorder_play_hotkey": {
+        "type": "special",
+        "value": "f11"
+    },
+    "recorder_repetitions": 1,
+    "recorded_events_v2": [
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ф"
+            },
+            "key_name_display": "Ф",
+            "action_canonical": "press",
+            "delay_ms": 589.4350999997187
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ы"
+            },
+            "key_name_display": "Ы",
+            "action_canonical": "press",
+            "delay_ms": 134.73220000014408
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "в"
+            },
+            "key_name_display": "В",
+            "action_canonical": "press",
+            "delay_ms": 27.90050000021438
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ы"
+            },
+            "key_name_display": "Ы",
+            "action_canonical": "release",
+            "delay_ms": 11.434999999437423
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ф"
+            },
+            "key_name_display": "Ф",
+            "action_canonical": "release",
+            "delay_ms": 26.44289999989269
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "а"
+            },
+            "key_name_display": "А",
+            "action_canonical": "press",
+            "delay_ms": 16.880700000001525
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "д"
+            },
+            "key_name_display": "Д",
+            "action_canonical": "press",
+            "delay_ms": 62.362100000427745
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "в"
+            },
+            "key_name_display": "В",
+            "action_canonical": "release",
+            "delay_ms": 18.78579999993235
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "а"
+            },
+            "key_name_display": "А",
+            "action_canonical": "release",
+            "delay_ms": 21.54030000019702
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "л"
+            },
+            "key_name_display": "Л",
+            "action_canonical": "press",
+            "delay_ms": 17.187499999636202
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "о"
+            },
+            "key_name_display": "О",
+            "action_canonical": "press",
+            "delay_ms": 102.06540000035602
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "д"
+            },
+            "key_name_display": "Д",
+            "action_canonical": "release",
+            "delay_ms": 17.80349999989994
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "л"
+            },
+            "key_name_display": "Л",
+            "action_canonical": "release",
+            "delay_ms": 22.970600000007835
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "о"
+            },
+            "key_name_display": "О",
+            "action_canonical": "release",
+            "delay_ms": 41.21119999945222
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "я"
+            },
+            "key_name_display": "Я",
+            "action_canonical": "press",
+            "delay_ms": 202.79090000076394
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ч"
+            },
+            "key_name_display": "Ч",
+            "action_canonical": "press",
+            "delay_ms": 19.80849999927159
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ч"
+            },
+            "key_name_display": "Ч",
+            "action_canonical": "release",
+            "delay_ms": 39.219600000251376
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "я"
+            },
+            "key_name_display": "Я",
+            "action_canonical": "release",
+            "delay_ms": 46.18269999991753
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "я"
+            },
+            "key_name_display": "Я",
+            "action_canonical": "press",
+            "delay_ms": 107.96250000021246
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "я"
+            },
+            "key_name_display": "Я",
+            "action_canonical": "release",
+            "delay_ms": 101.61779999998544
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "alt_l"
+            },
+            "key_name_display": "Alt",
+            "action_canonical": "press",
+            "delay_ms": 1179.9854999999297
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "shift"
+            },
+            "key_name_display": "Shift",
+            "action_canonical": "press",
+            "delay_ms": 20.960099999683734
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "alt_l"
+            },
+            "key_name_display": "Alt",
+            "action_canonical": "release",
+            "delay_ms": 121.23960000008083
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "ctrl_l"
+            },
+            "key_name_display": "Ctrl",
+            "action_canonical": "release",
+            "delay_ms": 3.985100000136299
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "shift"
+            },
+            "key_name_display": "Shift",
+            "action_canonical": "release",
+            "delay_ms": 9.847000000263506
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "enter"
+            },
+            "key_name_display": "Enter",
+            "action_canonical": "press",
+            "delay_ms": 943.614400000115
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "enter"
+            },
+            "key_name_display": "Enter",
+            "action_canonical": "release",
+            "delay_ms": 160.86129999985133
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ф"
+            },
+            "key_name_display": "Ф",
+            "action_canonical": "press",
+            "delay_ms": 623.8278000000719
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "в"
+            },
+            "key_name_display": "В",
+            "action_canonical": "press",
+            "delay_ms": 138.79009999982372
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ж"
+            },
+            "key_name_display": "Ж",
+            "action_canonical": "press",
+            "delay_ms": 38.60689999964961
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ф"
+            },
+            "key_name_display": "Ф",
+            "action_canonical": "release",
+            "delay_ms": 23.335900000347465
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "а"
+            },
+            "key_name_display": "А",
+            "action_canonical": "press",
+            "delay_ms": 16.84720000048401
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "в"
+            },
+            "key_name_display": "В",
+            "action_canonical": "release",
+            "delay_ms": 63.77529999917897
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "д"
+            },
+            "key_name_display": "Д",
+            "action_canonical": "press",
+            "delay_ms": 19.98870000079478
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ж"
+            },
+            "key_name_display": "Ж",
+            "action_canonical": "release",
+            "delay_ms": 17.137899999397632
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "а"
+            },
+            "key_name_display": "А",
+            "action_canonical": "release",
+            "delay_ms": 17.607200000384182
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "л"
+            },
+            "key_name_display": "Л",
+            "action_canonical": "press",
+            "delay_ms": 22.92429999943124
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "о"
+            },
+            "key_name_display": "О",
+            "action_canonical": "press",
+            "delay_ms": 41.618400000515976
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "д"
+            },
+            "key_name_display": "Д",
+            "action_canonical": "release",
+            "delay_ms": 17.334699999992154
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "л"
+            },
+            "key_name_display": "Л",
+            "action_canonical": "release",
+            "delay_ms": 21.470399999998335
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "о"
+            },
+            "key_name_display": "О",
+            "action_canonical": "release",
+            "delay_ms": 80.73999999942316
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ы"
+            },
+            "key_name_display": "Ы",
+            "action_canonical": "press",
+            "delay_ms": 463.34160000060365
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "ы"
+            },
+            "key_name_display": "Ы",
+            "action_canonical": "release",
+            "delay_ms": 120.80409999998665
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "2"
+            },
+            "key_name_display": "2",
+            "action_canonical": "press",
+            "delay_ms": 378.6289999998189
+        },
+        {
+            "key_obj_s": {
+                "type": "keycode_char",
+                "value": "2"
+            },
+            "key_name_display": "2",
+            "action_canonical": "release",
+            "delay_ms": 140.26530000046478
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "enter"
+            },
+            "key_name_display": "Enter",
+            "action_canonical": "press",
+            "delay_ms": 233.99719999997615
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "enter"
+            },
+            "key_name_display": "Enter",
+            "action_canonical": "release",
+            "delay_ms": 145.22759999999835
+        },
+        {
+            "key_obj_s": {
+                "type": "special",
+                "value": "f10"
+            },
+            "key_name_display": "F10",
+            "action_canonical": "press",
+            "delay_ms": 2949.0313999995124
+        }
+    ]
+}
