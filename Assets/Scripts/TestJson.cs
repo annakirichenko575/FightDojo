@@ -1,7 +1,6 @@
 ﻿using FightDojo.Data;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 namespace FightDojo
 {
@@ -43,6 +42,7 @@ namespace FightDojo
             // 2. TabImage (интервал)
             GameObject tabGO = Instantiate(tabImagePrefab, parent);
             RectTransform rect = tabGO.GetComponent<RectTransform>();
+            rect.SetSiblingIndex(0);
             rect.anchoredPosition = offset;
 
             float widthPx = Mathf.Max(1f, recordedEvent.delay_ms * stripScale); // защита от 0
@@ -69,9 +69,10 @@ namespace FightDojo
             TMP_Text text = keyGO.GetComponent<TMP_Text>();
             if (text != null)
             {
+                
                 text.color = recordedEvent.action_canonical == "press"
                     ? new Color(0.0f, 0.0f, 0.7f, 1f)
-                    : new Color(0.0f, 0.0f, 0.7f, 0.7f);
+                    : new Color(0.0f, 0.0f, 0.7f, 0.6f);
             }
         }
     }
