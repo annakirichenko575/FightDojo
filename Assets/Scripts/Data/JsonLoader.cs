@@ -16,7 +16,7 @@ namespace FightDojo.Data
 
             foreach (RecordedEvent e in recordData.recorded_events_v2)
             {
-                e.Log();
+                //e.Log();
             }
 
             return recordData;
