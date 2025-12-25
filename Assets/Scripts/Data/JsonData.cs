@@ -17,12 +17,12 @@ namespace FightDojo.Data
         public string action_canonical;
         public float delay_ms;
 
-        public void Log()
+        /*public void Log()
         {
             Debug.Log($"[{action_canonical}] {key_name_display} delay={delay_ms}"
                     + $" key.type={key_obj_s.type} key.type={key_obj_s.type}");
                 
-        }
+        }*/
     }
 
     [Serializable]
