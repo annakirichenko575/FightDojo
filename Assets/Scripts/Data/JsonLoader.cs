@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using FightDojo.Data.Auto_Keyboard;
 
 namespace FightDojo.Data
 {

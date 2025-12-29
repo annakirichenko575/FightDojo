@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace FightDojo.Data
+namespace FightDojo.Data.Auto_Keyboard
 {
     [Serializable]
     public class RecordData

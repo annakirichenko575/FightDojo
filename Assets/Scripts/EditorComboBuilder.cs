@@ -1,10 +1,11 @@
 ﻿using FightDojo.Data;
 using UnityEngine;
 using TMPro;
+using FightDojo.Data.Auto_Keyboard;
 
 namespace FightDojo
 {
-    public class ComboStripFactory : MonoBehaviour
+    public class EditorComboBuilder : MonoBehaviour
     {
         [Header("UI")]
         [SerializeField] private float stripScale = 1f;
@@ -33,11 +34,11 @@ namespace FightDojo
 
         private void BuildStripItem(RecordedEvent recordedEvent, Transform parent)
         {
-            SpawnKeyText(recordedEvent, parent);
-            SpawnTabImage(recordedEvent, parent);
+            SpawnKeyText(recordedEvent.action_canonical, recordedEvent.key_name_display, parent);
+            SpawnTabImage(recordedEvent.delay_ms, parent);
         }
 
-        private void SpawnTabImage(RecordedEvent recordedEvent, Transform parent)
+        private void SpawnTabImage(float delta, Transform parent)
         {
             // 2. TabImage (интервал)
             GameObject tabGO = Instantiate(tabImagePrefab, parent);
@@ -45,12 +46,12 @@ namespace FightDojo
             rect.SetSiblingIndex(0);
             rect.anchoredPosition = offset;
 
-            float widthPx = Mathf.Max(1f, recordedEvent.delay_ms * stripScale); // защита от 0
+            float widthPx = Mathf.Max(1f, delta * stripScale); // защита от 0
             rect.sizeDelta = new Vector2(widthPx, rect.sizeDelta.y);
             offset += Vector2.right * widthPx;
         }
 
-        private void SpawnKeyText(RecordedEvent recordedEvent, Transform parent)
+        private void SpawnKeyText(string action, string keyName, Transform parent)
         {
             // 1. KeyText
             RectTransform prefabRect = keyTextPrefab.GetComponent<RectTransform>();
@@ -63,14 +64,14 @@ namespace FightDojo
             offset += Vector2.right * halfWidth;
 
             TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
-            keyText.text = recordedEvent.key_name_display;
+            keyText.text = keyName;
 
-            // Опционально: цвет по press/release
+            // цвет по press/release
             TMP_Text text = keyGO.GetComponent<TMP_Text>();
             if (text != null)
             {
                 
-                text.color = recordedEvent.action_canonical == "press"
+                text.color = action == Constants.Press
                     ? new Color(0.0f, 0.0f, 0.7f, 1f)
                     : new Color(0.0f, 0.0f, 0.7f, 0.6f);
             }
