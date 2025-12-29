@@ -6,7 +6,7 @@ using FightDojo.Data;
 
 namespace FightDojo
 {
-    public class KeyInputReader : MonoBehaviour
+    public class KeyInputReader
     {
         private Stopwatch stopwatch;
         private long lastEventMs = -1;
@@ -47,11 +47,14 @@ namespace FightDojo
                 if (key == null)
                     continue;
 
-                string action = "";
+                string action = null;
                 if (key.wasPressedThisFrame)
                     action = "press";
                 if (key.wasReleasedThisFrame)
                     action = "release";
+
+                if (action == null)
+                    continue;
 
                 string keyName = GetKeyName(key);
                 long delta = RecountDeltaLastInput();
