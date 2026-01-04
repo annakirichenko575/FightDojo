@@ -38,6 +38,12 @@ namespace FightDojo
             AllKeys.AddRange(LetterKeys);
         }
 
+        public void Reset()
+        {
+            stopwatch.Restart();
+            lastEventMs = -1;
+        }
+
         // Проверяет указанный набор клавиш на press / release
         public KeyData CheckKeys()
         {
