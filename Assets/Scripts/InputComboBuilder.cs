@@ -23,25 +23,26 @@ namespace FightDojo
             if (Keyboard.current == null)
                 return;
 
-            // ▶ START RECORDING — Space
             if (Keyboard.current[Key.Space].wasPressedThisFrame)
             {
-                StartRecording();
-                return;
+
+                if (isRecording == true)
+                {
+                    StopRecording();
+                }
+                else
+                {
+                    StartRecording();
+                }
             }
 
-            // ⏹ STOP RECORDING — Left Ctrl
-            if (Keyboard.current[Key.LeftCtrl].wasPressedThisFrame)
-            {
-                StopRecording();
-                return;
-            }
+            if (isRecording == true)
+                InputRead();
+        }
 
-            // Если запись не активна — Update ничего не делает
-            if (!isRecording)
-                return;
-
-            // Чтение ввода и построение полоски
+        // Чтение ввода и построение полоски
+        private void InputRead()
+        {
             KeyData keyData = keyInputReader.CheckKeys();
             if (keyData != null)
             {
@@ -60,14 +61,14 @@ namespace FightDojo
             // 🔑 СБРОС ТАЙМЕРА ВВОДА
             keyInputReader.Reset();
 
-            UnityEngine.Debug.Log("InputCombo recording started");
+            Debug.Log("InputCombo recording started");
         }
 
         // Остановка записи
         private void StopRecording()
         {
             isRecording = false;
-            UnityEngine.Debug.Log("InputCombo recording stopped");
+            Debug.Log("InputCombo recording stopped");
         }
 
         // Полная очистка Content

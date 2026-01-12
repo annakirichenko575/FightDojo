@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using FightDojo.Data.Auto_Keyboard;
+using Unity.VisualScripting;
 
 namespace FightDojo.Data
 {
@@ -14,12 +15,7 @@ namespace FightDojo.Data
             Debug.Log(Path);
             string json = System.IO.File.ReadAllText(Path);
             RecordData recordData = JsonUtility.FromJson<RecordData>(json);
-
-            foreach (RecordedEvent e in recordData.recorded_events_v2)
-            {
-                //e.Log();
-            }
-
+            recordData.Initialize();
             return recordData;
         }
     }

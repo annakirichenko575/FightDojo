@@ -34,7 +34,7 @@ namespace FightDojo
 
         private void BuildStripItem(RecordedEvent recordedEvent, Transform parent)
         {
-            SpawnKeyText(recordedEvent.action_canonical, recordedEvent.key_name_display, parent);
+            SpawnKeyText(recordedEvent.id, recordedEvent.action_canonical, recordedEvent.key_name_display, parent);
             SpawnTabImage(recordedEvent.delay_ms, parent);
         }
 
@@ -51,7 +51,7 @@ namespace FightDojo
             offset += Vector2.right * widthPx;
         }
 
-        private void SpawnKeyText(string action, string keyName, Transform parent)
+        private void SpawnKeyText(int id, string action, string keyName, Transform parent)
         {
             // 1. KeyText
             RectTransform prefabRect = keyTextPrefab.GetComponent<RectTransform>();
@@ -75,6 +75,10 @@ namespace FightDojo
                     ? new Color(0.0f, 0.0f, 0.7f, 1f)
                     : new Color(0.0f, 0.0f, 0.7f, 0.6f);
             }
+
+            StripItemView stripItem = keyGO.AddComponent<StripItemView>();
+            stripItem.Initialize(id);
+
         }
     }
 }
