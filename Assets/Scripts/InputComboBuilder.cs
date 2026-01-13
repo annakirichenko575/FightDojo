@@ -16,6 +16,9 @@ namespace FightDojo
         private Vector2 offset = Vector2.zero;
         private bool isRecording = false;
 
+        //Счетчик id для букв
+        private int nextItemId = 0;
+
         private KeyInputReader keyInputReader = new KeyInputReader();
 
         private void Update()
@@ -58,7 +61,10 @@ namespace FightDojo
             ClearContent();
             offset = Vector2.zero;
 
-            // 🔑 СБРОС ТАЙМЕРА ВВОДА
+            //Сброс, чтобы новая запись начиналась с 0
+            nextItemId = 0;
+
+            //сброс таймера ввода
             keyInputReader.Reset();
 
             Debug.Log("InputCombo recording started");
@@ -111,6 +117,14 @@ namespace FightDojo
 
             TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
             keyText.text = keyName;
+
+            //Повесить StripItemView и дать ему id
+            StripItemView view = keyGO.GetComponent<StripItemView>();
+            if (view == null)
+                view = keyGO.AddComponent<StripItemView>();
+
+            view.Initialize(nextItemId);
+            nextItemId++;
 
             TMP_Text text = keyGO.GetComponent<TMP_Text>();
             if (text != null)
