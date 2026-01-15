@@ -1,7 +1,7 @@
 ﻿using FightDojo.Data;
 using UnityEngine;
 using TMPro;
-using FightDojo.Data.Auto_Keyboard;
+using FightDojo.Data.AutoKeyboard;
 
 namespace FightDojo
 {

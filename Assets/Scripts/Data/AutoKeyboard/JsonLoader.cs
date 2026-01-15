@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEngine;
-using FightDojo.Data.Auto_Keyboard;
-using Unity.VisualScripting;
+﻿using UnityEngine;
 
-namespace FightDojo.Data
+namespace FightDojo.Data.AutoKeyboard
 {
     public class JsonLoader
     {

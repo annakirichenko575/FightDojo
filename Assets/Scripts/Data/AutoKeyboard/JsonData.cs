@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace FightDojo.Data.Auto_Keyboard
+namespace FightDojo.Data.AutoKeyboard
 {
     [Serializable]
     public class RecordData

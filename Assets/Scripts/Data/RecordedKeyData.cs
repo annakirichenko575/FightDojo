@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.InputSystem.Interactions;
 
 namespace FightDojo.Data
 {
-
     [Serializable]
     public class RecordedKeyData
     {

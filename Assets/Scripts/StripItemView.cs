@@ -14,6 +14,6 @@ public class StripItemView : MonoBehaviour, IPointerClickHandler
     // Вызывается Unity, когда кликнули по этому UI-объекту
     public void OnPointerClick(PointerEventData eventData)
     {
-        UnityEngine.Debug.Log($"Clicked StripItem id={id}");
+        Debug.Log($"Clicked StripItem id={id}");
     }
 }

@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using System.Diagnostics;
 using System.Collections.Generic;
 using FightDojo.Data;
@@ -74,7 +74,7 @@ namespace FightDojo
         }
 
         // Возвращает имя клавиши
-        private string GetKeyName(UnityEngine.InputSystem.Controls.KeyControl key)
+        private string GetKeyName(KeyControl key)
         {
             return key.keyCode.ToString();
         }
