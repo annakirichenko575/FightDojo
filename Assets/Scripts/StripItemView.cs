@@ -1,19 +1,24 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StripItemView : MonoBehaviour, IPointerClickHandler
+namespace FightDojo
 {
-    private int id;
-
-    // Вызывается из билдера после Instantiate, чтобы назначить id
-    public void Initialize(int id)
+    public class StripItemView : MonoBehaviour, IPointerClickHandler
     {
-        this.id = id;
-    }
+        private int id;
 
-    // Вызывается Unity, когда кликнули по этому UI-объекту
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log($"Clicked StripItem id={id}");
+        // Вызывается из билдера после Instantiate, чтобы назначить id
+        public void Initialize(int id)
+        {
+            this.id = id;
+        }
+
+        // Вызывается Unity, когда кликнули по этому UI-объекту
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Debug.Log($"Clicked StripItem id={id}");
+            KeySettingsView keySettingsView = FindFirstObjectByType<KeySettingsView>();
+            keySettingsView.Initialize(this, id);
+        }
     }
 }

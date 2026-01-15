@@ -1,4 +1,4 @@
-﻿using FightDojo.Data;
+﻿
 using UnityEngine;
 using TMPro;
 using FightDojo.Data.AutoKeyboard;
@@ -15,20 +15,23 @@ namespace FightDojo
 
         private Vector2 offset;
 
-        private void Start()
-        {
-            JsonLoader jsonLoader = new JsonLoader();
-            RecordData recordData = jsonLoader.Load();
 
-            BuildComboStrip(recordData);
-        }
-
-        private void BuildComboStrip(RecordData recordData)
+        public void BuildComboStrip(RecordData recordData)
         {
             offset = Vector2.zero;
             foreach (RecordedEvent recordedEvent in recordData.recorded_events_v2)
             {
                 BuildStripItem(recordedEvent, contentParent);
+            }
+        }
+
+        
+        // Полная очистка Content
+        public void ClearContent()
+        {
+            for (int i = contentParent.childCount - 1; i >= 0; i--)
+            {
+                Destroy(contentParent.GetChild(i).gameObject);
             }
         }
 
