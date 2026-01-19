@@ -13,11 +13,8 @@ namespace FightDojo
         [SerializeField] private GameObject keyTextPrefab;
         [SerializeField] private GameObject tabImagePrefab;
 
-        private Vector2 offset = Vector2.zero;
+        [SerializeField] private Vector2 offset;
         private bool isRecording = false;
-
-        //Счетчик id для букв
-        private int nextItemId = 0;
 
         private KeyInputReader keyInputReader = new KeyInputReader();
 
@@ -57,16 +54,9 @@ namespace FightDojo
         private void StartRecording()
         {
             isRecording = true;
-
             ClearContent();
-            offset = Vector2.zero;
-
-            //Сброс, чтобы новая запись начиналась с 0
-            nextItemId = 0;
-
             //сброс таймера ввода
             keyInputReader.Reset();
-
             Debug.Log("InputCombo recording started");
         }
 
@@ -88,43 +78,21 @@ namespace FightDojo
 
         private void BuildStripItem(KeyData keyData, Transform parent)
         {
-            SpawnKeyText(keyData.Action, keyData.KeyName, parent);
-            SpawnTabImage(keyData.Delta, parent);
+            SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
+            
         }
 
-        private void SpawnTabImage(float delta, Transform parent)
+        private void SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
         {
-            GameObject tabGO = Instantiate(tabImagePrefab, parent);
-            RectTransform rect = tabGO.GetComponent<RectTransform>();
-            rect.SetSiblingIndex(0);
-            rect.anchoredPosition = offset;
+            Vector2 right = Vector2.right * (time * stripScale) + offset;
 
-            float widthPx = Mathf.Max(1f, delta * stripScale);
-            rect.sizeDelta = new Vector2(widthPx, rect.sizeDelta.y);
-            offset += Vector2.right * widthPx;
-        }
-
-        private void SpawnKeyText(string action, string keyName, Transform parent)
-        {
-            RectTransform prefabRect = keyTextPrefab.GetComponent<RectTransform>();
-            float halfWidth = prefabRect.sizeDelta.x / 2f;
-            offset -= Vector2.right * halfWidth;
-
-            GameObject keyGO = Instantiate(keyTextPrefab, offset, Quaternion.identity, parent);
-            RectTransform rect = keyGO.GetComponent<RectTransform>();
-            rect.anchoredPosition = offset;
-            offset += Vector2.right * halfWidth;
+            GameObject keyGO = Instantiate(keyTextPrefab, parent);
+            
+            RectTransform keyRect = keyGO.GetComponent<RectTransform>();
+            keyRect.anchoredPosition = new Vector2(right.x, right.y);
 
             TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
             keyText.text = keyName;
-
-            //Повесить StripItemView и дать ему id
-            StripItemView view = keyGO.GetComponent<StripItemView>();
-            if (view == null)
-                view = keyGO.AddComponent<StripItemView>();
-
-            view.Initialize(nextItemId);
-            nextItemId++;
 
             TMP_Text text = keyGO.GetComponent<TMP_Text>();
             if (text != null)
@@ -133,6 +101,9 @@ namespace FightDojo
                     ? new Color(0.0f, 0.0f, 0.7f, 1f)
                     : new Color(0.0f, 0.0f, 0.7f, 0.6f);
             }
+            
+            StripItemView stripItem = keyGO.AddComponent<StripItemView>();
+            stripItem.Initialize(id);
         }
     }
 }

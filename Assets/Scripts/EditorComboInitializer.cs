@@ -1,4 +1,5 @@
 using System.Linq;
+using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
 using UnityEngine;
 
@@ -6,12 +7,12 @@ namespace FightDojo
 {
     public class EditorComboInitializer : MonoBehaviour
     {
-        private RecordData recordData; 
+        private RecordedKeys recordedKeys;
 
         private void Start()
         {
             JsonLoader jsonLoader = new JsonLoader();
-            recordData = jsonLoader.Load();
+            recordedKeys = RecordDataAdapter.Adapt(jsonLoader.Load());
             BuildStrip();
         }
 
@@ -19,7 +20,7 @@ namespace FightDojo
         public void BuildStrip()
         {
             EditorComboBuilder comboBuilder = GetComponent<EditorComboBuilder>();
-            comboBuilder.BuildComboStrip(recordData);
+            comboBuilder.BuildComboStrip(recordedKeys);
         }
 
         // Очищает текущую полоску (контент)
@@ -30,9 +31,9 @@ namespace FightDojo
         }
 
         // Находит нужный RecordedEvent по id
-        public RecordedEvent FindKey(int id)
+        public KeyData FindKey(int id)
         {
-            return recordData.recorded_events_v2.First(item => item.id == id);
+            return recordedKeys.GetEditorStripItem(id);
         }
     }
 }

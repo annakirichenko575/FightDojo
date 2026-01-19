@@ -12,7 +12,6 @@ namespace FightDojo.Data.AutoKeyboard
             Debug.Log(Path);
             string json = System.IO.File.ReadAllText(Path);
             RecordData recordData = JsonUtility.FromJson<RecordData>(json);
-            recordData.Initialize();
             return recordData;
         }
     }

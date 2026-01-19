@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using FightDojo.Data.AutoKeyboard;
+using FightDojo.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +14,13 @@ namespace FightDojo
         [SerializeField] private TMP_InputField inputTime;
         [SerializeField] private Button okButton;
 
-        private RecordedEvent recordedEvent = null;
+        private KeyData keyData = null;
 
         public void Initialize(StripItemView stripItemView, int id)
         {
-            recordedEvent = editorCombo.FindKey(id);
-            inputKey.text = recordedEvent.key_name_display;
-            inputTime.text = recordedEvent.delay_ms.ToString(CultureInfo.InvariantCulture);
+            keyData = editorCombo.FindKey(id);
+            inputKey.text = keyData.KeyName;
+            inputTime.text = keyData.Time.ToString(CultureInfo.InvariantCulture);
 
             okButton.onClick.RemoveAllListeners();
             okButton.onClick.AddListener(Apply);
@@ -28,11 +28,8 @@ namespace FightDojo
 
         private void Apply()
         {
-            if (recordedEvent == null)
+            if (keyData == null)
                 return;
-
-            //данные из инпутов в recordedEvent
-            recordedEvent.key_name_display = inputKey.text;
 
             float ms;
             if (!float.TryParse(inputTime.text, NumberStyles.Float, CultureInfo.InvariantCulture, out ms))
@@ -44,7 +41,8 @@ namespace FightDojo
                     return;
                 }
             }
-            recordedEvent.delay_ms = ms;
+            //данные из инпутов в recordedEvent
+            keyData.Set(keyData.Action, ms, inputKey.text);
 
             //зачистить стрип EditorComboBuilder-ом через EditorComboInitializer
             editorCombo.ClearStrip();
@@ -52,5 +50,12 @@ namespace FightDojo
             //пересобрать стрип через EditorComboInitializer
             editorCombo.BuildStrip();
         }
+
+        /*
+        Delete
+        {
+            editorCombo.Dlete(id)
+        }
+        */
     }
 }

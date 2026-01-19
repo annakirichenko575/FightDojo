@@ -1,15 +1,16 @@
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using System.Diagnostics;
 using System.Collections.Generic;
 using FightDojo.Data;
+using UnityEngine;
 
 namespace FightDojo
 {
     public class KeyInputReader
     {
-        private Stopwatch stopwatch;
-        private long lastEventMs = -1;
+        private float startTime = -1;
+        private int nextItemId = 0;
+        
 
         // Буквенные клавиши A–Z
         private readonly Key[] LetterKeys =
@@ -32,16 +33,14 @@ namespace FightDojo
         // Инициализация таймера
         public KeyInputReader()
         {
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
             AllKeys.AddRange(NumpadKeys);
             AllKeys.AddRange(LetterKeys);
         }
 
         public void Reset()
         {
-            stopwatch.Restart();
-            lastEventMs = -1;
+            startTime = -1;
+            nextItemId = 0;
         }
 
         // Проверяет указанный набор клавиш на press / release
@@ -63,10 +62,11 @@ namespace FightDojo
                     continue;
 
                 string keyName = GetKeyName(key);
-                long delta = RecountDeltaLastInput();
-                KeyData keyData = new KeyData(action, delta, keyName);
+                float time = GetLastInputTime();
+                KeyData keyData = new KeyData(nextItemId, action, time, keyName);
+                nextItemId++;
 
-                UnityEngine.Debug.Log(keyData);
+                Debug.Log(keyData);
 
                 return keyData;
             }
@@ -80,13 +80,14 @@ namespace FightDojo
         }
 
         // Логирует событие и задержку с предыдущего события
-        private long RecountDeltaLastInput()
+        private float GetLastInputTime()
         {
-            long now = stopwatch.ElapsedMilliseconds;
-            bool first = lastEventMs < 0;
-            long delta = first ? 0 : now - lastEventMs;
-            lastEventMs = now;
-            return delta;
+            float now = Time.unscaledTime;
+            if (startTime < 0f)
+            {
+                startTime = now;
+            }
+            return now - startTime;
         }
     }
 }
