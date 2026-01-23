@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using FightDojo.Data;
 using TMPro;
@@ -14,16 +13,28 @@ namespace FightDojo
         [SerializeField] private TMP_InputField inputTime;
         [SerializeField] private Button okButton;
 
+        // NEW: кнопка удаления рядом с OK
+        [SerializeField] private Button deleteButton;
+
         private KeyData keyData = null;
+        private int currentId = -1;
 
         public void Initialize(StripItemView stripItemView, int id)
         {
+            currentId = id;
+
             keyData = editorCombo.FindKey(id);
             inputKey.text = keyData.KeyName;
             inputTime.text = keyData.Time.ToString(CultureInfo.InvariantCulture);
 
             okButton.onClick.RemoveAllListeners();
             okButton.onClick.AddListener(Apply);
+
+            if (deleteButton != null)
+            {
+                deleteButton.onClick.RemoveAllListeners();
+                deleteButton.onClick.AddListener(Delete);
+            }
         }
 
         private void Apply()
@@ -31,31 +42,34 @@ namespace FightDojo
             if (keyData == null)
                 return;
 
-            float ms;
-            if (!float.TryParse(inputTime.text, NumberStyles.Float, CultureInfo.InvariantCulture, out ms))
+            float time;
+            if (!float.TryParse(inputTime.text, NumberStyles.Float, CultureInfo.InvariantCulture, out time))
             {
-                // если юзер ввёл через запятую, пробуем текущую культуру
-                if (!float.TryParse(inputTime.text, NumberStyles.Float, CultureInfo.CurrentCulture, out ms))
+                if (!float.TryParse(inputTime.text, NumberStyles.Float, CultureInfo.CurrentCulture, out time))
                 {
                     Debug.LogWarning($"Не могу распарсить время: '{inputTime.text}'");
                     return;
                 }
             }
-            //данные из инпутов в recordedEvent
-            keyData.Set(keyData.Action, ms, inputKey.text);
 
-            //зачистить стрип EditorComboBuilder-ом через EditorComboInitializer
+            // данные из инпутов в KeyData
+            keyData.Set(keyData.Action, time, inputKey.text);
+
+            // зачистить и пересобрать
             editorCombo.ClearStrip();
-
-            //пересобрать стрип через EditorComboInitializer
             editorCombo.BuildStrip();
         }
 
-        /*
-        Delete
+        // NEW: удаление выбранного элемента
+        private void Delete()
         {
-            editorCombo.Dlete(id)
+            if (currentId < 0)
+                return;
+
+            editorCombo.Delete(currentId);
+
+            editorCombo.ClearStrip();
+            editorCombo.BuildStrip();
         }
-        */
     }
 }

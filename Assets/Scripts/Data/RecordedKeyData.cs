@@ -22,9 +22,17 @@ namespace FightDojo.Data
             return editorStrip[i];
         }
 
+        public void Delete(int id)
+        {
+            editorStrip.Remove(id);
+        }
+
         public ReadOnlyCollection<KeyData> GetKeys()
         {
-            return editorStrip.Values.ToList().AsReadOnly();
+            return editorStrip.Values
+                .OrderBy(k => k.Id)
+                .ToList()
+                .AsReadOnly();
         }
     }
 
