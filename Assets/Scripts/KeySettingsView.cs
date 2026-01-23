@@ -56,7 +56,6 @@ namespace FightDojo
             keyData.Set(keyData.Action, time, inputKey.text);
 
             // зачистить и пересобрать
-            editorCombo.ClearStrip();
             editorCombo.BuildStrip();
         }
 
@@ -68,7 +67,6 @@ namespace FightDojo
 
             editorCombo.Delete(currentId);
 
-            editorCombo.ClearStrip();
             editorCombo.BuildStrip();
         }
     }

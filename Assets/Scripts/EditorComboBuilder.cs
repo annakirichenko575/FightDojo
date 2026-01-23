@@ -9,13 +9,18 @@ namespace FightDojo
     public class EditorComboBuilder : MonoBehaviour
     {
         [Header("UI")]
-        [SerializeField] private float stripScale = 1f;
         [SerializeField] private Transform contentParent;
         [SerializeField] private GameObject keyTextPrefab;
         [SerializeField] private GameObject tabImagePrefab;
 
-        [SerializeField] private Vector2 offset;
+        private Vector2 offset;
+        private float stripScale;
 
+        public void Initialize(Vector2 offset, float stripScale)
+        {
+            this.stripScale = stripScale;
+            this.offset = offset;
+        }
 
         public void BuildComboStrip(RecordedKeys recordedKeys)
         {
