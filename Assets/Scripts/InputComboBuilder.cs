@@ -1,4 +1,4 @@
-﻿using FightDojo.Data;
+﻿﻿using FightDojo.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -7,6 +7,8 @@ namespace FightDojo
 {
     public class InputComboBuilder : MonoBehaviour
     {
+        private readonly float rightBorderOffsetX = 100f;
+
         [Header("UI")]
         [SerializeField] private float stripScale = 1f;
         [SerializeField] private Transform contentParent;
@@ -15,6 +17,8 @@ namespace FightDojo
 
         [SerializeField] private Vector2 offset;
         private bool isRecording = false;
+
+        private float maxTime = 0f;
 
         private KeyInputReader keyInputReader = new KeyInputReader();
 
@@ -25,15 +29,10 @@ namespace FightDojo
 
             if (Keyboard.current[Key.Space].wasPressedThisFrame)
             {
-
                 if (isRecording == true)
-                {
                     StopRecording();
-                }
                 else
-                {
                     StartRecording();
-                }
             }
 
             if (isRecording == true)
@@ -50,13 +49,21 @@ namespace FightDojo
             }
         }
 
-        // Запуск записи: очистка UI и сброс offset
+        // Запуск записи: очистка UI и сброс таймера
         private void StartRecording()
         {
             isRecording = true;
             ClearContent();
-            //сброс таймера ввода
+
+            // сброс таймера ввода и id
             keyInputReader.Reset();
+
+            // сброс maxTime для новой записи
+            maxTime = 0f;
+
+            // сразу сбросим ширину контента 
+            UpdateContentWidth();
+
             Debug.Log("InputCombo recording started");
         }
 
@@ -78,8 +85,23 @@ namespace FightDojo
 
         private void BuildStripItem(KeyData keyData, Transform parent)
         {
+            // обновляем maxTime
+            if (maxTime < keyData.Time)
+                maxTime = keyData.Time;
+
             SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
-            
+
+            // выставляем ширину Content после добавления
+            UpdateContentWidth();
+        }
+
+        private void UpdateContentWidth()
+        {
+            RectTransform rect = contentParent.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(
+                maxTime * stripScale + offset.x + rightBorderOffsetX,
+                rect.sizeDelta.y
+            );
         }
 
         private void SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
@@ -87,7 +109,7 @@ namespace FightDojo
             Vector2 right = Vector2.right * (time * stripScale) + offset;
 
             GameObject keyGO = Instantiate(keyTextPrefab, parent);
-            
+
             RectTransform keyRect = keyGO.GetComponent<RectTransform>();
             keyRect.anchoredPosition = new Vector2(right.x, right.y);
 
@@ -101,7 +123,7 @@ namespace FightDojo
                     ? new Color(0.0f, 0.0f, 0.7f, 1f)
                     : new Color(0.0f, 0.0f, 0.7f, 0.6f);
             }
-            
+
             StripItemView stripItem = keyGO.AddComponent<StripItemView>();
             stripItem.Initialize(id);
         }
