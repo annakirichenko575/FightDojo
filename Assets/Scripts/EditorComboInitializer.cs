@@ -1,4 +1,3 @@
-using System;
 using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
 using UnityEngine;
@@ -15,22 +14,7 @@ namespace FightDojo
         private RecordedKeys recordedKeys;
         private EditorComboBuilder comboBuilder;
         private StripItemView currentStripItemView = null;
-
-        // Разрешённые клавиши: буквы A–Z
-        private static readonly Key[] LetterKeys =
-        {
-            Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G,
-            Key.H, Key.I, Key.J, Key.K, Key.L, Key.M, Key.N,
-            Key.O, Key.P, Key.Q, Key.R, Key.S, Key.T, Key.U,
-            Key.V, Key.W, Key.X, Key.Y, Key.Z
-        };
-
-        // Разрешённые клавиши: цифры справа (NumPad)
-        private static readonly Key[] NumpadKeys =
-        {
-            Key.Numpad0, Key.Numpad1, Key.Numpad2, Key.Numpad3, Key.Numpad4,
-            Key.Numpad5, Key.Numpad6, Key.Numpad7, Key.Numpad8, Key.Numpad9
-        };
+        private KeyInputReader keyInputReader = new KeyInputReader();        
 
         private void Start()
         {
@@ -51,26 +35,18 @@ namespace FightDojo
             if (Keyboard.current == null)
                 return;
 
-            // 1) Проверяем буквы
-            string pressed = GetPressedKeyName(LetterKeys);
-            if (pressed == null)
-            {
-                // 2) Проверяем numpad
-                pressed = GetPressedKeyName(NumpadKeys);
-            }
+            KeyData inputKeyData = keyInputReader.CheckKeys();
 
-            // Если в этом кадре ничего из нужного не нажали — выходим
-            if (pressed == null)
+            if (inputKeyData == null || inputKeyData.Action != KeyData.IsPressedAction)
                 return;
 
             // Берём KeyData выбранного элемента и меняем KeyName
-            KeyData keyData = FindKey(currentStripItemView.Id);
-            keyData.KeyName = pressed;
+            recordedKeys.UpdateKeyName(currentStripItemView.Id, inputKeyData.KeyName);
 
             // Сразу обновим текст на выбранном объекте, без пересборки стрипа
             TMP_Text txt = currentStripItemView.GetComponent<TMP_Text>();
             if (txt != null)
-                txt.text = pressed;
+                txt.text = inputKeyData.KeyName;
         }
 
         // Возвращает имя первой нажатой клавиши из списка (или null)
@@ -104,8 +80,7 @@ namespace FightDojo
 
         public void UpdateTimeByX(int id, float x)
         {
-            KeyData keyData = FindKey(id);
-            keyData.Time = (x - offset.x) / stripScale;
+            recordedKeys.UpdateKeyTime(id, (x - offset.x) / stripScale);
             BuildStrip();
         }
 

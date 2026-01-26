@@ -34,11 +34,24 @@ namespace FightDojo.Data
                 .ToList()
                 .AsReadOnly();
         }
+
+        public void UpdateKeyName(int id, string keyName)
+        {
+            editorStrip[id].KeyName = keyName;
+        }
+
+        public void UpdateKeyTime(int id, float keyTime)
+        {
+            editorStrip[id].Time = keyTime;
+        }
     }
 
     [Serializable]
     public class KeyData
     {
+        public const string IsPressedAction = "press";
+        public const string IsReleaseAction = "release";
+
         public int Id;
         public string Action;
         public float Time;

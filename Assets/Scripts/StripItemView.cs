@@ -1,4 +1,3 @@
-using FightDojo.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -56,14 +55,18 @@ namespace FightDojo
         public void Unselect()
         {
             // делаем букву обычной
-            if (tmpText == null) return;
+            if (tmpText == null) 
+                return;
+
             tmpText.fontStyle &= ~FontStyles.Bold;
         }
 
         private void Select()
         {
             // делаем букву жирным
-            if (tmpText == null) return;
+            if (tmpText == null) 
+                return;
+
             tmpText.fontStyle |= FontStyles.Bold;
         }
     }

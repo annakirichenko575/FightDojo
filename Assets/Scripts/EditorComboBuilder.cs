@@ -8,6 +8,8 @@ namespace FightDojo
 {
     public class EditorComboBuilder : MonoBehaviour
     {
+        private readonly float rightBorderOffsetX = 100f;
+
         [Header("UI")]
         [SerializeField] private Transform contentParent;
         [SerializeField] private GameObject keyTextPrefab;
@@ -15,6 +17,7 @@ namespace FightDojo
 
         private Vector2 offset;
         private float stripScale;
+        private float maxTime;
 
         public void Initialize(Vector2 offset, float stripScale)
         {
@@ -24,10 +27,17 @@ namespace FightDojo
 
         public void BuildComboStrip(RecordedKeys recordedKeys)
         {
+            maxTime = 0f; //зануляем максТайм
             foreach (KeyData keyData in recordedKeys.GetKeys())
             {
                 BuildStripItem(keyData, contentParent);
             }
+            //задаём максимальный размер Content исходя из максТайма
+            RectTransform rect = contentParent.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(
+                maxTime * stripScale + offset.x + rightBorderOffsetX,          
+                rect.sizeDelta.y 
+            );
         }
 
         
@@ -42,6 +52,11 @@ namespace FightDojo
 
         private void BuildStripItem(KeyData keyData, Transform parent)
         {
+            //определяем максТайм
+            if (maxTime < keyData.Time)
+            {
+                maxTime = keyData.Time;
+            }
             SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
         }
 

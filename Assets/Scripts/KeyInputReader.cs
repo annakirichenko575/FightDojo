@@ -8,6 +8,7 @@ namespace FightDojo
 {
     public class KeyInputReader
     {
+        
         private float startTime = -1;
         private int nextItemId = 0;
         
@@ -44,7 +45,7 @@ namespace FightDojo
         }
 
         // Проверяет указанный набор клавиш на press / release
-        public KeyData CheckKeys()
+        public KeyData CheckKeys(bool isTime = true)
         {
             foreach (var k in AllKeys)
             {
@@ -54,15 +55,17 @@ namespace FightDojo
 
                 string action = null;
                 if (key.wasPressedThisFrame)
-                    action = "press";
+                    action = KeyData.IsPressedAction;
                 if (key.wasReleasedThisFrame)
-                    action = "release";
+                    action = KeyData.IsReleaseAction;
 
                 if (action == null)
                     continue;
 
                 string keyName = GetKeyName(key);
-                float time = GetLastInputTime();
+
+                float time = isTime ? GetLastInputTime() : 0f;
+
                 KeyData keyData = new KeyData(nextItemId, action, time, keyName);
                 nextItemId++;
 
