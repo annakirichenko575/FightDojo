@@ -41,8 +41,8 @@ namespace FightDojo
             keySettingsView.Initialize(this, id);
 
             EditorComboInitializer editorCombo = FindFirstObjectByType<EditorComboInitializer>();
-            editorCombo.Select(this);
-
+            editorCombo.Select(this, eventData);
+            
             Select();
         }
 

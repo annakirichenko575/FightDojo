@@ -14,15 +14,20 @@ namespace FightDojo
         [SerializeField] private Transform contentParent;
         [SerializeField] private GameObject keyTextPrefab;
         [SerializeField] private GameObject tabImagePrefab;
+        
+        
 
         private Vector2 offset;
         private float stripScale;
         private float maxTime;
+        private Transform carriage;
 
-        public void Initialize(Vector2 offset, float stripScale)
+
+        public void Initialize(Vector2 offset, float stripScale, Transform carriage)
         {
             this.stripScale = stripScale;
             this.offset = offset;
+            this.carriage = carriage;
         }
 
         public void BuildComboStrip(RecordedKeys recordedKeys)
@@ -44,10 +49,12 @@ namespace FightDojo
         // Полная очистка Content
         public void ClearContent()
         {
+            carriage.SetParent(contentParent.parent);
             for (int i = contentParent.childCount - 1; i >= 0; i--)
             {
                 Destroy(contentParent.GetChild(i).gameObject);
             }
+            carriage.SetParent(contentParent);
         }
 
         private void BuildStripItem(KeyData keyData, Transform parent)
