@@ -8,7 +8,7 @@ namespace FightDojo
 {
     public class KeySettingsView : MonoBehaviour
     {
-        [SerializeField] private EditorComboInitializer editorCombo;
+        [SerializeField] private EditorComboStrip editorCombo;
         [SerializeField] private TMP_InputField inputKey;
         [SerializeField] private TMP_InputField inputTime;
         [SerializeField] private Button okButton;

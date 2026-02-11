@@ -40,7 +40,7 @@ namespace FightDojo
             KeySettingsView keySettingsView = FindFirstObjectByType<KeySettingsView>();
             keySettingsView.Initialize(this, id);
 
-            EditorComboInitializer editorCombo = FindFirstObjectByType<EditorComboInitializer>();
+            EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.Select(this, eventData);
             
             Select();
@@ -48,7 +48,7 @@ namespace FightDojo
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            EditorComboInitializer editorCombo = FindFirstObjectByType<EditorComboInitializer>();
+            EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.UpdateTimeByX(id, rectTransform.anchoredPosition.x);
         }
 
