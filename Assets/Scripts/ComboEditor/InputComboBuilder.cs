@@ -1,7 +1,6 @@
 ﻿﻿using FightDojo.Data;
-using UnityEngine;
+ using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
 
 namespace FightDojo
 {
@@ -21,6 +20,12 @@ namespace FightDojo
         private float maxTime = 0f;
 
         private KeyInputReader keyInputReader = new KeyInputReader();
+        private KeyTextSpawner keyTextSpawner;
+
+        public void Awake()
+        {
+            keyTextSpawner = new KeyTextSpawner(stripScale, offset, keyTextPrefab);
+        }
 
         private void Update()
         {
@@ -89,7 +94,7 @@ namespace FightDojo
             if (maxTime < keyData.Time)
                 maxTime = keyData.Time;
 
-            SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
+            keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
 
             // выставляем ширину Content после добавления
             UpdateContentWidth();
@@ -102,30 +107,6 @@ namespace FightDojo
                 maxTime * stripScale + offset.x + rightBorderOffsetX,
                 rect.sizeDelta.y
             );
-        }
-
-        private void SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
-        {
-            Vector2 right = Vector2.right * (time * stripScale) + offset;
-
-            GameObject keyGO = Instantiate(keyTextPrefab, parent);
-
-            RectTransform keyRect = keyGO.GetComponent<RectTransform>();
-            keyRect.anchoredPosition = new Vector2(right.x, right.y);
-
-            TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
-            keyText.text = keyName;
-
-            TMP_Text text = keyGO.GetComponent<TMP_Text>();
-            if (text != null)
-            {
-                text.color = action == Constants.Press
-                    ? new Color(0.0f, 0.0f, 0.7f, 1f)
-                    : new Color(0.0f, 0.0f, 0.7f, 0.6f);
-            }
-
-            StripItemView stripItem = keyGO.AddComponent<StripItemView>();
-            stripItem.Initialize(id);
         }
     }
 }
