@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using Infrastructure.AssetManagement;
+using Services;
+using TMPro;
 using UnityEngine;
 
 namespace FightDojo
@@ -7,20 +9,19 @@ namespace FightDojo
   {
     private readonly float stripScale;
     private readonly Vector2 offset;
-    private readonly GameObject keyTextPrefab;
+    private readonly IAssetProvider assetProvider;
 
-    public KeyTextSpawner(float stripScale, Vector2 offset, GameObject keyTextPrefab)
+    public KeyTextSpawner(float stripScale, Vector2 offset, IAssetProvider assetProvider)
     {
       this.stripScale = stripScale;
       this.offset = offset;
-      this.keyTextPrefab = keyTextPrefab;
+      this.assetProvider = assetProvider;
     }
 
     public void SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
     {
       Vector2 right = Vector2.right * (time * stripScale) + offset;
-            
-      GameObject keyGO = Object.Instantiate(keyTextPrefab, parent);
+      GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
 
       RectTransform keyRect = keyGO.GetComponent<RectTransform>();
       keyRect.anchoredPosition = new Vector2(right.x, right.y);

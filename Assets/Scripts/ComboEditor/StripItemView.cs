@@ -41,7 +41,7 @@ namespace FightDojo
             keySettingsView.Initialize(this, id);
 
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
-            editorCombo.Select(this, eventData);
+            editorCombo.Select(this, eventData); //Это перемещает карретку
             
             Select();
         }

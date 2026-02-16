@@ -1,4 +1,6 @@
 using System;
+using Infrastructure.AssetManagement;
+using Services;
 using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
 using UnityEngine;
@@ -14,9 +16,12 @@ namespace FightDojo
         [SerializeField] private float stripScale = 2000f;
         [SerializeField] private Carriage carriage;
         [SerializeField] private Transform contentParent;
+        [SerializeField] private Transform InputContentParent;
+
 
         private RecordedKeys recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
+        private InputComboBuilder inputComboStripBuilder;
         private StripItemView currentStripItemView = null;
         private KeyInputReader keyInputReader = new KeyInputReader();
 
@@ -24,9 +29,20 @@ namespace FightDojo
         {
             JsonLoader jsonLoader = new JsonLoader();
             recordedKeys = RecordDataAdapter.Adapt(jsonLoader.Load());
-            comboStripBuilder = GetComponent<EditorComboStripBuilder>();
-            comboStripBuilder.Initialize(offset, stripScale, contentParent, carriage.transform);
+            
             carriage.Initialize(contentParent.GetComponent<RectTransform>());
+            IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
+
+            KeyTextSpawner keyTextSpawner = 
+                new KeyTextSpawner(stripScale, offset, assetProvider);
+
+            comboStripBuilder = new EditorComboStripBuilder(offset, stripScale, contentParent, 
+                carriage.transform, keyTextSpawner);
+
+            inputComboStripBuilder = GetComponent<InputComboBuilder>();
+            inputComboStripBuilder.Initialize(offset, stripScale, InputContentParent, 
+                carriage.transform, keyTextSpawner);
+            
             BuildStrip();
         }
 

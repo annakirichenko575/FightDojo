@@ -4,14 +4,10 @@ using FightDojo.Data;
 
 namespace FightDojo
 {
-    public class EditorComboStripBuilder : MonoBehaviour
+    public class EditorComboStripBuilder
     {
         private readonly float rightBorderOffsetX = 100f;
 
-        [Header("UI")]
-        [SerializeField] private GameObject keyTextPrefab;
-        [SerializeField] private GameObject tabImagePrefab;
-        
         private Vector2 offset;
         private float stripScale;
         private float maxTime;
@@ -19,13 +15,14 @@ namespace FightDojo
         private KeyTextSpawner keyTextSpawner;
         private Transform contentParent;
 
-        public void Initialize(Vector2 offset, float stripScale, Transform contentParent, Transform carriage)
+        public EditorComboStripBuilder(Vector2 offset, float stripScale, 
+            Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner)
         {
             this.stripScale = stripScale;
             this.offset = offset;
             this.contentParent = contentParent;
             this.carriage = carriage;
-            keyTextSpawner = new KeyTextSpawner(stripScale, offset, keyTextPrefab);
+            this.keyTextSpawner = keyTextSpawner;
         }
 
         public void BuildComboStrip(RecordedKeys recordedKeys)
@@ -49,7 +46,7 @@ namespace FightDojo
             carriage.SetParent(contentParent.parent);
             for (int i = contentParent.childCount - 1; i >= 0; i--)
             {
-                Destroy(contentParent.GetChild(i).gameObject);
+                Object.Destroy(contentParent.GetChild(i).gameObject);
             }
             carriage.SetParent(contentParent);
         }
@@ -58,9 +55,8 @@ namespace FightDojo
         {
             //определяем максТайм
             if (maxTime < keyData.Time)
-            {
                 maxTime = keyData.Time;
-            }
+                
             keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
         }
     }

@@ -1,5 +1,7 @@
 ﻿﻿using FightDojo.Data;
- using UnityEngine;
+using Infrastructure.AssetManagement;
+using Services;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FightDojo
@@ -8,13 +10,9 @@ namespace FightDojo
     {
         private readonly float rightBorderOffsetX = 100f;
 
-        [Header("UI")]
-        [SerializeField] private float stripScale = 1f;
-        [SerializeField] private Transform contentParent;
-        [SerializeField] private GameObject keyTextPrefab;
-        [SerializeField] private GameObject tabImagePrefab;
-
-        [SerializeField] private Vector2 offset;
+        private Transform contentParent;
+        private Vector2 offset;
+        private float stripScale;
         private bool isRecording = false;
 
         private float maxTime = 0f;
@@ -22,9 +20,13 @@ namespace FightDojo
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
 
-        public void Awake()
+        public void Initialize(Vector2 offset, float stripScale, 
+            Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner)
         {
-            keyTextSpawner = new KeyTextSpawner(stripScale, offset, keyTextPrefab);
+            this.stripScale = stripScale;
+            this.offset = offset;
+            this.contentParent = contentParent;
+            this.keyTextSpawner = keyTextSpawner;
         }
 
         private void Update()
@@ -84,7 +86,7 @@ namespace FightDojo
         {
             for (int i = contentParent.childCount - 1; i >= 0; i--)
             {
-                Destroy(contentParent.GetChild(i).gameObject);
+                Object.Destroy(contentParent.GetChild(i).gameObject);
             }
         }
 

@@ -7,11 +7,11 @@ namespace Infrastructure
 {
   public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
   {
-    private readonly AllServices _services;
+    private AllServices _services = AllServices.Container;
     
     private void Awake()
     {
-
+      RegisterServices();
     }
     
     private void RegisterServices() 

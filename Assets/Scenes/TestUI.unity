@@ -428,7 +428,6 @@ GameObject:
   - component: {fileID: 432825168}
   - component: {fileID: 432825172}
   - component: {fileID: 432825171}
-  - component: {fileID: 432825167}
   - component: {fileID: 432825170}
   m_Layer: 0
   m_Name: System
@@ -437,20 +436,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &432825167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 432825166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a42c904db2111b459ca6b5aa57bf231, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keyTextPrefab: {fileID: 1727497624087470239, guid: 00754b6e019f0dc4cb9dc145dcae461f, type: 3}
-  tabImagePrefab: {fileID: 622536306869698797, guid: df82dff744e1c9848b24e75124a18017, type: 3}
 --- !u!4 &432825168
 Transform:
   m_ObjectHideFlags: 0
@@ -478,11 +463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c515c568aa5b8534b9f965e45232bf9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stripScale: 2000
-  contentParent: {fileID: 266504917}
-  keyTextPrefab: {fileID: 1727497624087470239, guid: 00754b6e019f0dc4cb9dc145dcae461f, type: 3}
-  tabImagePrefab: {fileID: 622536306869698797, guid: df82dff744e1c9848b24e75124a18017, type: 3}
-  offset: {x: 100, y: 0}
 --- !u!114 &432825171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +479,7 @@ MonoBehaviour:
   stripScale: 2000
   carriage: {fileID: 1310874717}
   contentParent: {fileID: 677835802}
+  InputContentParent: {fileID: 266504917}
 --- !u!114 &432825172
 MonoBehaviour:
   m_ObjectHideFlags: 0
