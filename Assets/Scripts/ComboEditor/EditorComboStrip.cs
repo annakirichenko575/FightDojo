@@ -49,7 +49,7 @@ namespace FightDojo
         public void Update()
         {
             // Если ничего не выбрано — нечего менять
-            if (currentStripItemView == null)
+            if (currentStripItemView == null || currentStripItemView.Id < 0)
                 return;
             
             if (Keyboard.current != null && Keyboard.current.deleteKey.wasPressedThisFrame)
