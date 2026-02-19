@@ -49,7 +49,7 @@ namespace FightDojo
         public void Update()
         {
             // Если ничего не выбрано — нечего менять
-            if (currentStripItemView == null || currentStripItemView.Id < 0)
+            if (currentStripItemView == null)
                 return;
             
             if (Keyboard.current != null && Keyboard.current.deleteKey.wasPressedThisFrame)
@@ -101,15 +101,29 @@ namespace FightDojo
             BuildStrip();
         }
 
-        public void Select(StripItemView stripItemView, PointerEventData eventData)
+        public void MoveCarriage(PointerEventData eventData)
         {
+            SetCarriagePosition(eventData);
+            SelectNewStripItem(null);
+        }
+
+        public void SelectKey(StripItemView stripItemView, PointerEventData eventData)
+        {
+            SetCarriagePosition(eventData);
+            SelectNewStripItem(stripItemView);
+        }
+
+        private void SetCarriagePosition(PointerEventData eventData) =>
             carriage.SetCarriagePosition(eventData);
 
+        private void SelectNewStripItem(StripItemView stripItemView)
+        {
             if (currentStripItemView != null)
             {
                 currentStripItemView.Unselect();
             }
             currentStripItemView = stripItemView;
         }
+
     }
 }

@@ -37,11 +37,11 @@ namespace FightDojo
         {
             Debug.Log($"Clicked StripItem id={id}");
 
-            KeySettingsView keySettingsView = FindFirstObjectByType<KeySettingsView>();
-            keySettingsView.Initialize(this, id);
+            /*KeySettingsView keySettingsView = FindFirstObjectByType<KeySettingsView>();
+            keySettingsView.Initialize(this, id);*/
 
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
-            editorCombo.Select(this, eventData); //Это перемещает карретку
+            editorCombo.SelectKey(this, eventData); //Это перемещает карретку
             
             Select();
         }
