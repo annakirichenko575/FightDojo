@@ -30,7 +30,7 @@ namespace FightDojo
             maxTime = 0f; //зануляем максТайм
             foreach (KeyData keyData in recordedKeys.GetKeys())
             {
-                BuildStripItem(keyData, contentParent);
+                BuildStripItem(keyData);
             }
             //задаём максимальный размер Content исходя из максТайма
             RectTransform rect = contentParent.GetComponent<RectTransform>();
@@ -51,13 +51,13 @@ namespace FightDojo
             carriage.SetParent(contentParent);
         }
 
-        private void BuildStripItem(KeyData keyData, Transform parent)
+        public GameObject BuildStripItem(KeyData keyData)
         {
             //определяем максТайм
             if (maxTime < keyData.Time)
                 maxTime = keyData.Time;
                 
-            keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
+            return keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, contentParent);
         }
     }
 }

@@ -8,6 +8,8 @@ namespace FightDojo
     private RectTransform rectCarriage;
     private RectTransform rectContent;
 
+    public RectTransform Rect => rectCarriage;
+
     public void Initialize(RectTransform rectContent)
     {
       this.rectContent = rectContent;

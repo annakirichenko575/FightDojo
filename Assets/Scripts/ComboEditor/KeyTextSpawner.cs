@@ -1,4 +1,5 @@
-﻿using Infrastructure.AssetManagement;
+﻿using System;
+using Infrastructure.AssetManagement;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace FightDojo
       this.assetProvider = assetProvider;
     }
 
-    public void SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
+    public GameObject SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
     {
       Vector2 right = Vector2.right * (time * stripScale) + offset;
       GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
@@ -39,6 +40,10 @@ namespace FightDojo
 
       StripItemView stripItem = keyGO.AddComponent<StripItemView>();
       stripItem.Initialize(id);
+      return keyGO;
     }
+
+    public float GetTimeByPosition(float x) =>
+      (x - offset.x) / stripScale;
   }
 }

@@ -12,9 +12,5 @@ namespace FightDojo
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.MoveCarriage(eventData);
         }
-
-        // На фоне перетаскивание не нужно
-        public new void OnDrag(PointerEventData eventData) { }
-        public new void OnEndDrag(PointerEventData eventData) { }
     }
 }

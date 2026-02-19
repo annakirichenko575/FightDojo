@@ -3,6 +3,7 @@ using UnityEngine.InputSystem.Controls;
 using System.Collections.Generic;
 using FightDojo.Data;
 using UnityEngine;
+using System;
 
 namespace FightDojo
 {

@@ -42,8 +42,6 @@ namespace FightDojo
 
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.SelectKey(this, eventData); //Это перемещает карретку
-            
-            Select();
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -61,7 +59,7 @@ namespace FightDojo
             tmpText.fontStyle &= ~FontStyles.Bold;
         }
 
-        private void Select()
+        public void Select()
         {
             // делаем букву жирным
             if (tmpText == null) 

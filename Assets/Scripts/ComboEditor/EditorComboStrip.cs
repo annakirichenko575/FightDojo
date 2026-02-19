@@ -24,6 +24,7 @@ namespace FightDojo
         private InputComboBuilder inputComboStripBuilder;
         private StripItemView currentStripItemView = null;
         private KeyInputReader keyInputReader = new KeyInputReader();
+        private KeyTextSpawner keyTextSpawner;
 
         private void Start()
         {
@@ -33,8 +34,7 @@ namespace FightDojo
             carriage.Initialize(contentParent.GetComponent<RectTransform>());
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
 
-            KeyTextSpawner keyTextSpawner = 
-                new KeyTextSpawner(stripScale, offset, assetProvider);
+            keyTextSpawner = new KeyTextSpawner(stripScale, offset, assetProvider);
 
             comboStripBuilder = new EditorComboStripBuilder(offset, stripScale, contentParent, 
                 carriage.transform, keyTextSpawner);
@@ -48,26 +48,56 @@ namespace FightDojo
 
         public void Update()
         {
+            DeleteKey();
+            if (currentStripItemView == null)
+            {
+                AddKey();
+            }
+            else
+            {
+                UpdateKey();
+            }
+        }
+
+        private void AddKey()
+        {
+            if (Keyboard.current == null || currentStripItemView != null)
+                return;
+
+            KeyData keyData = keyInputReader.CheckKeys();
+            if (keyData == null || keyData.Action != KeyData.IsPressedAction)
+                return;
+
+            float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
+            KeyData inputKeyData = new KeyData(keyData.Id, keyData.Action, time, keyData.KeyName);
+
+            GameObject keyGO = comboStripBuilder.BuildStripItem(inputKeyData);
+            SelectNewStripItem(keyGO.GetComponent<StripItemView>());
+        }
+
+        private void DeleteKey()
+        {
             // Если ничего не выбрано — нечего менять
             if (currentStripItemView == null)
                 return;
-            
-            if (Keyboard.current != null && Keyboard.current.deleteKey.wasPressedThisFrame)
+
+            if (Keyboard.current != null && Keyboard.current.deleteKey.wasPressedThisFrame)// вынести в Input модуль
             {
                 Delete(currentStripItemView.Id);
                 Destroy(currentStripItemView.gameObject);
                 currentStripItemView = null;
-                return;
             }
+        }
 
-            if (Keyboard.current == null)
+        private void UpdateKey() 
+        {
+            if (Keyboard.current == null || currentStripItemView == null)
                 return;
 
             KeyData inputKeyData = keyInputReader.CheckKeys();
 
             if (inputKeyData == null || inputKeyData.Action != KeyData.IsPressedAction)
                 return;
-
 
             // Берём KeyData выбранного элемента и меняем KeyName
             recordedKeys.UpdateKeyName(currentStripItemView.Id, inputKeyData.KeyName);
@@ -123,6 +153,10 @@ namespace FightDojo
                 currentStripItemView.Unselect();
             }
             currentStripItemView = stripItemView;
+            if (currentStripItemView != null)
+            {
+                currentStripItemView.Select();
+            }
         }
 
     }
