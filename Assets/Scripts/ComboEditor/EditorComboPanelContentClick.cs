@@ -7,7 +7,7 @@ namespace FightDojo
     public class EditorComboPanelContentClick : MonoBehaviour, IPointerClickHandler
     {
         // Скрываем поведение StripItemView (которое трогает KeySettingsView и выделение текста)
-        public new void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.MoveCarriage(eventData);
