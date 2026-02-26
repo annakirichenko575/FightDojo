@@ -1,4 +1,5 @@
-﻿using Infrastructure.AssetManagement;
+﻿using FightDojo.Database;
+using Infrastructure.AssetManagement;
 using Services;
 using Services.Randomizer;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Infrastructure
     {
       _services.RegisterSingle<IRandomService>(new RandomService());
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
+      _services.RegisterSingle<IDatabaseService>(new DatabaseService());
       
     }
   }
