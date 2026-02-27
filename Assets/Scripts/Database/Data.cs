@@ -1,7 +1,9 @@
+using System;
 using SQLite;
 
 namespace FightDojo.Database
 {
+    [Serializable]
     public class Game
     {
         [PrimaryKey, AutoIncrement]
@@ -11,6 +13,7 @@ namespace FightDojo.Database
         public string Name { get; set; }
     }
 
+    [Serializable]
     public class Character
     {
         [PrimaryKey, AutoIncrement]
@@ -22,7 +25,8 @@ namespace FightDojo.Database
         [NotNull]
         public string Name { get; set; }
     }
-
+    
+    [Serializable]
     public class Combos
     {
         [PrimaryKey, AutoIncrement]

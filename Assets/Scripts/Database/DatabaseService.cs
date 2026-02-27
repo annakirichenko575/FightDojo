@@ -1,4 +1,3 @@
-using Services;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -7,14 +6,10 @@ using UnityEngine;
 
 namespace FightDojo.Database
 {
-    interface IDatabaseService : IService
+    // C:/Users/Anna/AppData/LocalLow/DefaultCompany/FightDojo
+    public class DatabaseService : IDatabaseService
     {
-        //перенести все методы в интерфейс
-    }
-
-    public class DatabaseService : IDatabaseService, IDisposable
-    {
-        public readonly string DbName = "FD.db";
+        private readonly string dbName = "FD.db";
 
         private SQLiteConnection _connection;
         private string _persistentDbPath;
@@ -26,11 +21,8 @@ namespace FightDojo.Database
 
         private void InitializeDatabase()
         {
-            _persistentDbPath = Path.IsPathRooted(DbName) ? DbName : Path.Join(Application.persistentDataPath, DbName);
-            //_persistentDbPath = Path.Combine(Application.persistentDataPath, "FD.db");
-
+            _persistentDbPath = Path.IsPathRooted(dbName) ? dbName : Path.Join(Application.persistentDataPath, dbName);
             bool dbExists = File.Exists(_persistentDbPath);
-
             try
             {
                 _connection = new SQLiteConnection(_persistentDbPath);
@@ -82,6 +74,11 @@ namespace FightDojo.Database
                 .ToList();
         }
 
+        public int AddGame(Game newGame)
+        {
+            return _connection.Insert(newGame);
+        }
+
         public void AddCombo(Combos newCombo)
         {
             _connection.Insert(newCombo);
@@ -90,6 +87,11 @@ namespace FightDojo.Database
         public void UpdateCombo(Combos combo)
         {
             _connection.Update(combo);
+        }
+
+        public void DeleteGame(int id)
+        {
+            _connection.Delete<Game>(id);
         }
 
         public void DeleteCombo(int id)
@@ -116,7 +118,12 @@ namespace FightDojo.Database
             return _connection.Query<ComboWithCharacter>(sql, gameId);
         }
 
-        // Вспомогательный класс для JOIN
+        public void Dispose()
+        {
+            _connection?.Close();
+            _connection = null;
+        }
+
         public class ComboWithCharacter
         {
             public int Id { get; set; }
@@ -126,14 +133,6 @@ namespace FightDojo.Database
             public string Description { get; set; }
             public string Tags { get; set; }
             public string CharacterName { get; set; }
-        }
-
-
-        public void Dispose()
-        {
-            _connection?.Close();
-            //_connection?.Dispose();
-            _connection = null;
         }
     }
 }

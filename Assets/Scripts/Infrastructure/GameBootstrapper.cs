@@ -13,6 +13,7 @@ namespace Infrastructure
     private void Awake()
     {
       RegisterServices();
+      Debug.Log("Game bootstrapper started");
     }
     
     private void RegisterServices() 
