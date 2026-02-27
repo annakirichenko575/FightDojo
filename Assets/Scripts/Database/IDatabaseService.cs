@@ -15,6 +15,7 @@ namespace FightDojo.Database
         void UpdateCombo(Combos combo);
         void DeleteGame(int id);
         void DeleteCombo(int id);
+        void UpdateGameName(int id, string newName);
         Combos GetCombo(int id);
         List<DatabaseService.ComboWithCharacter> GetCombosWithCharacterName(int gameId);
     }

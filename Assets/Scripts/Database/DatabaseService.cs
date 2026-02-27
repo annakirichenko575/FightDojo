@@ -134,5 +134,21 @@ namespace FightDojo.Database
             public string Tags { get; set; }
             public string CharacterName { get; set; }
         }
+        
+        public void UpdateGameName(int id, string newName)
+        {
+            var game = _connection.Find<Game>(id);
+
+            if (game == null)
+            {
+                Debug.LogWarning($"Игра с id={id} не найдена");
+                return;
+            }
+
+            game.Name = newName;
+            _connection.Update(game);
+
+            Debug.Log($"Имя игры обновлено: id={id}, newName={newName}");
+        }
     }
 }
