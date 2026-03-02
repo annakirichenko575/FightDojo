@@ -118,6 +118,21 @@ namespace FightDojo.Database
             return _connection.Query<ComboWithCharacter>(sql, gameId);
         }
 
+        public void UpdateGameName(int id, string newName)
+        {
+            var game = _connection.Find<Game>(id);
+            if (game == null)
+            {
+                Debug.LogWarning($"Игра с id={id} не найдена");
+                return;
+            }
+
+            game.Name = newName;
+            _connection.Update(game);
+
+            Debug.Log($"Имя игры обновлено: id={id}, newName={newName}");
+        }
+        
         public void Dispose()
         {
             _connection?.Close();
@@ -135,20 +150,5 @@ namespace FightDojo.Database
             public string CharacterName { get; set; }
         }
         
-        public void UpdateGameName(int id, string newName)
-        {
-            var game = _connection.Find<Game>(id);
-
-            if (game == null)
-            {
-                Debug.LogWarning($"Игра с id={id} не найдена");
-                return;
-            }
-
-            game.Name = newName;
-            _connection.Update(game);
-
-            Debug.Log($"Имя игры обновлено: id={id}, newName={newName}");
-        }
     }
 }
