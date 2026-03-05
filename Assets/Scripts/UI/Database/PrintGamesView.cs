@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FightDojo.Database;
 using Infrastructure.AssetManagement;
@@ -7,25 +8,23 @@ using UnityEngine;
 public class PrintGamesView : MonoBehaviour
 {
     [SerializeField] private Transform _content;
+    private GameDataProvider gameDataProvider;
 
-    private GameDataProvider _gameDataProvider;
-    
     IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
     
-    private void Awake()
+    public void Initialize(GameDataProvider gameDataProvider)
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+        this.gameDataProvider = gameDataProvider;
     }
-
-    public void PrintGames()
+    
+    public Dictionary<int, GameItemView> PrintGames(ReadOnlyCollection<Game> games)
     {
-        ReadOnlyCollection<Game> games = _gameDataProvider.GetAllGameNames();
+        Dictionary<int, GameItemView> gameItemViews = new Dictionary<int, GameItemView>();
         if (games == null || games.Count == 0)
         {
             //_content.text = "В базе нет игр.";
-            return;
+            return gameItemViews;
         }
-
         //_content.text = "Список игр:\n";
         foreach (Transform item in _content)
         {
@@ -35,7 +34,11 @@ public class PrintGamesView : MonoBehaviour
         foreach (var game in games)
         {
             GameObject item = AssetProvider.Instantiate(AssetPath.GameItemPath, _content);
-            item.GetComponent<GameItemView>().Initialize(game.Id, game.Name);
+            GameItemView itemView = item.GetComponent<GameItemView>();
+            itemView.Initialize(game.Id, game.Name, gameDataProvider);
+            gameItemViews.Add(game.Id, itemView);
         }
+        return gameItemViews;
     }
+
 }
