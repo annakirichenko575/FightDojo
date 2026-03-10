@@ -14,6 +14,14 @@ public class AddGameButton : MonoBehaviour
 
     public void AddGame()
     {
-        _gameDataProvider.AddGame(nameTMP.text);
+        string newName = nameTMP.text;
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            Debug.LogWarning("Новое имя не введено!");
+            return;
+        }
+        
+        _gameDataProvider.AddGame(newName);
+        nameTMP.text = "";
     }
 }

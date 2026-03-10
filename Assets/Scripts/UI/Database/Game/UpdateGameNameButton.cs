@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class UpdateGameNameButton : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField idInput;
     [SerializeField] private TMP_InputField nameInput;
 
     private GameDataProvider _gameDataProvider;
@@ -15,14 +14,6 @@ public class UpdateGameNameButton : MonoBehaviour
 
     public void UpdateName()
     {
-        // 1) проверяем id
-        if (!int.TryParse(idInput.text, out int id))
-        {
-            Debug.LogWarning("Id должен быть числом!");
-            return;
-        }
-
-        // 2) проверяем имя
         string newName = nameInput.text;
         if (string.IsNullOrWhiteSpace(newName))
         {
@@ -31,10 +22,9 @@ public class UpdateGameNameButton : MonoBehaviour
         }
 
         // 3) обновляем в БД
-        _gameDataProvider.UpdateGameName(id, newName);
+        _gameDataProvider.UpdateGameName(newName);
 
         // очистить поля
-        idInput.text = "";
         nameInput.text = "";
     }
 }

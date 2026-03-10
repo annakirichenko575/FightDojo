@@ -10,7 +10,8 @@ public class GameDataProvider : MonoBehaviour
     Dictionary<int, GameItemView> gameItemViews = new Dictionary<int, GameItemView>();
     
     private PrintGamesView printGamesView;
-    private int selectedId;
+    private int selectedGameId;
+    private int selectedCharacterId;
     private IDatabaseService dbService => AllServices.Container.Single<IDatabaseService>();
     
     private void Start()
@@ -36,19 +37,22 @@ public class GameDataProvider : MonoBehaviour
 
     public void DeleteGame()
     {
-        if (selectedId == 0)
+        if (selectedGameId == 0)
             return;
             
-        dbService.DeleteGame(selectedId);
+        dbService.DeleteGame(selectedGameId);
         RefreshGames();
     }
     
     public ReadOnlyCollection<Game> GetAllGameNames() => 
         games.AsReadOnly();
 
-    public void UpdateGameName(int id, string newName)
+    public void UpdateGameName(string newName)
     {
-        dbService.UpdateGameName(id, newName);
+        if (selectedGameId == 0)
+            return;
+        
+        dbService.UpdateGameName(selectedGameId, newName);
         RefreshGames();
     }
 
@@ -56,14 +60,14 @@ public class GameDataProvider : MonoBehaviour
     {
         games = dbService.GetAllGames();
         gameItemViews = printGamesView.PrintGames(GetAllGameNames());
-        selectedId = 0;
-        HighlightSelected(selectedId);
+        selectedGameId = 0;
+        HighlightSelected(selectedGameId);
     }
 
     public void SelectGame(int id)
     {
-        selectedId = id;
-        HighlightSelected(selectedId);
+        selectedGameId = id;
+        HighlightSelected(selectedGameId);
     }
 
     private void HighlightSelected(int id)

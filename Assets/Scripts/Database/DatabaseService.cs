@@ -78,6 +78,11 @@ namespace FightDojo.Database
         {
             return _connection.Insert(newGame);
         }
+        
+        public int AddCharacter(Character newCharacter)
+        {
+            return _connection.Insert(newCharacter);
+        }
 
         public void AddCombo(Combos newCombo)
         {
@@ -94,6 +99,11 @@ namespace FightDojo.Database
             _connection.Delete<Game>(id);
         }
 
+        public void DeleteCharacter(int id)
+        {
+            _connection.Delete<Character>(id);
+        }
+        
         public void DeleteCombo(int id)
         {
             _connection.Delete<Combos>(id);
@@ -131,6 +141,21 @@ namespace FightDojo.Database
             _connection.Update(game);
 
             Debug.Log($"Имя игры обновлено: id={id}, newName={newName}");
+        }
+        
+        public void UpdateCharacterName(int id, string newName)
+        {
+            var character = _connection.Find<Character>(id);
+            if (character == null)
+            {
+                Debug.LogWarning($"Перс с id={id} не найдена");
+                return;
+            }
+
+            character.Name = newName;
+            _connection.Update(character);
+
+            Debug.Log($"Имя перса обновлено: id={id}, newName={newName}");
         }
         
         public void Dispose()
