@@ -49,5 +49,6 @@ public class GameWindow : MonoBehaviour
     {
         _deleteWindow.SetActive(false);
         _addWindow.SetActive(false);
+        _updateWindow.SetActive(false);
     }
 }

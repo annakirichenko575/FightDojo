@@ -8,13 +8,13 @@ using UnityEngine;
 public class PrintCharactersView : MonoBehaviour
 {
     [SerializeField] private Transform _content;
-    private GameDataProvider gameDataProvider;
+    private CharacterDataProvider characterDataProvider;
 
     IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
 
-    public void Initialize(GameDataProvider gameDataProvider)
+    public void Initialize(CharacterDataProvider gameDataProvider)
     {
-        this.gameDataProvider = gameDataProvider;
+        this.characterDataProvider = gameDataProvider;
     }
 
     public Dictionary<int, CharacterItemView> PrintCharacters(ReadOnlyCollection<Character> characters)
@@ -33,7 +33,7 @@ public class PrintCharactersView : MonoBehaviour
         {
             GameObject item = AssetProvider.Instantiate(AssetPath.CharacterItemPath, _content);
             CharacterItemView itemView = item.GetComponent<CharacterItemView>();
-            itemView.Initialize(character.Id, character.Name, gameDataProvider);
+            itemView.Initialize(character.Id, character.Name, characterDataProvider);
             characterItemViews.Add(character.Id, itemView);
         }
 

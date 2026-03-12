@@ -1,0 +1,98 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using FightDojo.Database;
+using Services;
+using UnityEngine;
+
+public class CharacterDataProvider : MonoBehaviour
+{
+    private List<Character> _characters = new List<Character>();
+
+    private Dictionary<int, CharacterItemView> _characterItemViews = new Dictionary<int, CharacterItemView>();
+
+    private PrintCharactersView _printCharactersView;
+
+    private int _selectedGameId;
+    private int _selectedCharacterId;
+
+    private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
+
+    public void Initialize()
+    {
+        _printCharactersView = GameObject.FindAnyObjectByType<PrintCharactersView>();
+        _printCharactersView.Initialize(this);
+        
+        //находим комбо провайдр и инициализируем его как было у game провайдера
+    }
+
+    public void AddCharacter(string name)
+    {
+        if (_selectedGameId == 0)
+            return;
+
+        Character character = new Character()
+        {
+            Name = name,
+            GameId = _selectedGameId
+        };
+
+        int id = _dbService.AddCharacter(character);
+        character.Id = id;
+
+        RefreshCharacters();
+        Debug.Log(id);
+    }
+
+    public void DeleteCharacter()
+    {
+        if (_selectedCharacterId == 0)
+            return;
+
+        _dbService.DeleteCharacter(_selectedCharacterId);
+        RefreshCharacters();
+    }
+
+    public ReadOnlyCollection<Character> GetAllCharacterNames() =>
+        _characters.AsReadOnly();
+
+    public void UpdateCharacterName(string newName)
+    {
+        if (_selectedCharacterId == 0)
+            return;
+
+        _dbService.UpdateCharacterName(_selectedCharacterId, newName);
+        RefreshCharacters();
+    }
+
+    public void SelectCharacter(int id)
+    {
+        _selectedCharacterId = id;
+        HighlightSelectedCharacter(_selectedCharacterId);
+        Debug.Log($"Selected character id={id}");
+        //_comboDataProvider._ComboSelected(_selectedCharacterId)
+    }
+
+    public void GameSelected(int selectedGameId)
+    {
+        _selectedGameId = selectedGameId;
+        RefreshCharacters();
+    }
+    
+    private void RefreshCharacters()
+    { 
+        _characters = _dbService.GetCharactersByGame(_selectedGameId);
+        _characterItemViews = _printCharactersView.PrintCharacters(GetAllCharacterNames());
+        SelectCharacter(0);
+    }
+
+    private void HighlightSelectedCharacter(int id)
+    {
+        foreach (CharacterItemView item in _characterItemViews.Values)
+        {
+            item.Unselect();
+        }
+
+        if (id > 0)
+            _characterItemViews[id].Highlight();
+    }
+}

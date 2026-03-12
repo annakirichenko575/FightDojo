@@ -5,11 +5,11 @@ public class UpdateCharacterNameButton : MonoBehaviour
 {
     [SerializeField] private TMP_InputField nameInput;
 
-    private GameDataProvider _gameDataProvider;
+    private CharacterDataProvider _characterDataProvider;
 
     private void Awake()
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+        _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
     }
 
     public void UpdateName()
@@ -21,7 +21,7 @@ public class UpdateCharacterNameButton : MonoBehaviour
             return;
         }
 
-        _gameDataProvider.UpdateCharacterName(newName);
+        _characterDataProvider.UpdateCharacterName(newName);
         nameInput.text = "";
     }
 }

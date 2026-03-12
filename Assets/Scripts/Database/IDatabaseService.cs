@@ -12,10 +12,10 @@ namespace FightDojo.Database
         List<Combos> SearchCombosByTag(string tagFragment);
         int AddGame(Game newGame);
         int AddCharacter(Character newCharacter);
-        void AddCombo(Combos newCombo);
+        int AddCombo(Combos newCombo);
         void UpdateGameName(int id, string newName);
         void UpdateCharacterName(int id, string newName);
-        void UpdateCombo(Combos combo);
+        void UpdateCombo(int id, string newName);
         void DeleteGame(int id);
         void DeleteCharacter(int id);
         void DeleteCombo(int id);

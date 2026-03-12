@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class DeleteCharacterButton : MonoBehaviour
 {
-    private GameDataProvider _gameDataProvider;
+    private CharacterDataProvider _characterDataProvider;
 
     private void Awake()
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+        _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
     }
 
     public void DeleteCharacter()
     {
-        _gameDataProvider.DeleteCharacter();
+        _characterDataProvider.DeleteCharacter();
     }
 }

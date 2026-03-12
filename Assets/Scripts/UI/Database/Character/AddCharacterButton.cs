@@ -5,11 +5,11 @@ public class AddCharacterButton : MonoBehaviour
 {
     public TMP_InputField nameTMP;
     
-    private GameDataProvider _gameDataProvider;
+    private CharacterDataProvider _characterDataProvider;
 
     private void Awake()
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+        _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
     }
 
     public void AddCharacter()
@@ -21,7 +21,7 @@ public class AddCharacterButton : MonoBehaviour
             return;
         }
         
-        _gameDataProvider.AddCharacter(newName);
+        _characterDataProvider.AddCharacter(newName);
         nameTMP.text = "";
     }
 }

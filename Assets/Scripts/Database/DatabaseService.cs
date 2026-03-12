@@ -84,14 +84,9 @@ namespace FightDojo.Database
             return _connection.Insert(newCharacter);
         }
 
-        public void AddCombo(Combos newCombo)
+        public int AddCombo(Combos newCombo)
         {
-            _connection.Insert(newCombo);
-        }
-
-        public void UpdateCombo(Combos combo)
-        {
-            _connection.Update(combo);
+            return _connection.Insert(newCombo);
         }
 
         public void DeleteGame(int id)
@@ -156,6 +151,21 @@ namespace FightDojo.Database
             _connection.Update(character);
 
             Debug.Log($"Имя перса обновлено: id={id}, newName={newName}");
+        }
+        
+        public void UpdateCombo(int id, string newName)
+        {
+            var combo = _connection.Find<Combos>(id);
+            if (combo == null)
+            {
+                Debug.LogWarning($"Перс с id={id} не найдена");
+                return;
+            }
+
+            combo.CreatorName = newName;
+            _connection.Update(combo);
+
+            Debug.Log($"Имя создателя комбо обновлено: id={id}, newName={newName}");
         }
         
         public void Dispose()
