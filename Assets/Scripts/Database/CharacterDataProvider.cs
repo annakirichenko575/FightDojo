@@ -12,6 +12,8 @@ public class CharacterDataProvider : MonoBehaviour
 
     private PrintCharactersView _printCharactersView;
 
+    private ComboDataProvider _comboDataProvider;
+
     private int _selectedGameId;
     private int _selectedCharacterId;
 
@@ -21,8 +23,10 @@ public class CharacterDataProvider : MonoBehaviour
     {
         _printCharactersView = GameObject.FindAnyObjectByType<PrintCharactersView>();
         _printCharactersView.Initialize(this);
-        
-        //находим комбо провайдр и инициализируем его как было у game провайдера
+
+        // находим ComboDataProvider
+        _comboDataProvider = GameObject.FindAnyObjectByType<ComboDataProvider>();
+        _comboDataProvider.Initialize();
     }
 
     public void AddCharacter(string name)
@@ -68,8 +72,11 @@ public class CharacterDataProvider : MonoBehaviour
     {
         _selectedCharacterId = id;
         HighlightSelectedCharacter(_selectedCharacterId);
+
         Debug.Log($"Selected character id={id}");
-        //_comboDataProvider._ComboSelected(_selectedCharacterId)
+
+        // передаем выбранного персонажа в ComboDataProvider
+        _comboDataProvider.CharacterSelected(_selectedCharacterId);
     }
 
     public void GameSelected(int selectedGameId)
@@ -77,7 +84,7 @@ public class CharacterDataProvider : MonoBehaviour
         _selectedGameId = selectedGameId;
         RefreshCharacters();
     }
-    
+
     private void RefreshCharacters()
     { 
         _characters = _dbService.GetCharactersByGame(_selectedGameId);

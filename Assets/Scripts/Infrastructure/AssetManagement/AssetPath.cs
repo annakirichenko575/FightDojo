@@ -5,5 +5,6 @@ namespace Infrastructure.AssetManagement
     public const string KeyTextPath = "ComboStrip/KeyText";
     public const string GameItemPath = "Database/GameItemView";
     public const string CharacterItemPath = "Database/CharacterItem";
+    public const string ComboItemPath = "Database/ComboItem";
   }
 }

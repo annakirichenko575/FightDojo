@@ -158,7 +158,7 @@ namespace FightDojo.Database
             var combo = _connection.Find<Combos>(id);
             if (combo == null)
             {
-                Debug.LogWarning($"Перс с id={id} не найдена");
+                Debug.LogWarning($"Комбо с id={id} не найдена");
                 return;
             }
 
