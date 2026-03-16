@@ -4,6 +4,8 @@ using UnityEngine;
 public class AddComboButton : MonoBehaviour
 {
     public TMP_InputField nameTMP;
+    public TMP_InputField descriptionTMP;
+    public TMP_InputField tagsTMP;
     
     private ComboDataProvider _comboDataProvider;
 
@@ -21,7 +23,7 @@ public class AddComboButton : MonoBehaviour
             return;
         }
         
-        _comboDataProvider.AddCombo(newName);
+        _comboDataProvider.AddCombo(newName, descriptionTMP.text, tagsTMP.text);
         nameTMP.text = "";
     }
 }

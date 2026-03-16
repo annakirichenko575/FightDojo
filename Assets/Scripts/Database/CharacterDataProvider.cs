@@ -25,7 +25,7 @@ public class CharacterDataProvider : MonoBehaviour
         _printCharactersView.Initialize(this);
 
         // находим ComboDataProvider
-        _comboDataProvider = GameObject.FindAnyObjectByType<ComboDataProvider>();
+        _comboDataProvider = GetComponent<ComboDataProvider>();
         _comboDataProvider.Initialize();
     }
 

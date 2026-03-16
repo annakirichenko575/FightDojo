@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,10 +13,13 @@ public class ComboItemView : MonoBehaviour, IPointerClickHandler
 
     public int GetId => _id;
 
-    public void Initialize(int id, string creatorName, ComboDataProvider comboDataProvider)
+    public void Initialize(int id, string creatorName, string description, string tags, ComboDataProvider comboDataProvider)
     {
         _id = id;
-        _text.text = $"{creatorName}\n";
+        Debug.Log(creatorName + ", " + description + ", " + tags);
+        _text.text = $"{ShortText(creatorName, 12)} " +
+                     $"{ShortText(description,  20)} " +
+                     $"{ShortText(tags,  13)}\n";
         this.comboDataProvider = comboDataProvider;
         Unselect();
     }
@@ -30,5 +34,21 @@ public class ComboItemView : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log($"Clicked ComboItem id={_id}");
         comboDataProvider.SelectCombo(_id);
+    }
+
+    private string ShortText(string text, int maxLength)
+    {
+        if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+        {
+            return text;
+        }
+        
+        Debug.Log("Sub");
+        string sub = text.Substring(0, maxLength);
+        Debug.Log(sub);
+        string split = sub.Split('\n')[0].TrimEnd('\r');
+        Debug.Log(split);
+        
+        return split;
     }
 }

@@ -28,7 +28,7 @@ public class GameItemView : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"Clicked StripItem id={_id}");
+        Debug.Log($"Clicked Game id={_id}");
         gameDataProvider.SelectGame(_id);
     }
 }

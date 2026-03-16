@@ -23,15 +23,17 @@ public class ComboDataProvider : MonoBehaviour
         _printCombosView.Initialize(this);
     }
 
-    public void AddCombo(string creatorName)
+    public void AddCombo(string creatorName, string description, string tags)
     {
         if (_selectedCharacterId == 0)
             return;
 
         Combos combo = new Combos()
         {
+            CharacterId = _selectedCharacterId,
             CreatorName = creatorName,
-            CharacterId = _selectedCharacterId
+            Description = description,
+            Tags = tags
         };
 
         int id = _dbService.AddCombo(combo);
@@ -92,4 +94,5 @@ public class ComboDataProvider : MonoBehaviour
         if (id > 0 && _comboItemViews.ContainsKey(id))
             _comboItemViews[id].Highlight();
     }
+
 }

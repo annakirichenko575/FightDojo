@@ -33,7 +33,7 @@ public class PrintCombosView : MonoBehaviour
         {
             GameObject item = AssetProvider.Instantiate(AssetPath.ComboItemPath, _content);
             ComboItemView itemView = item.GetComponent<ComboItemView>();
-            itemView.Initialize(combo.Id, combo.CreatorName, comboDataProvider);
+            itemView.Initialize(combo.Id, combo.CreatorName, combo.Description, combo.Tags, comboDataProvider);
             comboItemViews.Add(combo.Id, itemView);
         }
 
