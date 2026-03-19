@@ -20,15 +20,16 @@ public class PrintGamesView : MonoBehaviour
     public Dictionary<int, GameItemView> PrintGames(ReadOnlyCollection<Game> games)
     {
         Dictionary<int, GameItemView> gameItemViews = new Dictionary<int, GameItemView>();
-        if (games == null || games.Count == 0)
-        {
-            //_content.text = "В базе нет игр.";
-            return gameItemViews;
-        }
         //_content.text = "Список игр:\n";
         foreach (Transform item in _content)
         {
             GameObject.Destroy(item.gameObject);
+        }
+        
+        if (games == null || games.Count == 0)
+        {
+            //_content.text = "В базе нет игр.";
+            return gameItemViews;
         }
         
         foreach (var game in games)

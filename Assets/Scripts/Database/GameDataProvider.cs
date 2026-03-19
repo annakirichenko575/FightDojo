@@ -36,11 +36,10 @@ public class GameDataProvider : MonoBehaviour
             Name = name,
         };
 
-        int id = _dbService.AddGame(game);
-        game.Id = id;
-
+        _dbService.AddGame(game);
+        _selectedGameId = game.Id;
+        Debug.Log(game.Id);
         RefreshGames();
-        Debug.Log(id);
     }
 
     public void DeleteGame()
@@ -49,6 +48,7 @@ public class GameDataProvider : MonoBehaviour
             return;
 
         _dbService.DeleteGame(_selectedGameId);
+        ResetSelectedGame();
         RefreshGames();
     }
 
@@ -66,16 +66,26 @@ public class GameDataProvider : MonoBehaviour
 
     public void SelectGame(int id)
     {
+        if (id == 0 && _games.Count > 0)
+        {
+            id = _games[0].Id;
+        }
         _selectedGameId = id;
         HighlightSelectedGame(_selectedGameId);
         _characterDataProvider.GameSelected(_selectedGameId);
     }
 
+    public void CurrentGame(out Game game) => 
+        game = _dbService.GetGame(_selectedGameId);
+
+    private void ResetSelectedGame() => 
+        _selectedGameId = 0;
+
     private void RefreshGames()
     {
         _games = _dbService.GetAllGames();
         _gameItemViews = _printGamesView.PrintGames(GetAllGameNames());
-        SelectGame(0);
+        SelectGame(_selectedGameId);
     }
 
     private void HighlightSelectedGame(int id)
@@ -88,4 +98,5 @@ public class GameDataProvider : MonoBehaviour
         if (id > 0)
             _gameItemViews[id].Highlight();
     }
+
 }

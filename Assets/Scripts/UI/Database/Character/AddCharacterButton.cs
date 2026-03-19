@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AddCharacterButton : MonoBehaviour
 {
-    public TMP_InputField nameTMP;
+    public TMP_InputField nameInput;
     
     private CharacterDataProvider _characterDataProvider;
 
@@ -12,9 +12,14 @@ public class AddCharacterButton : MonoBehaviour
         _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
     }
 
+    private void OnEnable()
+    {
+        //nameInput.text = "";
+    }
+
     public void AddCharacter()
     {
-        string newName = nameTMP.text;
+        string newName = nameInput.text;
         if (string.IsNullOrWhiteSpace(newName))
         {
             Debug.LogWarning("Новое имя не введено!");
@@ -22,6 +27,6 @@ public class AddCharacterButton : MonoBehaviour
         }
         
         _characterDataProvider.AddCharacter(newName);
-        nameTMP.text = "";
+        nameInput.text = "";
     }
 }

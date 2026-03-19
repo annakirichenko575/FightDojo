@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AddGameButton : MonoBehaviour
 {
-    public TMP_InputField nameTMP;
+    public TMP_InputField nameInput;
     
     private GameDataProvider _gameDataProvider;
 
@@ -12,9 +12,14 @@ public class AddGameButton : MonoBehaviour
         _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
     }
 
+    private void OnEnable()
+    {
+        //nameInput.text = "";
+    }
+
     public void AddGame()
     {
-        string newName = nameTMP.text;
+        string newName = nameInput.text;
         if (string.IsNullOrWhiteSpace(newName))
         {
             Debug.LogWarning("Новое имя не введено!");
@@ -22,6 +27,6 @@ public class AddGameButton : MonoBehaviour
         }
         
         _gameDataProvider.AddGame(newName);
-        nameTMP.text = "";
+        nameInput.text = "";
     }
 }

@@ -15,11 +15,13 @@ namespace FightDojo.Database
         int AddCombo(Combos newCombo);
         void UpdateGameName(int id, string newName);
         void UpdateCharacterName(int id, string newName);
-        void UpdateCombo(int id, string newName);
+        void UpdateCombo(int id, string newName, string newDesc, string newTags);
         void DeleteGame(int id);
         void DeleteCharacter(int id);
         void DeleteCombo(int id);
         Combos GetCombo(int id);
+        Game GetGame(int id);
+        Character GetCharacter(int id);
         List<DatabaseService.ComboWithCharacter> GetCombosWithCharacterName(int gameId);
     }
 }

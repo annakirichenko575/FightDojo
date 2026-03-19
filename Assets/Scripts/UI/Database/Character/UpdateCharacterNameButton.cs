@@ -1,3 +1,4 @@
+using FightDojo.Database;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,12 @@ public class UpdateCharacterNameButton : MonoBehaviour
     private void Awake()
     {
         _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
+    }
+
+    private void OnEnable()
+    {
+        _characterDataProvider.CurrentCharacter(out Character characterData);
+        nameInput.text = characterData.Name;
     }
 
     public void UpdateName()

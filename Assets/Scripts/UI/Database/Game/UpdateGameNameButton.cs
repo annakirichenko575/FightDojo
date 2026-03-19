@@ -1,3 +1,5 @@
+using System;
+using FightDojo.Database;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +12,12 @@ public class UpdateGameNameButton : MonoBehaviour
     private void Awake()
     {
         _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+    }
+
+    private void OnEnable()
+    {
+        _gameDataProvider.CurrentGame(out Game gameData);
+        nameInput.text = gameData.Name;
     }
 
     public void UpdateName()

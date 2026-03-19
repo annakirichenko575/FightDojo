@@ -36,11 +36,10 @@ public class ComboDataProvider : MonoBehaviour
             Tags = tags
         };
 
-        int id = _dbService.AddCombo(combo);
-        combo.Id = id;
-
+        _dbService.AddCombo(combo);
+        _selectedComboId = combo.Id;
+        Debug.Log(combo.Id);
         RefreshCombos();
-        Debug.Log(id);
     }
 
     public void DeleteCombo()
@@ -49,23 +48,29 @@ public class ComboDataProvider : MonoBehaviour
             return;
 
         _dbService.DeleteCombo(_selectedComboId);
+        
+        ResetSelectedCombo();
         RefreshCombos();
     }
 
     public ReadOnlyCollection<Combos> GetAllCombos() =>
         _combos.AsReadOnly();
 
-    public void UpdateCombo(string newCreatorName)
+    public void UpdateCombo(string newCreatorName, string description, string tags)
     {
         if (_selectedComboId == 0)
             return;
 
-        _dbService.UpdateCombo(_selectedComboId, newCreatorName);
+        _dbService.UpdateCombo(_selectedComboId, newCreatorName, description, tags);
         RefreshCombos();
     }
 
     public void SelectCombo(int id)
     {
+        if (id == 0 && _combos.Count > 0)
+        {
+            id = _combos[0].Id;
+        }
         _selectedComboId = id;
         HighlightSelectedCombo(_selectedComboId);
         Debug.Log($"Selected combo id={id}");
@@ -73,15 +78,25 @@ public class ComboDataProvider : MonoBehaviour
 
     public void CharacterSelected(int selectedCharacterId)
     {
+        if (_selectedCharacterId == selectedCharacterId)
+            return;
+        
         _selectedCharacterId = selectedCharacterId;
+        ResetSelectedCombo();
         RefreshCombos();
     }
+
+    public void CurrentCombo(out Combos combos) => 
+        combos = _dbService.GetCombo(_selectedComboId);
+
+    private void ResetSelectedCombo() => 
+        _selectedComboId = 0;
 
     private void RefreshCombos()
     {
         _combos = _dbService.GetCombosByCharacter(_selectedCharacterId);
         _comboItemViews = _printCombosView.PrintCombos(GetAllCombos());
-        SelectCombo(0);
+        SelectCombo(_selectedComboId);
     }
 
     private void HighlightSelectedCombo(int id)

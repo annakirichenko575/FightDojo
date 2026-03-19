@@ -104,11 +104,14 @@ namespace FightDojo.Database
             _connection.Delete<Combos>(id);
         }
 
-        // Получить одно комбо по id
-        public Combos GetCombo(int id)
-        {
-            return _connection.Find<Combos>(id);
-        }
+        public Game GetGame(int id) => 
+            _connection.Find<Game>(id);
+
+        public Character GetCharacter(int id) => 
+            _connection.Find<Character>(id);
+
+        public Combos GetCombo(int id) => 
+            _connection.Find<Combos>(id);
 
         // Пример JOIN (raw SQL)
         public List<ComboWithCharacter> GetCombosWithCharacterName(int gameId)
@@ -153,7 +156,7 @@ namespace FightDojo.Database
             Debug.Log($"Имя перса обновлено: id={id}, newName={newName}");
         }
         
-        public void UpdateCombo(int id, string newName)
+        public void UpdateCombo(int id, string newName, string newDesc, string newTags)
         {
             var combo = _connection.Find<Combos>(id);
             if (combo == null)
@@ -163,6 +166,8 @@ namespace FightDojo.Database
             }
 
             combo.CreatorName = newName;
+            combo.Description = newDesc;
+            combo.Tags = newTags;
             _connection.Update(combo);
 
             Debug.Log($"Имя создателя комбо обновлено: id={id}, newName={newName}");

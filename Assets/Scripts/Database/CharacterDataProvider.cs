@@ -40,11 +40,10 @@ public class CharacterDataProvider : MonoBehaviour
             GameId = _selectedGameId
         };
 
-        int id = _dbService.AddCharacter(character);
-        character.Id = id;
-
+        _dbService.AddCharacter(character);
+        _selectedCharacterId = character.Id;
+        Debug.Log(character.Id);
         RefreshCharacters();
-        Debug.Log(id);
     }
 
     public void DeleteCharacter()
@@ -53,6 +52,8 @@ public class CharacterDataProvider : MonoBehaviour
             return;
 
         _dbService.DeleteCharacter(_selectedCharacterId);
+        
+        ResetSelectedCharacter();
         RefreshCharacters();
     }
 
@@ -70,6 +71,10 @@ public class CharacterDataProvider : MonoBehaviour
 
     public void SelectCharacter(int id)
     {
+        if (id == 0 && _characters.Count > 0)
+        {
+            id = _characters[0].Id;
+        }
         _selectedCharacterId = id;
         HighlightSelectedCharacter(_selectedCharacterId);
 
@@ -81,15 +86,25 @@ public class CharacterDataProvider : MonoBehaviour
 
     public void GameSelected(int selectedGameId)
     {
+        if (_selectedGameId == selectedGameId)
+            return;
+        
         _selectedGameId = selectedGameId;
+        ResetSelectedCharacter();
         RefreshCharacters();
     }
+
+    public void CurrentCharacter(out Character character) => 
+        character = _dbService.GetCharacter(_selectedCharacterId);
+
+    private void ResetSelectedCharacter() => 
+        _selectedCharacterId = 0;
 
     private void RefreshCharacters()
     { 
         _characters = _dbService.GetCharactersByGame(_selectedGameId);
         _characterItemViews = _printCharactersView.PrintCharacters(GetAllCharacterNames());
-        SelectCharacter(0);
+        SelectCharacter(_selectedCharacterId);
     }
 
     private void HighlightSelectedCharacter(int id)
@@ -102,4 +117,5 @@ public class CharacterDataProvider : MonoBehaviour
         if (id > 0)
             _characterItemViews[id].Highlight();
     }
+
 }

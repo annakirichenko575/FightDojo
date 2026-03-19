@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class AddComboButton : MonoBehaviour
 {
-    public TMP_InputField nameTMP;
-    public TMP_InputField descriptionTMP;
-    public TMP_InputField tagsTMP;
+    public TMP_InputField nameInput;
+    public TMP_InputField descriptionInput;
+    public TMP_InputField tagsInput;
     
     private ComboDataProvider _comboDataProvider;
 
@@ -14,16 +14,23 @@ public class AddComboButton : MonoBehaviour
         _comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
     }
 
+    private void OnEnable()
+    {
+        //nameInput.text = "";
+    }
+
     public void AddCombo()
     {
-        string newName = nameTMP.text;
+        string newName = nameInput.text;
         if (string.IsNullOrWhiteSpace(newName))
         {
             Debug.LogWarning("Новое имя не введено!");
             return;
         }
         
-        _comboDataProvider.AddCombo(newName, descriptionTMP.text, tagsTMP.text);
-        nameTMP.text = "";
+        _comboDataProvider.AddCombo(newName, descriptionInput.text, tagsInput.text);
+        nameInput.text = "";
+        descriptionInput.text = "";
+        tagsInput.text = "";
     }
 }
