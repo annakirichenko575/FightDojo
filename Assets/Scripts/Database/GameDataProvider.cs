@@ -78,15 +78,15 @@ public class GameDataProvider : MonoBehaviour
     public void CurrentGame(out Game game) => 
         game = _dbService.GetGame(_selectedGameId);
 
-    private void ResetSelectedGame() => 
-        _selectedGameId = 0;
-
-    private void RefreshGames()
+    public void RefreshGames()
     {
         _games = _dbService.GetAllGames();
         _gameItemViews = _printGamesView.PrintGames(GetAllGameNames());
         SelectGame(_selectedGameId);
     }
+
+    private void ResetSelectedGame() => 
+        _selectedGameId = 0;
 
     private void HighlightSelectedGame(int id)
     {

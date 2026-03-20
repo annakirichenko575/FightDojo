@@ -14,6 +14,8 @@ namespace FightDojo.Database
         private SQLiteConnection _connection;
         private string _persistentDbPath;
 
+        public string PersistentDbPath => _persistentDbPath;
+
         public DatabaseService()
         {
             InitializeDatabase();
@@ -22,10 +24,10 @@ namespace FightDojo.Database
         private void InitializeDatabase()
         {
             _persistentDbPath = Path.IsPathRooted(dbName) ? dbName : Path.Join(Application.persistentDataPath, dbName);
-            bool dbExists = File.Exists(_persistentDbPath);
+            bool dbExists = File.Exists(PersistentDbPath);
             try
             {
-                _connection = new SQLiteConnection(_persistentDbPath);
+                _connection = new SQLiteConnection(PersistentDbPath);
 
                 // создаём таблицы только если база была новой (или пустой)
                 if (!dbExists)
@@ -33,12 +35,12 @@ namespace FightDojo.Database
                     _connection.CreateTable<Game>();
                     _connection.CreateTable<Character>();
                     _connection.CreateTable<Combos>();
-                    Debug.Log("Создана новая база данных: " + _persistentDbPath);
+                    Debug.Log("Создана новая база данных: " + PersistentDbPath);
                 }
                 else
                 {
                     // можно добавить проверку наличия таблиц, если нужно
-                    Debug.Log("База уже существует: " + _persistentDbPath);
+                    Debug.Log("База уже существует: " + PersistentDbPath);
                 }
             }
             catch (Exception ex)
@@ -172,6 +174,92 @@ namespace FightDojo.Database
 
             Debug.Log($"Имя создателя комбо обновлено: id={id}, newName={newName}");
         }
+       
+        public bool ExportDatabase(string exportPath)
+        {
+            if (_connection == null)
+            {
+                Debug.LogError("ExportDatabase: connection is null");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(exportPath))
+            {
+                Debug.LogError("ExportDatabase: exportPath is empty");
+                return false;
+            }
+
+            try
+            {
+                // Самый надёжный способ — сериализация всей базы в байты
+                byte[] dbBytes = _connection.Serialize();
+
+                // Записываем в файл
+                File.WriteAllBytes(exportPath, dbBytes);
+
+                Debug.Log($"База данных успешно экспортирована → {exportPath} ({dbBytes.Length} байт)");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка при экспорте базы в {exportPath}\n{ex.Message}\n{ex.StackTrace}");
+                return false;
+            }
+        } 
+       
+        public void MergeDatabases(string secondDbPath)
+        {
+            // 1. отключаем FK (важно)
+            _connection.Execute("PRAGMA foreign_keys = OFF;");
+            // 2. подключаем вторую БД
+            try
+            {
+                _connection.Execute($"ATTACH DATABASE ? AS db2;", secondDbPath);
+                _connection.RunInTransaction(() =>
+                {
+                    // 3. добавляем временную колонку (если её нет)
+                    try
+                    {
+                        _connection.Execute("ALTER TABLE Game ADD COLUMN OldId INTEGER;");
+                    }
+                    catch
+                    {
+                        // колонка уже существует — игнорируем
+                    }
+                    
+                    // 4. копируем Game + сохраняем старый Id
+                    _connection.Execute(@"
+                        INSERT INTO Game (Name, OldId)
+                            SELECT Name, Id FROM db2.Game;
+                    ");
+
+                    // 5. копируем Character с правильным GameId
+                    _connection.Execute(@"
+                        INSERT INTO Character (Name, GameId)
+                            SELECT c.Name, g.Id 
+                            FROM db2.Character c
+                            JOIN Game g ON g.OldId = c.GameId;
+                    ");
+            
+                    _connection.Execute("ALTER TABLE Game DROP COLUMN OldId;");
+                });
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+            finally
+            {
+                // 6. отключаем вторую БД
+                try
+                {
+                    _connection.Execute("DETACH DATABASE db2;");
+                }
+                catch (Exception e) { Debug.LogError(e.Message); }
+            }
+            // 7. включаем FK обратно
+            //_connection.Execute("PRAGMA foreign_keys = ON;");
+        } 
         
         public void Dispose()
         {
