@@ -209,39 +209,59 @@ namespace FightDojo.Database
        
         public void MergeDatabases(string secondDbPath)
         {
-            // 1. отключаем FK (важно)
             _connection.Execute("PRAGMA foreign_keys = OFF;");
-            // 2. подключаем вторую БД
+
             try
             {
-                _connection.Execute($"ATTACH DATABASE ? AS db2;", secondDbPath);
+                _connection.Execute("ATTACH DATABASE ? AS db2;", secondDbPath);
+
                 _connection.RunInTransaction(() =>
                 {
-                    // 3. добавляем временную колонку (если её нет)
+                    // Добавляем временные колонки для старых Id
                     try
                     {
                         _connection.Execute("ALTER TABLE Game ADD COLUMN OldId INTEGER;");
                     }
                     catch
                     {
-                        // колонка уже существует — игнорируем
+                        // Уже существует
                     }
-                    
-                    // 4. копируем Game + сохраняем старый Id
+
+                    try
+                    {
+                        _connection.Execute("ALTER TABLE Character ADD COLUMN OldId INTEGER;");
+                    }
+                    catch
+                    {
+                        // Уже существует
+                    }
+
+                    // Копируем Game + сохраняем старый Id
                     _connection.Execute(@"
                         INSERT INTO Game (Name, OldId)
-                            SELECT Name, Id FROM db2.Game;
+                        SELECT Name, Id
+                        FROM db2.Game;
                     ");
 
-                    // 5. копируем Character с правильным GameId
+                    // Копируем Character + сохраняем старый Id
                     _connection.Execute(@"
-                        INSERT INTO Character (Name, GameId)
-                            SELECT c.Name, g.Id 
-                            FROM db2.Character c
-                            JOIN Game g ON g.OldId = c.GameId;
+                        INSERT INTO Character (Name, GameId, OldId)
+                        SELECT c.Name, g.Id, c.Id
+                        FROM db2.Character c
+                        JOIN Game g ON g.OldId = c.GameId;
                     ");
-            
+
+                    // Копируем Combos с правильным CharacterId
+                    _connection.Execute(@"
+                        INSERT INTO Combos (CharacterId, Combo, CreatorName, Description, Tags)
+                        SELECT ch.Id, cb.Combo, cb.CreatorName, cb.Description, cb.Tags
+                        FROM db2.Combos cb
+                        JOIN Character ch ON ch.OldId = cb.CharacterId;
+                    ");
+
+                    // Удаляем временные колонки
                     _connection.Execute("ALTER TABLE Game DROP COLUMN OldId;");
+                    _connection.Execute("ALTER TABLE Character DROP COLUMN OldId;");
                 });
             }
             catch (Exception e)
@@ -250,16 +270,18 @@ namespace FightDojo.Database
             }
             finally
             {
-                // 6. отключаем вторую БД
                 try
                 {
                     _connection.Execute("DETACH DATABASE db2;");
                 }
-                catch (Exception e) { Debug.LogError(e.Message); }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
             }
-            // 7. включаем FK обратно
+
             //_connection.Execute("PRAGMA foreign_keys = ON;");
-        } 
+        }
         
         public void Dispose()
         {
