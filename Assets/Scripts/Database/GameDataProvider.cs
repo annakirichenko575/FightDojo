@@ -85,7 +85,7 @@ public class GameDataProvider : MonoBehaviour
         SelectGame(_selectedGameId);
     }
 
-    private void ResetSelectedGame() => 
+    public void ResetSelectedGame() => 
         _selectedGameId = 0;
 
     private void HighlightSelectedGame(int id)

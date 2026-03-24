@@ -87,7 +87,10 @@ public class CharacterDataProvider : MonoBehaviour
     public void GameSelected(int selectedGameId)
     {
         if (_selectedGameId == selectedGameId)
+        {
+            RefreshCharacters();
             return;
+        }
         
         _selectedGameId = selectedGameId;
         ResetSelectedCharacter();
@@ -97,10 +100,10 @@ public class CharacterDataProvider : MonoBehaviour
     public void CurrentCharacter(out Character character) => 
         character = _dbService.GetCharacter(_selectedCharacterId);
 
-    private void ResetSelectedCharacter() => 
+    public void ResetSelectedCharacter() => 
         _selectedCharacterId = 0;
 
-    private void RefreshCharacters()
+    public void RefreshCharacters()
     { 
         _characters = _dbService.GetCharactersByGame(_selectedGameId);
         _characterItemViews = _printCharactersView.PrintCharacters(GetAllCharacterNames());

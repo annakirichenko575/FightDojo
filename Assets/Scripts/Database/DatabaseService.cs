@@ -12,9 +12,9 @@ namespace FightDojo.Database
         private readonly string dbName = "FD.db";
 
         private SQLiteConnection _connection;
-        private string _persistentDbPath;
+        private string _persistentPath;
 
-        public string PersistentDbPath => _persistentDbPath;
+        public string PersistentPath => Application.persistentDataPath;
 
         public DatabaseService()
         {
@@ -23,11 +23,16 @@ namespace FightDojo.Database
 
         private void InitializeDatabase()
         {
-            _persistentDbPath = Path.IsPathRooted(dbName) ? dbName : Path.Join(Application.persistentDataPath, dbName);
-            bool dbExists = File.Exists(PersistentDbPath);
+            _persistentPath = Path.IsPathRooted(dbName) ? dbName : Path.Join(Application.persistentDataPath, dbName);
+            InitializeDatabase(_persistentPath);
+        }
+
+        private void InitializeDatabase(string dbPath)
+        {
+            bool dbExists = File.Exists(dbPath);
             try
             {
-                _connection = new SQLiteConnection(PersistentDbPath);
+                _connection = new SQLiteConnection(dbPath);
 
                 // создаём таблицы только если база была новой (или пустой)
                 if (!dbExists)
@@ -35,12 +40,12 @@ namespace FightDojo.Database
                     _connection.CreateTable<Game>();
                     _connection.CreateTable<Character>();
                     _connection.CreateTable<Combos>();
-                    Debug.Log("Создана новая база данных: " + PersistentDbPath);
+                    Debug.Log("Создана новая база данных: " + dbPath);
                 }
                 else
                 {
                     // можно добавить проверку наличия таблиц, если нужно
-                    Debug.Log("База уже существует: " + PersistentDbPath);
+                    Debug.Log("База уже существует: " + dbPath);
                 }
             }
             catch (Exception ex)
@@ -282,7 +287,33 @@ namespace FightDojo.Database
 
             //_connection.Execute("PRAGMA foreign_keys = ON;");
         }
-        
+
+        public bool OpenDatabase(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                Debug.LogError("OpenDatabase: path is empty");
+                return false;
+            }
+
+            try
+            {
+                SQLiteConnection tempConnection = _connection;
+                InitializeDatabase(path);
+                if (tempConnection != null)
+                {
+                    tempConnection.Close();
+                }
+                Debug.Log($"База данных успешно открыта → {path} ");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка при открытии базы в {path}\n{ex.Message}\n{ex.StackTrace}");
+                return false;
+            } 
+        }
+
         public void Dispose()
         {
             _connection?.Close();

@@ -27,10 +27,10 @@ public class ImportFilePicker : MonoBehaviour
       () => { Debug.Log( "Отмена" ); },                      // отмена
       FileBrowser.PickMode.Files,                            // выбираем файлы (не папки)
       false,                                                 // только один файл
-      _dbService.PersistentDbPath,                                                  // начальный путь (null = Documents / стандартная папка)
+      _dbService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
       null,                                                  // начальное имя файла
       "Выберите файл",                                       // заголовок окна
-      "Открыть"                                              // текст кнопки
+      "Ипортировать"                                              // текст кнопки
     );
   }
 

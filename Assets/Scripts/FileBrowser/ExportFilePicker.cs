@@ -18,18 +18,18 @@ public class ExportFilePicker : MonoBehaviour
         );
         FileBrowser.SetDefaultFilter("DB");
         FileBrowser.ShowSaveDialog( 
-            ( string[] paths ) => { OnFileSaveSelected( paths ); },   // успех
+            ( string[] paths ) => { OnFileSelected( paths ); },   // успех
             () => { Debug.Log( "Отмена сохранения" ); },              // отмена
             FileBrowser.PickMode.Files,                               // сохраняем файл (не папку)
             false,                                                    // только один файл
-            _dbService.PersistentDbPath,                                                  // начальный путь (null = Documents / стандартная папка)
+            _dbService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
             "MyExport.db",                                           // предложенное имя файла по умолчанию
             "Сохранить файл",                                         // заголовок окна
             "Сохранить"                                               // текст кнопки
         );
     }
 
-    private void OnFileSaveSelected( string[] paths )
+    private void OnFileSelected( string[] paths )
     {
         if( paths == null || paths.Length == 0 )
         {

@@ -79,7 +79,10 @@ public class ComboDataProvider : MonoBehaviour
     public void CharacterSelected(int selectedCharacterId)
     {
         if (_selectedCharacterId == selectedCharacterId)
+        {
+            RefreshCombos();
             return;
+        }
         
         _selectedCharacterId = selectedCharacterId;
         ResetSelectedCombo();
@@ -89,10 +92,10 @@ public class ComboDataProvider : MonoBehaviour
     public void CurrentCombo(out Combos combos) => 
         combos = _dbService.GetCombo(_selectedComboId);
 
-    private void ResetSelectedCombo() => 
+    public void ResetSelectedCombo() => 
         _selectedComboId = 0;
 
-    private void RefreshCombos()
+    public void RefreshCombos()
     {
         _combos = _dbService.GetCombosByCharacter(_selectedCharacterId);
         _comboItemViews = _printCombosView.PrintCombos(GetAllCombos());
