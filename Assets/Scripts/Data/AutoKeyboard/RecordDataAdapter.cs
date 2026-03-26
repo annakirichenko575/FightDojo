@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace FightDojo.Data.AutoKeyboard
 {
@@ -17,5 +18,7 @@ namespace FightDojo.Data.AutoKeyboard
             }
             return new RecordedKeys(keys);
         }
+        
+        
     }
 }

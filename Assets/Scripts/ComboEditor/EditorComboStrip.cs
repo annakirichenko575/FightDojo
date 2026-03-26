@@ -69,9 +69,9 @@ namespace FightDojo
                 return;
 
             float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
-            KeyData inputKeyData = new KeyData(keyData.Id, keyData.Action, time, keyData.KeyName);
-
-            GameObject keyGO = comboStripBuilder.BuildStripItem(inputKeyData);
+            keyData.Time = time;
+            recordedKeys.Add(keyData); //insert correct id
+            GameObject keyGO = comboStripBuilder.BuildStripItem(keyData);
             SelectNewStripItem(keyGO.GetComponent<StripItemView>());
         }
 
@@ -114,10 +114,8 @@ namespace FightDojo
             comboStripBuilder.BuildComboStrip(recordedKeys);
         }
 
-        public KeyData FindKey(int id)
-        {
-            return recordedKeys.GetEditorStripItem(id);
-        }
+        public KeyData FindKey(int id) => 
+            recordedKeys.GetEditorStripItem(id);
 
         // удалить элемент из данных
         public void Delete(int id)
@@ -141,6 +139,12 @@ namespace FightDojo
         {
             SetCarriagePosition(eventData);
             SelectNewStripItem(stripItemView);
+        }
+
+        public void SaveCombo()
+        {
+            string json = recordedKeys.ToJson();
+            Debug.Log(json);
         }
 
         private void SetCarriagePosition(PointerEventData eventData) =>

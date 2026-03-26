@@ -1,6 +1,4 @@
 ﻿﻿using FightDojo.Data;
-using Infrastructure.AssetManagement;
-using Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

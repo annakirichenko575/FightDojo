@@ -61,10 +61,11 @@ namespace FightDojo
 
         public void Select()
         {
+            Debug.Log("Select" + Id);
             // делаем букву жирным
             if (tmpText == null) 
                 return;
-
+            
             tmpText.fontStyle |= FontStyles.Bold;
         }
     }
