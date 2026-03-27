@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.ObjectModel;
 using UnityEngine;
 using FightDojo.Data;
 
@@ -25,10 +26,10 @@ namespace FightDojo
             this.keyTextSpawner = keyTextSpawner;
         }
 
-        public void BuildComboStrip(RecordedKeys recordedKeys)
+        public void BuildComboStrip(ReadOnlyCollection<KeyData> allKeys)
         {
             maxTime = 0f; //зануляем максТайм
-            foreach (KeyData keyData in recordedKeys.GetKeys())
+            foreach (KeyData keyData in allKeys)
             {
                 BuildStripItem(keyData);
             }

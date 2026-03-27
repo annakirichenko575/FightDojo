@@ -27,5 +27,6 @@ namespace FightDojo.Database
         bool ExportDatabase(string exportPath);
         void MergeDatabases(string secondDbPath);
         bool OpenDatabase(string path);
+        void UpdateComboJson(int id, string comboJson);
     }
 }

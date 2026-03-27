@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace FightDojo.Data
 {
-    public class RecordedKeys
+    public class RecordedKeys : IRecordedKeysService
     {
         private Dictionary<int, KeyData> _editorStrip = new Dictionary<int, KeyData>();
 
@@ -14,6 +14,13 @@ namespace FightDojo.Data
         
         public RecordedKeys(List<KeyData> keys)
         {
+            Initialize(keys);
+        }
+
+        private void Initialize(List<KeyData> keys)
+        {
+            _maxId = 0;
+            _editorStrip.Clear();
             for (int i = 0; i < keys.Count; i++)
             {
                 if (_maxId < keys[i].Id)
@@ -62,6 +69,12 @@ namespace FightDojo.Data
         public string ToJson()
         {
             return RecordedStripJson.ToJson(GetKeys().ToList());
+        }
+
+        public void LoadJson(string comboJson)
+        {
+            List<KeyData> keys = RecordedStripJson.FromJson(comboJson);
+            Initialize(keys);
         }
     }
 

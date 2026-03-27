@@ -19,5 +19,21 @@ namespace FightDojo.Data
         return JsonUtility.ToJson(wrapper, true);   // true = красивый формат с отступами
     }
     
+    public static List<KeyData> FromJson(string json)
+    {
+      if (string.IsNullOrWhiteSpace(json))
+        return new List<KeyData>();
+
+      try
+      {
+        RecordedStripJson wrapper = JsonUtility.FromJson<RecordedStripJson>(json);
+        return wrapper?.Strip ?? new List<KeyData>();
+      }
+      catch
+      {
+        Debug.LogError("Не удалось загрузить JSON");
+        return new List<KeyData>();
+      }
+    }
   }
 }

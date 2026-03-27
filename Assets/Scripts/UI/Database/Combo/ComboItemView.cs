@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,8 +31,25 @@ public class ComboItemView : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"Clicked ComboItem id={_id}");
-        comboDataProvider.SelectCombo(_id);
+        // eventData.clickCount автоматически считает клики в пределах времени двойного клика Unity
+        if (eventData.clickCount == 2 
+            && eventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log("Двойной клик!");
+            OnDoubleClick();
+        }
+        else if (eventData.clickCount == 1)
+        {
+            Debug.Log("Одиночный клик");
+            Debug.Log($"Clicked ComboItem id={_id}");
+            comboDataProvider.SelectCombo(_id);
+        } 
+    }
+
+    private void OnDoubleClick()
+    {
+        CanvasRoots canvasRoots = FindAnyObjectByType<CanvasRoots>();
+        canvasRoots.OpenComboCanvas();
     }
 
     private string ShortText(string text, int maxLength)

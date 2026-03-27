@@ -65,6 +65,15 @@ public class ComboDataProvider : MonoBehaviour
         RefreshCombos();
     }
 
+    public void UpdateComboJson(string comboJson)
+    {
+        if (_selectedComboId == 0)
+            return;
+
+        _dbService.UpdateComboJson(_selectedComboId, comboJson);
+        RefreshCombos();
+    }
+
     public void SelectCombo(int id)
     {
         if (id == 0 && _combos.Count > 0)

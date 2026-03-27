@@ -2,7 +2,6 @@ using System;
 using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
-using FightDojo.Data.AutoKeyboard;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -18,19 +17,31 @@ namespace FightDojo
         [SerializeField] private Transform contentParent;
         [SerializeField] private Transform InputContentParent;
 
-
-        private RecordedKeys recordedKeys;
+        private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
         private InputComboBuilder inputComboStripBuilder;
         private StripItemView currentStripItemView = null;
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
+        private bool isInitialized = false;
 
         private void Start()
         {
-            JsonLoader jsonLoader = new JsonLoader();
-            recordedKeys = RecordDataAdapter.Adapt(jsonLoader.Load());
+            Open();
+        }
+
+        public void Open()
+        {
+            Initialize();
+            BuildStrip();
+        }
+
+        private void Initialize()
+        {
+            if (isInitialized)
+                return;
             
+            recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
             carriage.Initialize(contentParent.GetComponent<RectTransform>());
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
 
@@ -43,7 +54,7 @@ namespace FightDojo
             inputComboStripBuilder.Initialize(offset, stripScale, InputContentParent, 
                 carriage.transform, keyTextSpawner);
             
-            BuildStrip();
+            isInitialized = true;
         }
 
         public void Update()
@@ -111,7 +122,7 @@ namespace FightDojo
         public void BuildStrip()
         {
             comboStripBuilder.ClearContent();
-            comboStripBuilder.BuildComboStrip(recordedKeys);
+            comboStripBuilder.BuildComboStrip(recordedKeys.GetKeys());
         }
 
         public KeyData FindKey(int id) => 
@@ -139,12 +150,6 @@ namespace FightDojo
         {
             SetCarriagePosition(eventData);
             SelectNewStripItem(stripItemView);
-        }
-
-        public void SaveCombo()
-        {
-            string json = recordedKeys.ToJson();
-            Debug.Log(json);
         }
 
         private void SetCarriagePosition(PointerEventData eventData) =>

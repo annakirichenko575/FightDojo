@@ -163,6 +163,21 @@ namespace FightDojo.Database
             Debug.Log($"Имя перса обновлено: id={id}, newName={newName}");
         }
         
+        public void UpdateComboJson(int id, string comboJson)
+        {
+            var combo = _connection.Find<Combos>(id);
+            if (combo == null)
+            {
+                Debug.LogWarning($"Комбо с id={id} не найдена");
+                return;
+            }
+
+            combo.Combo = comboJson;
+            _connection.Update(combo);
+
+            Debug.Log($"Json комбо обновлено: id={id}");
+        }
+
         public void UpdateCombo(int id, string newName, string newDesc, string newTags)
         {
             var combo = _connection.Find<Combos>(id);
