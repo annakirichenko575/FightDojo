@@ -7,20 +7,20 @@ namespace FightDojo
 {
     public class EditorComboStripBuilder
     {
-        private readonly float rightBorderOffsetX = 100f;
+        private readonly float rightBorderOffsetX = 2000f;
 
-        private Vector2 offset;
+        private Vector2 leftOffset;
         private float stripScale;
         private float maxTime;
         private Transform carriage;
         private KeyTextSpawner keyTextSpawner;
         private Transform contentParent;
 
-        public EditorComboStripBuilder(Vector2 offset, float stripScale, 
+        public EditorComboStripBuilder(Vector2 leftOffset, float stripScale, 
             Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner)
         {
             this.stripScale = stripScale;
-            this.offset = offset;
+            this.leftOffset = leftOffset;
             this.contentParent = contentParent;
             this.carriage = carriage;
             this.keyTextSpawner = keyTextSpawner;
@@ -36,7 +36,7 @@ namespace FightDojo
             //задаём максимальный размер Content исходя из максТайма
             RectTransform rect = contentParent.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(
-                maxTime * stripScale + offset.x + rightBorderOffsetX,          
+                maxTime * stripScale + leftOffset.x + rightBorderOffsetX,          
                 rect.sizeDelta.y 
             );
         }
@@ -60,5 +60,21 @@ namespace FightDojo
                 
             return keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, contentParent);
         }
+        
+        public void ResizeContent(ReadOnlyCollection<KeyData> allKeys)
+        {
+            maxTime = 0f; //зануляем максТайм
+            foreach (KeyData keyData in allKeys)
+            {
+                if (maxTime < keyData.Time)
+                    maxTime = keyData.Time;
+            }
+            //задаём максимальный размер Content исходя из максТайма
+            RectTransform rect = contentParent.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(
+                maxTime * stripScale + leftOffset.x + rightBorderOffsetX,          
+                rect.sizeDelta.y 
+            );
+        } 
     }
 }

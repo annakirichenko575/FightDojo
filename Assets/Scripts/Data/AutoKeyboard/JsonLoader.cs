@@ -4,13 +4,10 @@ namespace FightDojo.Data.AutoKeyboard
 {
     public class JsonLoader
     {
-        private string Path => Application.dataPath + "/test.json";
-
-
-        public RecordData Load()
+        public RecordData Load(string path)
         {
-            Debug.Log(Path);
-            string json = System.IO.File.ReadAllText(Path);
+            Debug.Log(path);
+            string json = System.IO.File.ReadAllText(path);
             RecordData recordData = JsonUtility.FromJson<RecordData>(json);
             return recordData;
         }

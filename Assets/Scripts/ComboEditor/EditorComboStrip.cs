@@ -6,12 +6,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace FightDojo
 {
     public class EditorComboStrip : MonoBehaviour
     {
-        [SerializeField] private Vector2 offset;
+        [FormerlySerializedAs("offset")] [SerializeField] private Vector2 leftOffset;
         [SerializeField] private float stripScale = 2000f;
         [SerializeField] private Carriage carriage;
         [SerializeField] private Transform contentParent;
@@ -45,13 +46,13 @@ namespace FightDojo
             carriage.Initialize(contentParent.GetComponent<RectTransform>());
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
 
-            keyTextSpawner = new KeyTextSpawner(stripScale, offset, assetProvider);
+            keyTextSpawner = new KeyTextSpawner(stripScale, leftOffset, assetProvider);
 
-            comboStripBuilder = new EditorComboStripBuilder(offset, stripScale, contentParent, 
+            comboStripBuilder = new EditorComboStripBuilder(leftOffset, stripScale, contentParent, 
                 carriage.transform, keyTextSpawner);
 
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
-            inputComboStripBuilder.Initialize(offset, stripScale, InputContentParent, 
+            inputComboStripBuilder.Initialize(leftOffset, stripScale, InputContentParent, 
                 carriage.transform, keyTextSpawner);
             
             isInitialized = true;
@@ -83,6 +84,7 @@ namespace FightDojo
             keyData.Time = time;
             recordedKeys.Add(keyData); //insert correct id
             GameObject keyGO = comboStripBuilder.BuildStripItem(keyData);
+            comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
             SelectNewStripItem(keyGO.GetComponent<StripItemView>());
         }
 
@@ -136,7 +138,7 @@ namespace FightDojo
 
         public void UpdateTimeByX(int id, float x)
         {
-            recordedKeys.UpdateKeyTime(id, (x - offset.x) / stripScale);
+            recordedKeys.UpdateKeyTime(id, (x - leftOffset.x) / stripScale);
             BuildStrip();
         }
 

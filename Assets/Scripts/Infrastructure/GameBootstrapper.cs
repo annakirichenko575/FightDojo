@@ -1,5 +1,5 @@
-﻿using FightDojo.Data;
-using FightDojo.Data.AutoKeyboard;
+﻿using System.Collections.Generic;
+using FightDojo.Data;
 using FightDojo.Database;
 using Infrastructure.AssetManagement;
 using Services;
@@ -23,11 +23,7 @@ namespace Infrastructure
       _services.RegisterSingle<IRandomService>(new RandomService());
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
       _services.RegisterSingle<IDatabaseService>(new DatabaseService());
-      
-      JsonLoader jsonLoader = new JsonLoader();
-      RecordedKeys recordedKeys = RecordDataAdapter.Adapt(jsonLoader.Load());
-      _services.RegisterSingle<IRecordedKeysService>(recordedKeys);
-      
+      _services.RegisterSingle<IRecordedKeysService>(new RecordedKeys(new List<KeyData>()));
     }
   }
 }

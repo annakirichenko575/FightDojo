@@ -11,6 +11,11 @@ public class CanvasRoots : MonoBehaviour
   [SerializeField] private ComboDataProvider _comboProvider;
   [SerializeField] private EditorComboStrip _editorComboStrip;
 
+  public void Start()
+  {
+    OpenDbCanvas();
+  }
+  
   public void OpenDbCanvas()
   {
     _comboCanvas.SetActive(false);
