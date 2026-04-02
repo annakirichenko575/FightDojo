@@ -16,9 +16,9 @@ public class ComboItemView : MonoBehaviour, IPointerClickHandler
     {
         _id = id;
         Debug.Log(creatorName + ", " + description + ", " + tags);
-        _text.text = $"{ShortText(creatorName, 12)} " +
-                     $"{ShortText(description,  20)} " +
-                     $"{ShortText(tags,  13)}\n";
+        _text.text = $"{ShortText(creatorName, 22)} " +
+                     $"{ShortText(description,  40)} " +
+                     $"{ShortText(tags,  23)}\n";
         this.comboDataProvider = comboDataProvider;
         Unselect();
     }
