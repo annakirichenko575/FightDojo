@@ -13,6 +13,7 @@ namespace FightDojo
         private float startTime = -1;
         private int nextItemId = 0;
         
+        private float Now => Time.unscaledTime;
 
         // Буквенные клавиши A–Z
         private readonly Key[] LetterKeys =
@@ -39,6 +40,14 @@ namespace FightDojo
             AllKeys.AddRange(LetterKeys);
         }
 
+        public float GetTimeLeft()
+        {
+            if (startTime < 0f)
+                return 0f;
+
+            return Now - startTime;
+        }
+        
         public void Reset()
         {
             startTime = -1;
@@ -86,12 +95,12 @@ namespace FightDojo
         // Логирует событие и задержку с предыдущего события
         private float GetLastInputTime()
         {
-            float now = Time.unscaledTime;
             if (startTime < 0f)
             {
-                startTime = now;
+                startTime = Now;
             }
-            return now - startTime;
+            return GetTimeLeft();
         }
+
     }
 }

@@ -17,10 +17,14 @@ namespace FightDojo
 
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
+        private Carriage carriage;
 
-        public void Initialize(Vector2 offset, float stripScale, 
-            Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner)
+        public bool IsRecording => isRecording;
+
+        public void Initialize(Vector2 offset, float stripScale,
+            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner)
         {
+            this.carriage = carriage;
             this.stripScale = stripScale;
             this.offset = offset;
             this.contentParent = contentParent;
@@ -29,18 +33,33 @@ namespace FightDojo
 
         private void Update()
         {
+            RecordUpdate();
+            CarriageUpdate();
+        }
+
+        private void CarriageUpdate()
+        {
+            if (IsRecording)
+            {
+                float timeLeft = keyInputReader.GetTimeLeft();
+                carriage.SetCarriagePosition(keyTextSpawner.GetTimeOffset(timeLeft));
+            }
+        }
+
+        private void RecordUpdate()
+        {
             if (Keyboard.current == null)
                 return;
 
             if (Keyboard.current[Key.Space].wasPressedThisFrame)
             {
-                if (isRecording == true)
+                if (IsRecording == true)
                     StopRecording();
                 else
                     StartRecording();
             }
 
-            if (isRecording == true)
+            if (IsRecording == true)
                 InputRead();
         }
 

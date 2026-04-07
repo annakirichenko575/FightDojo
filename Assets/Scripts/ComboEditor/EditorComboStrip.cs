@@ -53,13 +53,16 @@ namespace FightDojo
 
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, InputContentParent, 
-                carriage.transform, keyTextSpawner);
+                carriage, keyTextSpawner);
             
             isInitialized = true;
         }
 
         public void Update()
         {
+            if (inputComboStripBuilder.IsRecording)
+                return;
+            
             DeleteKey();
             if (currentStripItemView == null)
             {

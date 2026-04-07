@@ -19,13 +19,15 @@ namespace FightDojo
       this.assetProvider = assetProvider;
     }
 
+    public Vector2 GetTimeOffset(float time) => Vector2.right * (time * stripScale) + offset;
+    
     public GameObject SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
     {
-      Vector2 right = Vector2.right * (time * stripScale) + offset;
+      Vector2 timeOffset = GetTimeOffset(time);
       GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
 
       RectTransform keyRect = keyGO.GetComponent<RectTransform>();
-      keyRect.anchoredPosition = new Vector2(right.x, right.y);
+      keyRect.anchoredPosition = timeOffset;
 
       TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
       keyText.text = keyName;
