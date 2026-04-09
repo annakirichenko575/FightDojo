@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 
 namespace FightDojo
 {
-    public class InputComboBuilder : MonoBehaviour
+    public class InputComboBuilder : MonoBehaviour, IStripWidth
     {
         private readonly float rightBorderOffsetX = 100f;
 
         private Transform contentParent;
-        private Vector2 offset;
+        private Vector2 leftOffset;
         private float stripScale;
         private bool isRecording = false;
 
@@ -18,17 +18,23 @@ namespace FightDojo
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
         private Carriage carriage;
+        private RectTransform rectContentParent;
+        private float minWidthX;
+        private StripWidthSync stripWidthSync;
 
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
-            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner)
+            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync)
         {
             this.carriage = carriage;
             this.stripScale = stripScale;
-            this.offset = offset;
+            this.leftOffset = offset;
             this.contentParent = contentParent;
+            this.rectContentParent = contentParent.GetComponent<RectTransform>();
             this.keyTextSpawner = keyTextSpawner;
+            this.stripWidthSync = stripWidthSync;
+            this.stripWidthSync.InitializeStrip(this);
         }
 
         private void Update()
@@ -37,6 +43,21 @@ namespace FightDojo
             CarriageUpdate();
         }
 
+        public void UpdateContentWidth()
+        {
+            float widthX = stripWidthSync.GetMaxWidth();
+            if (Mathf.Approximately(widthX, rectContentParent.sizeDelta.x))
+                return;
+            
+            rectContentParent.sizeDelta = new Vector2(
+                widthX,
+                rectContentParent.sizeDelta.y
+            );
+        }
+
+        public float GetCurrentWidth() => 
+            maxTime * stripScale + leftOffset.x + rightBorderOffsetX;
+        
         private void CarriageUpdate()
         {
             if (IsRecording)
@@ -86,7 +107,7 @@ namespace FightDojo
             maxTime = 0f;
 
             // сразу сбросим ширину контента 
-            UpdateContentWidth();
+            SyncContentWidth();
 
             Debug.Log("InputCombo recording started");
         }
@@ -116,16 +137,13 @@ namespace FightDojo
             keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
 
             // выставляем ширину Content после добавления
-            UpdateContentWidth();
+            SyncContentWidth();
         }
 
-        private void UpdateContentWidth()
+        private void SyncContentWidth()
         {
-            RectTransform rect = contentParent.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(
-                maxTime * stripScale + offset.x + rightBorderOffsetX,
-                rect.sizeDelta.y
-            );
+            stripWidthSync.SyncWidth();
         }
+
     }
 }

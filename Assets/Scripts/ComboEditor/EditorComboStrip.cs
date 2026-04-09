@@ -48,12 +48,13 @@ namespace FightDojo
 
             keyTextSpawner = new KeyTextSpawner(stripScale, leftOffset, assetProvider);
 
+            StripWidthSync stripWidthSync = new StripWidthSync();
             comboStripBuilder = new EditorComboStripBuilder(leftOffset, stripScale, contentParent, 
-                carriage.transform, keyTextSpawner);
+                carriage.transform, keyTextSpawner, stripWidthSync);
 
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, InputContentParent, 
-                carriage, keyTextSpawner);
+                carriage, keyTextSpawner, stripWidthSync);
             
             isInitialized = true;
         }
