@@ -21,27 +21,14 @@ namespace FightDojo
 
     public Vector2 GetTimeOffset(float time) => Vector2.right * (time * stripScale) + offset;
     
-    public GameObject SpawnKeyText(int id, string action, float time, string keyName, Transform parent)
+    public GameObject SpawnKeyText(int id, string action, 
+      float time, string keyName, Transform parent,
+      bool isInput = false)
     {
       Vector2 timeOffset = GetTimeOffset(time);
       GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
-
-      RectTransform keyRect = keyGO.GetComponent<RectTransform>();
-      keyRect.anchoredPosition = timeOffset;
-
-      TMP_Text keyText = keyGO.GetComponent<TMP_Text>();
-      keyText.text = keyName;
-
-      TMP_Text text = keyGO.GetComponent<TMP_Text>();
-      if (text != null)
-      {
-        text.color = action == Constants.Press
-          ? new Color(0.0f, 0.0f, 0.7f, 1f)
-          : new Color(0.0f, 0.0f, 0.7f, 0.6f);
-      }
-
       StripItemView stripItem = keyGO.AddComponent<StripItemView>();
-      stripItem.Initialize(id);
+      stripItem.Initialize(id, timeOffset, keyName, action, isInput);
       return keyGO;
     }
 

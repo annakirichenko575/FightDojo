@@ -8,24 +8,26 @@ namespace FightDojo
     {
         private readonly float rightBorderOffsetX = 100f;
 
+        [SerializeField] private float tolerance = 0.05f;
+        
         private Transform contentParent;
         private Vector2 leftOffset;
         private float stripScale;
         private bool isRecording = false;
-
         private float maxTime = 0f;
-
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
         private Carriage carriage;
         private RectTransform rectContentParent;
         private float minWidthX;
         private StripWidthSync stripWidthSync;
+        private IRecordedKeysService recordedKeys;
 
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
-            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync)
+            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
+            IRecordedKeysService recordedKeys)
         {
             this.carriage = carriage;
             this.stripScale = stripScale;
@@ -35,6 +37,7 @@ namespace FightDojo
             this.keyTextSpawner = keyTextSpawner;
             this.stripWidthSync = stripWidthSync;
             this.stripWidthSync.InitializeStrip(this);
+            this.recordedKeys = recordedKeys;
         }
 
         private void Update()
@@ -88,9 +91,14 @@ namespace FightDojo
         private void InputRead()
         {
             KeyData keyData = keyInputReader.CheckKeys();
-            if (keyData != null)
+            if (keyData == null || keyData.Action != KeyData.IsPressedAction)
+                return;
+            
+            GameObject keyGO = BuildStripItem(keyData, contentParent);
+            StripItemView stripItemView = keyGO.GetComponent<StripItemView>();
+            if (false == recordedKeys.FindApproximately(keyData.KeyName, keyData.Time, tolerance))
             {
-                BuildStripItem(keyData, contentParent);
+                stripItemView.SetErrorColor();
             }
         }
 
@@ -128,16 +136,19 @@ namespace FightDojo
             }
         }
 
-        private void BuildStripItem(KeyData keyData, Transform parent)
+        private GameObject BuildStripItem(KeyData keyData, Transform parent)
         {
             // обновляем maxTime
             if (maxTime < keyData.Time)
                 maxTime = keyData.Time;
 
-            keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, parent);
+            GameObject keyGO = 
+                keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, 
+                    keyData.Time, keyData.KeyName, parent, true);
 
             // выставляем ширину Content после добавления
             SyncContentWidth();
+            return keyGO;
         }
 
         private void SyncContentWidth()

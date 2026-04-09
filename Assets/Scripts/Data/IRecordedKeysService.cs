@@ -13,5 +13,6 @@ namespace FightDojo.Data
     void UpdateKeyTime(int id, float keyTime);
     string ToJson();
     void LoadJson(string comboJson);
+    bool FindApproximately(string keyName, float targetTime, float tolerance);
   }
 }

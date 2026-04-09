@@ -56,6 +56,28 @@ namespace FightDojo.Data
                 .AsReadOnly();
         }
 
+        public bool FindApproximately(string keyName, float targetTime, float tolerance)
+        {
+            foreach (var x in _editorStrip.Values)
+            {
+                if (x.KeyName == keyName)
+                {
+                    float abs = Mathf.Abs(x.Time - targetTime);
+                    Debug.Log(abs);
+                    if (abs < tolerance)
+                    {
+                        return true;
+                    }
+                } 
+            }
+
+            return false;
+            return _editorStrip.Values
+                .Any(x =>
+                    x.KeyName == keyName
+                    && Math.Abs(x.Time - targetTime) <= tolerance);
+        }
+
         public void UpdateKeyName(int id, string keyName)
         {
             _editorStrip[id].KeyName = keyName;
@@ -76,6 +98,7 @@ namespace FightDojo.Data
             List<KeyData> keys = RecordedStripJson.FromJson(comboJson);
             Initialize(keys);
         }
+
     }
 
     [Serializable]

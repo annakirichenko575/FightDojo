@@ -54,7 +54,7 @@ namespace FightDojo
 
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, InputContentParent, 
-                carriage, keyTextSpawner, stripWidthSync);
+                carriage, keyTextSpawner, stripWidthSync, recordedKeys);
             
             isInitialized = true;
         }
