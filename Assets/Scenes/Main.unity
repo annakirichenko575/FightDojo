@@ -5754,6 +5754,8 @@ GameObject:
   - component: {fileID: 432825168}
   - component: {fileID: 432825171}
   - component: {fileID: 432825170}
+  - component: {fileID: 432825173}
+  - component: {fileID: 432825174}
   m_Layer: 0
   m_Name: ComboEditorSystem
   m_TagString: Untagged
@@ -5817,6 +5819,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aba90ad3e2054559b75afaa4a09b14b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &432825173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432825166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f85657c37d9d7746b66dfc79759465f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorScroll: {fileID: 1696831875}
+  inputScroll: {fileID: 1859986515}
+--- !u!114 &432825174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432825166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a99b6300c5c5df468980bc1615c366d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _carriage: {fileID: 1310874717}
+  _inputComboBuilder: {fileID: 432825170}
+  _scrollRect: {fileID: 1859986515}
 --- !u!1 &442997598
 GameObject:
   m_ObjectHideFlags: 0
@@ -15713,7 +15744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1114124885
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16228,7 +16259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1139054579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28460,7 +28491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: -390}
+  m_AnchoredPosition: {x: 175, y: -400.89}
   m_SizeDelta: {x: 19, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1970451487
@@ -28476,7 +28507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.11928679, g: 0, b: 0.5622641, a: 1}
+  m_Color: {r: 0.36150187, g: 0, b: 0.56078434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
