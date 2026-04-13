@@ -11,6 +11,7 @@ namespace FightDojo
         {
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
             editorCombo.MoveCarriage(eventData);
+            
         }
     }
 }

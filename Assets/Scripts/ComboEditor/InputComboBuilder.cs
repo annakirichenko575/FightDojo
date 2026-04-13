@@ -10,7 +10,6 @@ namespace FightDojo
 
         [SerializeField] private float tolerance = 0.05f;
         
-        private Transform contentParent;
         private Vector2 leftOffset;
         private float stripScale;
         private bool isRecording = false;
@@ -18,7 +17,7 @@ namespace FightDojo
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
         private Carriage carriage;
-        private RectTransform rectContentParent;
+        private RectTransform contentParent;
         private float minWidthX;
         private StripWidthSync stripWidthSync;
         private IRecordedKeysService recordedKeys;
@@ -26,14 +25,13 @@ namespace FightDojo
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
-            Transform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
+            RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
             IRecordedKeysService recordedKeys)
         {
             this.carriage = carriage;
             this.stripScale = stripScale;
             this.leftOffset = offset;
             this.contentParent = contentParent;
-            this.rectContentParent = contentParent.GetComponent<RectTransform>();
             this.keyTextSpawner = keyTextSpawner;
             this.stripWidthSync = stripWidthSync;
             this.stripWidthSync.InitializeStrip(this);
@@ -49,12 +47,12 @@ namespace FightDojo
         public void UpdateContentWidth()
         {
             float widthX = stripWidthSync.GetMaxWidth();
-            if (Mathf.Approximately(widthX, rectContentParent.sizeDelta.x))
+            if (Mathf.Approximately(widthX, contentParent.sizeDelta.x))
                 return;
             
-            rectContentParent.sizeDelta = new Vector2(
+            contentParent.sizeDelta = new Vector2(
                 widthX,
-                rectContentParent.sizeDelta.y
+                contentParent.sizeDelta.y
             );
         }
 

@@ -48,12 +48,6 @@ namespace FightDojo
                 : new Color(ReleaseColor.r, ReleaseColor.g, ReleaseColor.b);
         }
 
-        private void Update()
-        {
-            if (isInput)
-                Debug.Log(keyText.color);
-        }
-
         public void OnDrag(PointerEventData eventData)
         {
             if (isInput)
@@ -101,7 +95,6 @@ namespace FightDojo
 
         public void Select()
         {
-            Debug.Log("Select" + Id);
             // делаем букву жирным
             if (keyText == null) 
                 return;

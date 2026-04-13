@@ -17,10 +17,13 @@ namespace FightDojo
         private StripWidthSync stripWidthSync;
         private Transform contentParent;
         private RectTransform rectContentParent;
+        private Timeline timeline;
 
         public EditorComboStripBuilder(Vector2 leftOffset, float stripScale,
-            Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync)
+            Transform contentParent, Transform carriage, KeyTextSpawner keyTextSpawner, 
+            StripWidthSync stripWidthSync, Timeline timeline)
         {
+            this.timeline = timeline;
             this.stripScale = stripScale;
             this.leftOffset = leftOffset;
             this.contentParent = contentParent;
@@ -45,11 +48,14 @@ namespace FightDojo
         // Полная очистка Content
         public void ClearContent()
         {
+            Transform timelineTransform = timeline.transform;
             carriage.SetParent(contentParent.parent);
+            timelineTransform.SetParent(contentParent.parent);
             for (int i = contentParent.childCount - 1; i >= 0; i--)
             {
                 Object.Destroy(contentParent.GetChild(i).gameObject);
             }
+            timelineTransform.SetParent(contentParent);
             carriage.SetParent(contentParent);
         }
 
@@ -83,6 +89,7 @@ namespace FightDojo
                 widthX,          
                 rectContentParent.sizeDelta.y 
             );
+            timeline.CreateTimeline(stripScale);
         }
 
         public float GetCurrentWidth() => 

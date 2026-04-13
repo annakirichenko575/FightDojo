@@ -1,4 +1,3 @@
-using System;
 using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
@@ -6,17 +5,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace FightDojo
 {
     public class EditorComboStrip : MonoBehaviour
     {
-        [FormerlySerializedAs("offset")] [SerializeField] private Vector2 leftOffset;
-        [SerializeField] private float stripScale = 2000f;
+        [SerializeField] private Vector2 leftOffset;
+        [SerializeField] private float stripScale = 1000f;
         [SerializeField] private Carriage carriage;
-        [SerializeField] private Transform contentParent;
-        [SerializeField] private Transform InputContentParent;
+        [SerializeField] private RectTransform contentParent;
+        [SerializeField] private RectTransform inputContentParent;
+        [SerializeField] private Timeline timeline;
 
         private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
@@ -43,18 +42,20 @@ namespace FightDojo
                 return;
             
             recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
-            carriage.Initialize(contentParent.GetComponent<RectTransform>());
+            carriage.Initialize(contentParent);
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
 
             keyTextSpawner = new KeyTextSpawner(stripScale, leftOffset, assetProvider);
 
             StripWidthSync stripWidthSync = new StripWidthSync();
             comboStripBuilder = new EditorComboStripBuilder(leftOffset, stripScale, contentParent, 
-                carriage.transform, keyTextSpawner, stripWidthSync);
+                carriage.transform, keyTextSpawner, stripWidthSync, timeline);
 
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
-            inputComboStripBuilder.Initialize(leftOffset, stripScale, InputContentParent, 
+            inputComboStripBuilder.Initialize(leftOffset, stripScale, inputContentParent, 
                 carriage, keyTextSpawner, stripWidthSync, recordedKeys);
+            
+            timeline.Initialize(assetProvider, contentParent, (int)leftOffset.x);
             
             isInitialized = true;
         }
@@ -149,6 +150,8 @@ namespace FightDojo
         public void MoveCarriage(PointerEventData eventData)
         {
             SetCarriagePosition(eventData);
+            float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
+            Debug.Log("!!!" + time + " " + (time*stripScale));
             SelectNewStripItem(null);
         }
 
