@@ -94,7 +94,11 @@ namespace FightDojo
             
             GameObject keyGO = BuildStripItem(keyData, contentParent);
             StripItemView stripItemView = keyGO.GetComponent<StripItemView>();
-            if (false == recordedKeys.FindApproximately(keyData.KeyName, keyData.Time, tolerance))
+            if (recordedKeys.FindApproximately(keyData.KeyName, keyData.Time, tolerance))
+            {
+                stripItemView.SetCorrectColor();
+            }
+            else
             {
                 stripItemView.SetErrorColor();
             }

@@ -32,8 +32,8 @@ public class ImportAutoKeyboardJsonFilePicker : MonoBehaviour
       false,                                                 // только один файл
       GameDirectory.GetPath(),                                                  // начальный путь (null = Documents / стандартная папка)
       null,                                                  // начальное имя файла
-      "Выберите файл",                                       // заголовок окна
-      "Ипортировать"                                              // текст кнопки
+      "Выберите json файл из AutoKeyboard",                                       // заголовок окна
+      "Ипортировать из AutoKeyboard"                                              // текст кнопки
     );
   }
 

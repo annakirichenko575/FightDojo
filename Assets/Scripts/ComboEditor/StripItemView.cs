@@ -8,12 +8,12 @@ namespace FightDojo
 {
     public class StripItemView : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler
     {
-        private readonly Color32 red = new Color32(208, 2, 5, 0xFF);
+        private readonly Color32 red = new Color32(0xD0, 0x02, 0x05, 0xFF);
         private readonly Color32 redDark = new Color32(139, 0, 0, 0xFF);
-        private readonly Color32 white = new Color32(255, 255, 255, 0xFF);
+        private readonly Color32 white = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
         private readonly Color32 gray = new Color32(127, 127, 127, 0xFF);
-        private readonly Color32 purple = new Color32(151, 0, 96, 0xFF);
-        private readonly Color32 purpleDark = new Color32(76, 1, 99, 0xFF);
+        private readonly Color32 purple = new Color32(0x97, 0x00, 0xC4, 0xFF);
+        private readonly Color32 purpleDark = new Color32(0x33, 0x13, 0x3D, 0xFF);
             
         private int id;
         private RectTransform rectTransform;
@@ -36,16 +36,17 @@ namespace FightDojo
             SetColor(white, gray);
         }
         
-        public void SetErrorColor()
-        {
+        public void SetCorrectColor() => 
+            SetColor(purple, purpleDark);
+
+        public void SetErrorColor() => 
             SetColor(red, redDark);
-        }
 
         private void SetColor(Color PressColor, Color ReleaseColor)
         {
             keyText.color = (action == KeyData.IsPressedAction)
-                ? new Color(PressColor.r, PressColor.g, PressColor.b)
-                : new Color(ReleaseColor.r, ReleaseColor.g, ReleaseColor.b);
+                ? new Color(PressColor.r, PressColor.g, PressColor.b, 0.5f)
+                : new Color(ReleaseColor.r, ReleaseColor.g, ReleaseColor.b, 0.5f);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -102,6 +103,6 @@ namespace FightDojo
             keyText.fontStyle |= FontStyles.Bold;
         }
 
-        
+
     }
 }

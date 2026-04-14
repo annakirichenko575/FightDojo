@@ -1,7 +1,4 @@
-﻿using System;
-using Infrastructure.AssetManagement;
-using Services;
-using TMPro;
+﻿using Infrastructure.AssetManagement;
 using UnityEngine;
 
 namespace FightDojo
