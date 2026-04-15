@@ -1,4 +1,4 @@
-﻿﻿using FightDojo.Data;
+﻿using FightDojo.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -59,12 +59,35 @@ namespace FightDojo
         public float GetCurrentWidth() => 
             maxTime * stripScale + leftOffset.x + rightBorderOffsetX;
         
+        public void ChangeScale(float scale)
+        {
+            stripScale = scale;
+            for (int i = contentParent.childCount - 1; i >= 0; i--)
+            {
+                if (contentParent.GetChild(i)
+                    .TryGetComponent(out StripItemView stripItemView))
+                {
+                    stripItemView.ChangeScale();
+                }
+            }
+            SyncContentWidth();
+        }
+        
+        // Полная очистка Content
+        public void ClearContent()
+        {
+            for (int i = contentParent.childCount - 1; i >= 0; i--)
+            {
+                Object.Destroy(contentParent.GetChild(i).gameObject);
+            }
+        }
+        
         private void CarriageUpdate()
         {
             if (IsRecording)
             {
                 float timeLeft = keyInputReader.GetTimeLeft();
-                carriage.SetCarriagePosition(keyTextSpawner.GetTimeOffset(timeLeft));
+                carriage.SetPosition(keyTextSpawner.GetTimeOffset(timeLeft).x);
             }
         }
 
@@ -92,8 +115,7 @@ namespace FightDojo
             if (keyData == null || keyData.Action != KeyData.IsPressedAction)
                 return;
             
-            GameObject keyGO = BuildStripItem(keyData, contentParent);
-            StripItemView stripItemView = keyGO.GetComponent<StripItemView>();
+            StripItemView stripItemView = BuildStripItem(keyData, contentParent);
             if (recordedKeys.FindApproximately(keyData.KeyName, keyData.Time, tolerance))
             {
                 stripItemView.SetCorrectColor();
@@ -129,16 +151,7 @@ namespace FightDojo
             Debug.Log("InputCombo recording stopped");
         }
 
-        // Полная очистка Content
-        private void ClearContent()
-        {
-            for (int i = contentParent.childCount - 1; i >= 0; i--)
-            {
-                Object.Destroy(contentParent.GetChild(i).gameObject);
-            }
-        }
-
-        private GameObject BuildStripItem(KeyData keyData, Transform parent)
+        private StripItemView BuildStripItem(KeyData keyData, Transform parent)
         {
             // обновляем maxTime
             if (maxTime < keyData.Time)
@@ -150,7 +163,8 @@ namespace FightDojo
 
             // выставляем ширину Content после добавления
             SyncContentWidth();
-            return keyGO;
+            StripItemView stripItemView = keyGO.GetComponent<StripItemView>();
+            return stripItemView;
         }
 
         private void SyncContentWidth()

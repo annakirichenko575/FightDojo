@@ -5,9 +5,9 @@ namespace FightDojo
 {
   public class KeyTextSpawner
   {
-    private readonly float stripScale;
     private readonly Vector2 offset;
     private readonly IAssetProvider assetProvider;
+    private float stripScale;
 
     public KeyTextSpawner(float stripScale, Vector2 offset, IAssetProvider assetProvider)
     {
@@ -25,11 +25,14 @@ namespace FightDojo
       Vector2 timeOffset = GetTimeOffset(time);
       GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
       StripItemView stripItem = keyGO.AddComponent<StripItemView>();
-      stripItem.Initialize(id, timeOffset, keyName, action, isInput);
+      stripItem.Initialize(id, keyName, time, action, this, isInput);
       return keyGO;
     }
 
     public float GetTimeByPosition(float x) =>
       (x - offset.x) / stripScale;
+
+    public void ChangeScale(float scale) => 
+      stripScale = scale;
   }
 }

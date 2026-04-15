@@ -1,4 +1,3 @@
-using System;
 using FightDojo.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,20 +19,29 @@ namespace FightDojo
         private TMP_Text keyText;
         private string action;
         private bool isInput;
+        private float time;
+        private KeyTextSpawner keyTextSpawner;
 
         public int Id => id;
 
-        public void Initialize(int id, Vector2 timeOffset, 
-            string keyName, string action, bool isInput)
+        public void Initialize(int id, string keyName, float time, string action, 
+            KeyTextSpawner keyTextSpawner, bool isInput)
         {
+            this.id = id;
+            this.time = time;
+            this.action = action;
+            this.keyTextSpawner = keyTextSpawner;
             this.isInput = isInput;
             rectTransform = GetComponent<RectTransform>();
             keyText = GetComponent<TMP_Text>(); // KeyText (TMP) висит на этом же объекте
-            this.id = id;
-            rectTransform.anchoredPosition = timeOffset;
+            rectTransform.anchoredPosition = keyTextSpawner.GetTimeOffset(time);
             keyText.text = keyName;
-            this.action = action;
             SetColor(white, gray);
+        }
+        
+        public void ChangeScale()
+        {
+            rectTransform.anchoredPosition = keyTextSpawner.GetTimeOffset(time);
         }
         
         public void SetCorrectColor() => 
@@ -54,6 +62,9 @@ namespace FightDojo
             if (isInput)
                 return;
             
+            if (eventData.button != PointerEventData.InputButton.Left)
+                return;
+            
             Vector2 position = rectTransform.anchoredPosition;
             position.x += eventData.delta.x;
             rectTransform.anchoredPosition = position;
@@ -64,6 +75,9 @@ namespace FightDojo
         public void OnPointerClick(PointerEventData eventData)
         {
             if (isInput)
+                return;
+            
+            if (eventData.button != PointerEventData.InputButton.Left)
                 return;
             
             Debug.Log($"Clicked StripItem id={id}");
@@ -78,6 +92,9 @@ namespace FightDojo
         public void OnEndDrag(PointerEventData eventData)
         {
             if (isInput)
+                return;
+            
+            if (eventData.button != PointerEventData.InputButton.Left)
                 return;
             
             EditorComboStrip editorCombo = FindFirstObjectByType<EditorComboStrip>();
@@ -102,7 +119,6 @@ namespace FightDojo
             
             keyText.fontStyle |= FontStyles.Bold;
         }
-
 
     }
 }

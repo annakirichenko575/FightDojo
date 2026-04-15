@@ -7,9 +7,9 @@ namespace FightDojo
   {
     [SerializeField] private TMP_Text _time;
 
-    public void SetText(string text)
+    public void SetTime(int time)
     {
-      _time.text = text;
+      _time.text = $"{time}:00";
     }
   }
   

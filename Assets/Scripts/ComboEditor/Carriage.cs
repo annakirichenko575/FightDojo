@@ -16,18 +16,19 @@ namespace FightDojo
       rectCarriage = GetComponent<RectTransform>();
     }
 
-    public void SetCarriagePosition(Vector2 position)
+    public void SetPosition(float positionX)
     {
-      rectCarriage.anchoredPosition = position;
+      rectCarriage.anchoredPosition = 
+        new Vector2(positionX, rectCarriage.anchoredPosition.y);
     }
     
-    public void SetCarriagePosition(PointerEventData eventData)
+    public void SetPosition(PointerEventData eventData)
     {
       Vector2 clickPosition = GetLocalPointerPosition(rectContent, eventData);
       Vector2 position = rectCarriage.anchoredPosition;
       position.x = clickPosition.x;
       Debug.Log(position.x + "  " + clickPosition.x);
-      SetCarriagePosition(position);
+      SetPosition(position.x);
     }
 
     private Vector2 GetLocalPointerPosition(RectTransform rectTransform, PointerEventData eventData)

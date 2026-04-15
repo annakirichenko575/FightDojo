@@ -28,7 +28,7 @@ namespace FightDojo
       float minWidth = Mathf.Max(_viewRect.sizeDelta.x, _contentRect.sizeDelta.x);
       float contentWidthInTime = minWidth / stripScale;
       int partsCount = Mathf.CeilToInt(contentWidthInTime);
-      Debug.Log(minWidth + " " + stripScale + " " + contentWidthInTime + " " + partsCount);
+      Debug.Log("Timeline:" + minWidth + " " + stripScale + " " + contentWidthInTime + " " + partsCount);
       float width = 1 * stripScale * partsCount + _offset;
       RectTransform rectTransform = GetComponent<RectTransform>();
       rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
@@ -44,7 +44,7 @@ namespace FightDojo
           AssetPath.TimelinePartPath, transform);
         TimelinePartView timelinePart = timelinePartGO.GetComponent<TimelinePartView>();
         int time = i;
-        timelinePart.SetText(time.ToString());
+        timelinePart.SetTime(time);
       }
     }
 

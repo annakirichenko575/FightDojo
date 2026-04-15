@@ -10,8 +10,12 @@ namespace FightDojo
 {
     public class EditorComboStrip : MonoBehaviour
     {
+        private readonly float minScale = 200f;
+        private readonly float maxScale = 1600f;
+        
         [SerializeField] private Vector2 leftOffset;
         [SerializeField] private float stripScale = 1000f;
+        [SerializeField] private float scaleFactor = 200f;
         [SerializeField] private Carriage carriage;
         [SerializeField] private RectTransform contentParent;
         [SerializeField] private RectTransform inputContentParent;
@@ -34,6 +38,7 @@ namespace FightDojo
         {
             Initialize();
             BuildStrip();
+            inputComboStripBuilder.ClearContent();
         }
 
         private void Initialize()
@@ -88,9 +93,9 @@ namespace FightDojo
             float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
             keyData.Time = time;
             recordedKeys.Add(keyData); //insert correct id
-            GameObject keyGO = comboStripBuilder.BuildStripItem(keyData);
+            StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
             comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
-            SelectNewStripItem(keyGO.GetComponent<StripItemView>());
+            SelectNewStripItem(stripItemView);
         }
 
         private void DeleteKey()
@@ -155,6 +160,18 @@ namespace FightDojo
             SelectNewStripItem(null);
         }
 
+        public void ChangeScale(float sign)
+        {
+            float oldScale = stripScale;
+            stripScale += sign * scaleFactor;
+            stripScale = Mathf.Clamp(stripScale, minScale, maxScale);
+            float carriageTime = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
+            keyTextSpawner.ChangeScale(stripScale);
+            carriage.SetPosition(keyTextSpawner.GetTimeOffset(carriageTime).x);
+            comboStripBuilder.ChangeScale(stripScale);
+            inputComboStripBuilder.ChangeScale(stripScale);
+        }
+    
         public void SelectKey(StripItemView stripItemView, PointerEventData eventData)
         {
             SetCarriagePosition(eventData);
@@ -162,7 +179,7 @@ namespace FightDojo
         }
 
         private void SetCarriagePosition(PointerEventData eventData) =>
-            carriage.SetCarriagePosition(eventData);
+            carriage.SetPosition(eventData);
 
         private void SelectNewStripItem(StripItemView stripItemView)
         {

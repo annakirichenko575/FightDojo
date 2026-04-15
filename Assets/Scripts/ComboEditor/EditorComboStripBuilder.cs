@@ -1,7 +1,7 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using UnityEngine;
 using FightDojo.Data;
+using Object = UnityEngine.Object;
 
 namespace FightDojo
 {
@@ -59,13 +59,15 @@ namespace FightDojo
             carriage.SetParent(contentParent);
         }
 
-        public GameObject BuildStripItem(KeyData keyData)
+        public StripItemView BuildStripItem(KeyData keyData)
         {
             //определяем максТайм
             if (maxTime < keyData.Time)
                 maxTime = keyData.Time;
-                
-            return keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, contentParent);
+            
+            GameObject keyGO = keyTextSpawner.SpawnKeyText(keyData.Id, keyData.Action, keyData.Time, keyData.KeyName, contentParent);
+            StripItemView stripItemView = keyGO.GetComponent<StripItemView>();
+            return stripItemView;
         }
         
         public void ResizeContent(ReadOnlyCollection<KeyData> allKeys)
@@ -82,19 +84,35 @@ namespace FightDojo
         public void UpdateContentWidth()
         {
             float widthX = stripWidthSync.GetMaxWidth();
-            if (Mathf.Approximately(widthX, rectContentParent.sizeDelta.x))
-                return;
-            
-            rectContentParent.sizeDelta = new Vector2(
-                widthX,          
-                rectContentParent.sizeDelta.y 
-            );
+            if (false == Mathf.Approximately(widthX, rectContentParent.sizeDelta.x))
+            {
+                rectContentParent.sizeDelta = new Vector2(
+                    widthX,          
+                    rectContentParent.sizeDelta.y 
+                );
+            }
             timeline.CreateTimeline(stripScale);
+            timeline.transform.SetAsLastSibling();
+            carriage.SetAsLastSibling();
         }
 
         public float GetCurrentWidth() => 
             maxTime * stripScale + leftOffset.x + rightBorderOffsetX;
 
+        public void ChangeScale(float scale)
+        {
+            stripScale = scale;
+            for (int i = contentParent.childCount - 1; i >= 0; i--)
+            {
+                if (contentParent.GetChild(i)
+                    .TryGetComponent(out StripItemView stripItemView))
+                {
+                    stripItemView.ChangeScale();
+                }
+            }
+            SyncContentWidth();
+        }
+    
         private void SyncContentWidth()
         {
             stripWidthSync.SyncWidth();
