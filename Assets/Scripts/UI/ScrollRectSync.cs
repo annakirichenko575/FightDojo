@@ -1,42 +1,44 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollRectSync : MonoBehaviour
+namespace FightDojo.UI
 {
-  public ScrollRect editorScroll;
-  public ScrollRect inputScroll;
-
-  private bool isSyncing = false;
-
-  private void OnEnable()
+  public class ScrollRectSync : MonoBehaviour
   {
-    editorScroll.onValueChanged.AddListener(OnEditorScrollChanged);
-    inputScroll.onValueChanged.AddListener(OnInputScrollChanged);
-  }
+    public ScrollRect editorScroll;
+    public ScrollRect inputScroll;
 
-  private void OnDisable()
-  {
-    editorScroll.onValueChanged.RemoveListener(OnEditorScrollChanged);
-    inputScroll.onValueChanged.RemoveListener(OnInputScrollChanged);
-  }
+    private bool isSyncing = false;
 
-  private void OnEditorScrollChanged(Vector2 value)
-  {
-    if (isSyncing) 
-      return;
+    private void OnEnable()
+    {
+      editorScroll.onValueChanged.AddListener(OnEditorScrollChanged);
+      inputScroll.onValueChanged.AddListener(OnInputScrollChanged);
+    }
+
+    private void OnDisable()
+    {
+      editorScroll.onValueChanged.RemoveListener(OnEditorScrollChanged);
+      inputScroll.onValueChanged.RemoveListener(OnInputScrollChanged);
+    }
+
+    private void OnEditorScrollChanged(Vector2 value)
+    {
+      if (isSyncing) 
+        return;
         
-    isSyncing = true; 
-    inputScroll.horizontalNormalizedPosition = value.x;
-    isSyncing = false;
-  }
+      isSyncing = true; 
+      inputScroll.horizontalNormalizedPosition = value.x;
+      isSyncing = false;
+    }
 
-  private void OnInputScrollChanged(Vector2 value)
-  {
-    if (isSyncing) 
-      return;
+    private void OnInputScrollChanged(Vector2 value)
+    {
+      if (isSyncing) 
+        return;
         
-    isSyncing = true;
-    editorScroll.horizontalNormalizedPosition = value.x;
-    isSyncing = false;
-  }}
+      isSyncing = true;
+      editorScroll.horizontalNormalizedPosition = value.x;
+      isSyncing = false;
+    }}
+}

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FightDojo.AudioService;
 using FightDojo.Data;
 using UnityEngine;
@@ -12,7 +11,6 @@ namespace FightDojo
         private readonly float rightBorderOffsetX = 100f;
 
         [SerializeField] private float tolerance = 0.05f;
-        [SerializeField] private AudioSource tickSound;
         
         private Vector2 leftOffset;
         private float stripScale;
@@ -88,6 +86,11 @@ namespace FightDojo
             {
                 Object.Destroy(contentParent.GetChild(i).gameObject);
             }
+        }
+        
+        public void SpeedChanged(float speed)
+        {
+            keyInputReader.SpeedChanged(speed);
         }
         
         private void CarriageUpdate()

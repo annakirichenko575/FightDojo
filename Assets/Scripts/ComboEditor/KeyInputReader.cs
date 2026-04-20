@@ -32,6 +32,7 @@ namespace FightDojo
         };
 
         private List<Key> AllKeys = new List<Key>();
+        private float timeSpeed = 1f;
 
         // Инициализация таймера
         public KeyInputReader()
@@ -45,7 +46,7 @@ namespace FightDojo
             if (startTime < 0f)
                 return 0f;
 
-            return Now - startTime;
+            return (Now - startTime) * timeSpeed;
         }
         
         public void Reset()
@@ -102,5 +103,9 @@ namespace FightDojo
             return GetTimeLeft();
         }
 
+        public void SpeedChanged(float speed)
+        {
+            timeSpeed = speed;
+        }
     }
 }

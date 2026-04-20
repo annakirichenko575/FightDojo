@@ -6,6 +6,7 @@ using Infrastructure.AssetManagement;
 using Services;
 using Services.Randomizer;
 using UnityEngine;
+using System.Globalization;
 
 namespace Infrastructure
 {
@@ -15,6 +16,8 @@ namespace Infrastructure
     
     private void Awake()
     {
+      CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+      
       RegisterServices();
       Debug.Log("Game bootstrapper started");
     }

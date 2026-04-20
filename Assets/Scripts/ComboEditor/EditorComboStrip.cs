@@ -2,6 +2,7 @@ using FightDojo.AudioService;
 using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
+using FightDojo.UI.Focus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -21,6 +22,7 @@ namespace FightDojo
         [SerializeField] private RectTransform contentParent;
         [SerializeField] private RectTransform inputContentParent;
         [SerializeField] private Timeline timeline;
+        [SerializeField] private FocusPanel focusPanel;
 
         private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
@@ -69,7 +71,8 @@ namespace FightDojo
 
         public void Update()
         {
-            if (inputComboStripBuilder.IsRecording)
+            if (inputComboStripBuilder.IsRecording 
+                || focusPanel.IsFocused == false)
                 return;
             
             DeleteKey();
