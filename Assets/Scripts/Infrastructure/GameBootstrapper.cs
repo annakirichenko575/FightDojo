@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FightDojo.AudioService;
 using FightDojo.Data;
 using FightDojo.Database;
 using Infrastructure.AssetManagement;
@@ -23,7 +24,10 @@ namespace Infrastructure
       _services.RegisterSingle<IRandomService>(new RandomService());
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
       _services.RegisterSingle<IDatabaseService>(new DatabaseService());
-      _services.RegisterSingle<IRecordedKeysService>(new RecordedKeys(new List<KeyData>()));
+      _services.RegisterSingle<IRecordedKeysService>(
+        new RecordedKeys(new List<KeyData>()));
+      _services.RegisterSingle<IAudioMasterService>(
+        new AudioMasterService(_services.Single<IAssetProvider>()));
     }
   }
 }

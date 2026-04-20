@@ -1,4 +1,7 @@
-﻿using FightDojo.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FightDojo.AudioService;
+using FightDojo.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +12,7 @@ namespace FightDojo
         private readonly float rightBorderOffsetX = 100f;
 
         [SerializeField] private float tolerance = 0.05f;
+        [SerializeField] private AudioSource tickSound;
         
         private Vector2 leftOffset;
         private float stripScale;
@@ -21,14 +25,17 @@ namespace FightDojo
         private float minWidthX;
         private StripWidthSync stripWidthSync;
         private IRecordedKeysService recordedKeys;
-        public float finishRecordTime = 0;
+        private float finishRecordTime = 0;
+        List<float> keyTimes = new List<float>();
+        private IAudioMasterService audioMaster;
 
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
             RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
-            IRecordedKeysService recordedKeys)
+            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster)
         {
+            this.audioMaster = audioMaster;
             this.carriage = carriage;
             this.stripScale = stripScale;
             this.leftOffset = offset;
@@ -89,7 +96,22 @@ namespace FightDojo
             {
                 float timeLeft = keyInputReader.GetTimeLeft();
                 carriage.SetPosition(keyTextSpawner.GetTimeOffset(timeLeft).x);
+                CheckNextKey(timeLeft);
             }
+        }
+
+        private void CheckNextKey(float timeLeft)
+        {
+            if (keyTimes.Count == 0)
+                return;
+            
+            float nextKeyTime = keyTimes[0];
+            if (nextKeyTime < timeLeft)
+            {
+                Debug.Log("nextTime: " + nextKeyTime + " time left: " + timeLeft);
+                keyTimes.RemoveAt(0);
+                audioMaster.PlayTick();
+            } 
         }
 
         private void RecordUpdate()
@@ -133,6 +155,7 @@ namespace FightDojo
             {
                 stripItemView.SetErrorColor();
             }
+            
         }
 
         // Запуск записи: очистка UI и сброс таймера
@@ -140,6 +163,8 @@ namespace FightDojo
         {
             isRecording = true;
             finishRecordTime = recordedKeys.GetMaxTime() + 0.5f;
+            keyTimes = recordedKeys.GetKeyTimes();
+            keyTimes.ForEach(time => Debug.Log(time));
             ClearContent();
 
             // сброс таймера ввода и id

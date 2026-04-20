@@ -6530,6 +6530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tolerance: 0.05
+  tickSound: {fileID: 0}
 --- !u!114 &432825171
 MonoBehaviour:
   m_ObjectHideFlags: 0

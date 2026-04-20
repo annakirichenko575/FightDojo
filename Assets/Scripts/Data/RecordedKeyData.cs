@@ -56,6 +56,16 @@ namespace FightDojo.Data
                 .AsReadOnly();
         }
 
+        public List<float> GetKeyTimes()
+        {
+            return _editorStrip.Values.Count == 0 
+                ? new List<float>()
+                : _editorStrip.Values
+                    .OrderBy(k => k.Time)
+                    .Select(k => k.Time)
+                    .ToList();
+        }
+
         public float GetMaxTime() => 
             _editorStrip.Values.Count > 0 
                 ? _editorStrip.Values.Max(x => x.Time)

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Services;
 
 namespace FightDojo.Data
@@ -15,5 +16,6 @@ namespace FightDojo.Data
     void LoadJson(string comboJson);
     bool FindApproximately(string keyName, float targetTime, float tolerance);
     float GetMaxTime();
+    List<float> GetKeyTimes();
   }
 }

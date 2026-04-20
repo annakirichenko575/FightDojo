@@ -1,3 +1,4 @@
+using FightDojo.AudioService;
 using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
@@ -49,16 +50,17 @@ namespace FightDojo
             recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
             carriage.Initialize(contentParent);
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
+            IAudioMasterService audioMaster = AllServices.Container.Single<IAudioMasterService>();
 
             keyTextSpawner = new KeyTextSpawner(stripScale, leftOffset, assetProvider);
 
             StripWidthSync stripWidthSync = new StripWidthSync();
             comboStripBuilder = new EditorComboStripBuilder(leftOffset, stripScale, contentParent, 
                 carriage.transform, keyTextSpawner, stripWidthSync, timeline);
-
+            
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, inputContentParent, 
-                carriage, keyTextSpawner, stripWidthSync, recordedKeys);
+                carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster);
             
             timeline.Initialize(assetProvider, contentParent, (int)leftOffset.x);
             
