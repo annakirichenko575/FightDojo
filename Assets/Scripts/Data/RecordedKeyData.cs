@@ -56,6 +56,11 @@ namespace FightDojo.Data
                 .AsReadOnly();
         }
 
+        public float GetMaxTime() => 
+            _editorStrip.Values.Count > 0 
+                ? _editorStrip.Values.Max(x => x.Time)
+                : 0f;
+
         public bool FindApproximately(string keyName, float targetTime, float tolerance)
         {
             foreach (var x in _editorStrip.Values)

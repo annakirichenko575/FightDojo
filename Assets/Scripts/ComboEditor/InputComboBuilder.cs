@@ -21,6 +21,7 @@ namespace FightDojo
         private float minWidthX;
         private StripWidthSync stripWidthSync;
         private IRecordedKeysService recordedKeys;
+        public float finishRecordTime = 0;
 
         public bool IsRecording => isRecording;
 
@@ -105,7 +106,15 @@ namespace FightDojo
             }
 
             if (IsRecording == true)
+            {
+                
                 InputRead();
+                float timeLeft = keyInputReader.GetTimeLeft();
+                if (finishRecordTime < timeLeft)
+                {
+                    StopRecording();
+                }
+            }
         }
 
         // Чтение ввода и построение полоски
@@ -130,6 +139,7 @@ namespace FightDojo
         private void StartRecording()
         {
             isRecording = true;
+            finishRecordTime = recordedKeys.GetMaxTime() + 0.5f;
             ClearContent();
 
             // сброс таймера ввода и id

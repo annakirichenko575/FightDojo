@@ -14,5 +14,6 @@ namespace FightDojo.Data
     string ToJson();
     void LoadJson(string comboJson);
     bool FindApproximately(string keyName, float targetTime, float tolerance);
+    float GetMaxTime();
   }
 }
