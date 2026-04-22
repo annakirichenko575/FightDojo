@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FightDojo.AudioService;
 using FightDojo.Data;
+using FightDojo.UI.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,12 +28,14 @@ namespace FightDojo
         List<float> keyTimes = new List<float>();
         private IAudioMasterService audioMaster;
         private CountdownInputTimer countdownTimer;
+        private ComboWindow underWindowChecker;
+
 
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
             RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
-            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster)
+            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, ComboWindow underWindowChecker)
         {
             this.audioMaster = audioMaster;
             this.carriage = carriage;
@@ -43,7 +46,8 @@ namespace FightDojo
             this.stripWidthSync = stripWidthSync;
             this.stripWidthSync.InitializeStrip(this);
             this.recordedKeys = recordedKeys;
-            countdownTimer = new CountdownInputTimer(keyInputReader, audioMaster);
+            this.countdownTimer = new CountdownInputTimer(keyInputReader, audioMaster);
+            this.underWindowChecker = underWindowChecker;
         }
 
         private void Update()
@@ -129,6 +133,14 @@ namespace FightDojo
             if (Keyboard.current == null)
                 return;
 
+            if (underWindowChecker.IsOpened)
+            {
+                if (IsRecording)
+                    StopRecording();
+                
+                return;
+            }
+            
             if (Keyboard.current[Key.Space].wasPressedThisFrame)
             {
                 if (IsRecording == true)

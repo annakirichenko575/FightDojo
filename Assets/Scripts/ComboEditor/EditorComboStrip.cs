@@ -3,10 +3,12 @@ using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
 using FightDojo.UI.Focus;
+using FightDojo.UI.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace FightDojo
 {
@@ -23,6 +25,8 @@ namespace FightDojo
         [SerializeField] private RectTransform inputContentParent;
         [SerializeField] private Timeline timeline;
         [SerializeField] private FocusPanel focusPanel;
+        [SerializeField] private ComboWindow inputComboUnderWindowChecker;
+        
 
         private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
@@ -62,7 +66,7 @@ namespace FightDojo
             
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, inputContentParent, 
-                carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster);
+                carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster, inputComboUnderWindowChecker);
             
             timeline.Initialize(assetProvider, contentParent, (int)leftOffset.x);
             
@@ -72,7 +76,8 @@ namespace FightDojo
         public void Update()
         {
             if (inputComboStripBuilder.IsRecording 
-                || focusPanel.IsFocused == false)
+                || focusPanel.IsFocused == false 
+                || inputComboUnderWindowChecker.IsOpened)
                 return;
             
             DeleteKey();

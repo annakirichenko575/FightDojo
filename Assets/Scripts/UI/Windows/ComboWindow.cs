@@ -1,54 +1,58 @@
-using System;
 using UnityEngine;
 
-public class ComboWindow : MonoBehaviour
+namespace FightDojo.UI.Windows
 {
-    [SerializeField] private GameObject _wrap;
-    [SerializeField] private GameObject _addWindow;
-    [SerializeField] private GameObject _updateWindow;
-    [SerializeField] private GameObject _deleteWindow;
-
-    private void Start()
+    public class ComboWindow : MonoBehaviour
     {
-        Hide();
-    }
+        [SerializeField] private GameObject _wrap;
+        [SerializeField] private GameObject _addWindow;
+        [SerializeField] private GameObject _updateWindow;
+        [SerializeField] private GameObject _deleteWindow;
 
-    public void OpenAddWindow()
-    {
-        CloseAllWindows();
-        _addWindow.SetActive(true);
-        Show();
-    }
+        public bool IsOpened => _wrap.activeSelf;
+        
+        private void Start()
+        {
+            Hide();
+        }
 
-    public void OpenUpdateWindow()
-    {
-        CloseAllWindows();
-        _updateWindow.SetActive(true);
-        Show();
-    }
+        public void OpenAddWindow()
+        {
+            CloseAllWindows();
+            _addWindow.SetActive(true);
+            Show();
+        }
 
-    public void OpenDeleteWindow()
-    {
-        CloseAllWindows();
-        _deleteWindow.SetActive(true);
-        Show();
-    }
+        public void OpenUpdateWindow()
+        {
+            CloseAllWindows();
+            _updateWindow.SetActive(true);
+            Show();
+        }
 
-    public void Hide()
-    {
-        CloseAllWindows();
-        _wrap.SetActive(false);
-    }
+        public void OpenDeleteWindow()
+        {
+            CloseAllWindows();
+            _deleteWindow.SetActive(true);
+            Show();
+        }
 
-    private void Show()
-    {
-        _wrap.SetActive(true);
-    }
+        public void Hide()
+        {
+            CloseAllWindows();
+            _wrap.SetActive(false);
+        }
 
-    private void CloseAllWindows()
-    {
-        _deleteWindow.SetActive(false);
-        _addWindow.SetActive(false);
-        _updateWindow.SetActive(false);
+        private void Show()
+        {
+            _wrap.SetActive(true);
+        }
+
+        private void CloseAllWindows()
+        {
+            _deleteWindow.SetActive(false);
+            _addWindow.SetActive(false);
+            _updateWindow.SetActive(false);
+        }
     }
 }
