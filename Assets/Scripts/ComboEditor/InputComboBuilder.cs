@@ -26,6 +26,7 @@ namespace FightDojo
         private float finishRecordTime = 0;
         List<float> keyTimes = new List<float>();
         private IAudioMasterService audioMaster;
+        private CountdownInputTimer countdownTimer;
 
         public bool IsRecording => isRecording;
 
@@ -42,6 +43,7 @@ namespace FightDojo
             this.stripWidthSync = stripWidthSync;
             this.stripWidthSync.InitializeStrip(this);
             this.recordedKeys = recordedKeys;
+            countdownTimer = new CountdownInputTimer(keyInputReader, audioMaster);
         }
 
         private void Update()
@@ -93,6 +95,11 @@ namespace FightDojo
             keyInputReader.SpeedChanged(speed);
         }
         
+        public void MaxCountdownTimeChanged(float time)
+        {
+            countdownTimer.MaxTimeChanged(time);
+        }
+        
         private void CarriageUpdate()
         {
             if (IsRecording)
@@ -132,12 +139,15 @@ namespace FightDojo
 
             if (IsRecording == true)
             {
-                
-                InputRead();
-                float timeLeft = keyInputReader.GetTimeLeft();
-                if (finishRecordTime < timeLeft)
+                countdownTimer.Tick();
+                if (keyInputReader.IsTimerStarted)
                 {
-                    StopRecording();
+                    InputRead();
+                    float timeLeft = keyInputReader.GetTimeLeft();
+                    if (finishRecordTime < timeLeft)
+                    {
+                        StopRecording();
+                    }
                 }
             }
         }
@@ -169,6 +179,7 @@ namespace FightDojo
             keyTimes = recordedKeys.GetKeyTimes();
             keyTimes.ForEach(time => Debug.Log(time));
             ClearContent();
+            countdownTimer.Reset();
 
             // сброс таймера ввода и id
             keyInputReader.Reset();

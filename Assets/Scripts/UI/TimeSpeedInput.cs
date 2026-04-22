@@ -10,14 +10,12 @@ namespace FightDojo.UI
     
     private void Start()
     {
+      _inputComboBuilder = FindAnyObjectByType<InputComboBuilder>();
       _validator = GetComponent<FloatRangeInputValidator>();
       _validator.OnValidated += SpeedChanged;
-      _inputComboBuilder = FindAnyObjectByType<InputComboBuilder>();
     }
 
-    private void SpeedChanged(float speed)
-    {
+    private void SpeedChanged(float speed) => 
       _inputComboBuilder.SpeedChanged(speed);
-    }
   }
 }

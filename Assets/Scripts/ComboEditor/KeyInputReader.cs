@@ -31,14 +31,17 @@ namespace FightDojo
             Key.Numpad5, Key.Numpad6, Key.Numpad7, Key.Numpad8, Key.Numpad9
         };
 
-        private List<Key> AllKeys = new List<Key>();
+        private List<Key> allKeys = new List<Key>();
         private float timeSpeed = 1f;
 
+        public bool IsTimerStarted => startTime >= 0f;
+        public float TimeSpeed => timeSpeed;
+        
         // Инициализация таймера
         public KeyInputReader()
         {
-            AllKeys.AddRange(NumpadKeys);
-            AllKeys.AddRange(LetterKeys);
+            allKeys.AddRange(NumpadKeys);
+            allKeys.AddRange(LetterKeys);
         }
 
         public float GetTimeLeft()
@@ -58,7 +61,7 @@ namespace FightDojo
         // Проверяет указанный набор клавиш на press / release
         public KeyData CheckKeys(bool isTime = true)
         {
-            foreach (var k in AllKeys)
+            foreach (var k in allKeys)
             {
                 var key = Keyboard.current[k];
                 if (key == null)
@@ -87,6 +90,19 @@ namespace FightDojo
             return null;
         }
 
+        public void SpeedChanged(float speed)
+        {
+            timeSpeed = speed;
+        }
+
+        public void TimerStart()
+        {
+            if (IsTimerStarted == false)
+            {
+                startTime = Now;
+            }
+        }
+    
         // Возвращает имя клавиши
         private string GetKeyName(KeyControl key)
         {
@@ -96,16 +112,9 @@ namespace FightDojo
         // Логирует событие и задержку с предыдущего события
         private float GetLastInputTime()
         {
-            if (startTime < 0f)
-            {
-                startTime = Now;
-            }
+            TimerStart();
             return GetTimeLeft();
         }
 
-        public void SpeedChanged(float speed)
-        {
-            timeSpeed = speed;
-        }
     }
 }

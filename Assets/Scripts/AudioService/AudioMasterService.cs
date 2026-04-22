@@ -6,6 +6,7 @@ namespace FightDojo.AudioService
   public class AudioMasterService : IAudioMasterService
   {
     private AudioSource tickFx;
+    private AudioSource countdownFx;
 
     public AudioMasterService(IAssetProvider assetProvider)
     {
@@ -15,14 +16,20 @@ namespace FightDojo.AudioService
       audioMasterRegistry.RegistryAudioSources(this);
     }
   
-    public void RegistryAudioSources(AudioSource tickFx)
+    public void RegistryAudioSources(AudioSource tickFx, AudioSource countdownFx)
     {
       this.tickFx = tickFx;
+      this.countdownFx = countdownFx;
     }
   
     public void PlayTick()
     {
       tickFx.Play();
+    }
+
+    public void PlayCountdown()
+    {
+      countdownFx.Play();
     }
   
   }
