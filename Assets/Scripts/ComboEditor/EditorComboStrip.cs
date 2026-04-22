@@ -44,8 +44,8 @@ namespace FightDojo
         public void Open()
         {
             Initialize();
-            BuildStrip();
             inputComboStripBuilder.ClearContent();
+            BuildStrip();
         }
 
         private void Initialize()

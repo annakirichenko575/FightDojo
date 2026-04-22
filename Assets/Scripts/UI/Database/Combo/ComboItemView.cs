@@ -55,15 +55,15 @@ public class ComboItemView : MonoBehaviour, IPointerClickHandler
 
     private string ShortText(string text, int maxLength)
     {
-        if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-        {
-            return text;
-        }
+        if (string.IsNullOrEmpty(text))
+            return "";
         
         Debug.Log("Sub");
-        string sub = text.Substring(0, maxLength);
-        Debug.Log(sub);
-        string split = sub.Split('\n')[0].TrimEnd('\r');
+        if (text.Length > maxLength)
+        {
+            text = text.Substring(0, maxLength);
+        }
+        string split = text.Split('\n')[0].TrimEnd('\r');
         Debug.Log(split);
         
         return split;
