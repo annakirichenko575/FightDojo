@@ -29,7 +29,8 @@ namespace FightDojo.UI
             float currentNorm = _scrollRect.horizontalNormalizedPosition;
             _smoothSpeed = 0.18f;
             _scrollRect.horizontalNormalizedPosition =
-                Mathf.Lerp(currentNorm, desiredNorm, _smoothSpeed);
+                //Mathf.Lerp(currentNorm, desiredNorm, _smoothSpeed);
+                desiredNorm;
         }
     }
 }
