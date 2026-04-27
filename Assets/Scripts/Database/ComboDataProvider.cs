@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.RegularExpressions;
 using FightDojo.Database;
 using Services;
 using UnityEngine;
@@ -52,10 +55,7 @@ public class ComboDataProvider : MonoBehaviour
         ResetSelectedCombo();
         RefreshCombos();
     }
-
-    public ReadOnlyCollection<Combos> GetAllCombos() =>
-        _combos.AsReadOnly();
-
+    
     public void UpdateCombo(string newCreatorName, string description, string tags)
     {
         if (_selectedComboId == 0)
@@ -72,6 +72,40 @@ public class ComboDataProvider : MonoBehaviour
 
         _dbService.UpdateComboJson(_selectedComboId, comboJson);
         RefreshCombos();
+    }
+    
+    public ReadOnlyCollection<Combos> GetAllCombos() =>
+        _combos.AsReadOnly();
+
+    public void FindByTags(string tags)
+    {
+        string[] words = Regex.Split(tags, @"\s+")
+            .Where(w => !string.IsNullOrWhiteSpace(w))
+            .ToArray(); 
+        Debug.Log("WORDS");
+        words.ToList().ForEach(w => Debug.Log(w));
+        List<Combos> result = _combos.Where(combo =>
+            {
+                if (string.IsNullOrWhiteSpace(combo.Tags))
+                    return false;
+
+                HashSet<string> tagsWords = combo.Tags
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);   // HashSet для быстрого поиска
+
+                return words.All(w => 
+                    tagsWords.Any(tag =>
+                        tag.StartsWith(w, StringComparison.OrdinalIgnoreCase)));
+            })
+            .ToList();
+        Debug.Log("RESULTS");
+        result.ForEach(w => Debug.Log(w.Id + " " + w.Tags));
+
+        _comboItemViews = _printCombosView.PrintCombos(result.AsReadOnly());
+        if (_comboItemViews.Count > 0)
+        {
+            SelectCombo(_comboItemViews.First().Key);
+        } 
     }
 
     public void SelectCombo(int id)
