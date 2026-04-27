@@ -77,7 +77,8 @@ namespace FightDojo
         {
             if (inputComboStripBuilder.IsRecording 
                 || focusPanel.IsFocused == false 
-                || inputComboUnderWindowChecker.IsOpened)
+                || inputComboUnderWindowChecker.IsOpened
+                || contentParent.gameObject.activeInHierarchy == false)
                 return;
             
             DeleteKey();

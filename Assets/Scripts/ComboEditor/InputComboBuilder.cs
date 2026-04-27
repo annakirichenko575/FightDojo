@@ -133,7 +133,8 @@ namespace FightDojo
             if (Keyboard.current == null)
                 return;
 
-            if (underWindowChecker.IsOpened)
+            if (underWindowChecker.IsOpened 
+                || contentParent.gameObject.activeInHierarchy == false)
             {
                 if (IsRecording)
                     StopRecording();
