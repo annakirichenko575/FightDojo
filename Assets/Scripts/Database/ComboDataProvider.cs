@@ -18,6 +18,8 @@ public class ComboDataProvider : MonoBehaviour
     private int _selectedCharacterId;
     private int _selectedComboId;
 
+    public bool HasSelectedCombo => _selectedComboId > 0;
+    public int Count => _combos.Count;
     private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
 
     public void Initialize()
@@ -141,6 +143,7 @@ public class ComboDataProvider : MonoBehaviour
     public void RefreshCombos()
     {
         _combos = _dbService.GetCombosByCharacter(_selectedCharacterId);
+        _combos.ForEach(c => Debug.Log(c.Id + " " + c.CreatorName));
         _comboItemViews = _printCombosView.PrintCombos(GetAllCombos());
         SelectCombo(_selectedComboId);
     }

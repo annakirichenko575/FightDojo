@@ -14,6 +14,7 @@ public class GameDataProvider : MonoBehaviour
 
     private int _selectedGameId;
 
+    public bool HasSelectedGame => _selectedGameId > 0;
     private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
 
     private void Start()

@@ -17,6 +17,9 @@ public class CharacterDataProvider : MonoBehaviour
     private int _selectedGameId;
     private int _selectedCharacterId;
 
+    
+    public bool HasSelectedCharacter => _selectedCharacterId > 0;
+    public int Count => _characters.Count;
     private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
 
     public void Initialize()
