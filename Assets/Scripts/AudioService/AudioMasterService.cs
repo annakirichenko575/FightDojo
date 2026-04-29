@@ -7,6 +7,9 @@ namespace FightDojo.AudioService
   {
     private AudioSource tickFx;
     private AudioSource countdownFx;
+    private bool isTickMute = false;
+    
+    public bool IsTickMuted => isTickMute;
 
     public AudioMasterService(IAssetProvider assetProvider)
     {
@@ -24,6 +27,9 @@ namespace FightDojo.AudioService
   
     public void PlayTick()
     {
+      if (isTickMute)
+        return;
+      
       tickFx.Play();
     }
 
@@ -31,6 +37,9 @@ namespace FightDojo.AudioService
     {
       countdownFx.Play();
     }
-  
+
+    public void TickMute() => isTickMute = true;
+
+    public void TickUnmute() => isTickMute = false;
   }
 }

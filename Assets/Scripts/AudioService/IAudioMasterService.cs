@@ -8,5 +8,8 @@ namespace FightDojo.AudioService
     void PlayTick();
     void RegistryAudioSources(AudioSource tickFx, AudioSource countdownFx);
     void PlayCountdown();
+    void TickMute();
+    void TickUnmute();
+    bool IsTickMuted { get; }
   }
 }
