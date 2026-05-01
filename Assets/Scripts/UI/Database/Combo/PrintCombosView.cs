@@ -5,38 +5,41 @@ using Infrastructure.AssetManagement;
 using Services;
 using UnityEngine;
 
-public class PrintCombosView : MonoBehaviour
+namespace FightDojo.UI.Database.Combo
 {
-    [SerializeField] private Transform _content;
-    private ComboDataProvider comboDataProvider;
-
-    IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
-
-    public void Initialize(ComboDataProvider comboDataProvider)
+    public class PrintCombosView : MonoBehaviour
     {
-        this.comboDataProvider = comboDataProvider;
-    }
+        [SerializeField] private Transform _content;
+        private ComboDataProvider comboDataProvider;
 
-    public Dictionary<int, ComboItemView> PrintCombos(ReadOnlyCollection<Combos> combos)
-    {
-        Dictionary<int, ComboItemView> comboItemViews = new Dictionary<int, ComboItemView>();
+        IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
 
-        foreach (Transform item in _content)
+        public void Initialize(ComboDataProvider comboDataProvider)
         {
-            GameObject.Destroy(item.gameObject);
+            this.comboDataProvider = comboDataProvider;
         }
 
-        if (combos == null || combos.Count == 0)
+        public Dictionary<int, ComboItemView> PrintCombos(ReadOnlyCollection<Combos> combos)
+        {
+            Dictionary<int, ComboItemView> comboItemViews = new Dictionary<int, ComboItemView>();
+
+            foreach (Transform item in _content)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+
+            if (combos == null || combos.Count == 0)
+                return comboItemViews;
+
+            foreach (var combo in combos)
+            {
+                GameObject item = AssetProvider.Instantiate(AssetPath.ComboItemPath, _content);
+                ComboItemView itemView = item.GetComponent<ComboItemView>();
+                itemView.Initialize(combo.Id, combo.CreatorName, combo.Description, combo.Tags, comboDataProvider);
+                comboItemViews.Add(combo.Id, itemView);
+            }
+
             return comboItemViews;
-
-        foreach (var combo in combos)
-        {
-            GameObject item = AssetProvider.Instantiate(AssetPath.ComboItemPath, _content);
-            ComboItemView itemView = item.GetComponent<ComboItemView>();
-            itemView.Initialize(combo.Id, combo.CreatorName, combo.Description, combo.Tags, comboDataProvider);
-            comboItemViews.Add(combo.Id, itemView);
         }
-
-        return comboItemViews;
     }
 }

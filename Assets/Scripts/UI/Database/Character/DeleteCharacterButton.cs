@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class DeleteCharacterButton : MonoBehaviour
+namespace FightDojo.UI.Database.Character
 {
-    private CharacterDataProvider _characterDataProvider;
-
-    private void Awake()
+    public class DeleteCharacterButton : MonoBehaviour
     {
-        _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
-    }
+        private CharacterDataProvider _characterDataProvider;
 
-    public void DeleteCharacter()
-    {
-        _characterDataProvider.DeleteCharacter();
+        private void Awake()
+        {
+            _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
+        }
+
+        public void DeleteCharacter()
+        {
+            _characterDataProvider.DeleteCharacter();
+        }
     }
 }

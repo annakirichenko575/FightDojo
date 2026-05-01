@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Infrastructure.AssetManagement;
 using Services;
+using FightDojo.UI.Database.Game;
 using UnityEngine;
 
 namespace FightDojo.UI.Database.Game

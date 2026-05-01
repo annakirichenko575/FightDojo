@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using FightDojo.Database;
 using Services;
+using FightDojo.UI.Database.Combo;
 using UnityEngine;
 
 public class ComboDataProvider : MonoBehaviour

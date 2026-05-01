@@ -1,34 +1,39 @@
-using FightDojo.Database;
+using FightDojo.UI.Windows;
 using TMPro;
 using UnityEngine;
 
-public class UpdateCharacterNameButton : MonoBehaviour
+namespace FightDojo.UI.Database.Character
 {
-    [SerializeField] private TMP_InputField nameInput;
-
-    private CharacterDataProvider _characterDataProvider;
-
-    private void Awake()
+    public class UpdateCharacterNameButton : MonoBehaviour
     {
-        _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
-    }
+        [SerializeField] private TMP_InputField nameInput;
 
-    private void OnEnable()
-    {
-        _characterDataProvider.CurrentCharacter(out Character characterData);
-        nameInput.text = characterData.Name;
-    }
+        private CharacterDataProvider _characterDataProvider;
+        private WarningWindow _warningWindow;
 
-    public void UpdateName()
-    {
-        string newName = nameInput.text;
-        if (string.IsNullOrWhiteSpace(newName))
+        private void Awake()
         {
-            Debug.LogWarning("Новое имя не введено!");
-            return;
+            _characterDataProvider = FindAnyObjectByType<CharacterDataProvider>();
+            _warningWindow = FindAnyObjectByType<WarningWindow>();
         }
 
-        _characterDataProvider.UpdateCharacterName(newName);
-        nameInput.text = "";
+        private void OnEnable()
+        {
+            _characterDataProvider.CurrentCharacter(out FightDojo.Database.Character characterData);
+            nameInput.text = characterData.Name;
+        }
+
+        public void UpdateName()
+        {
+            string newName = nameInput.text.Trim();
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                _warningWindow.OpenWarning("Новое название не введено!");
+                return;
+            }
+
+            _characterDataProvider.UpdateCharacterName(newName);
+            nameInput.text = "";
+        }
     }
 }

@@ -1,32 +1,38 @@
+using FightDojo.UI.Windows;
 using TMPro;
 using UnityEngine;
 
-public class AddGameButton : MonoBehaviour
+namespace FightDojo.UI.Database.Game
 {
-    public TMP_InputField nameInput;
+    public class AddGameButton : MonoBehaviour
+    {
+        public TMP_InputField nameInput;
     
-    private GameDataProvider _gameDataProvider;
+        private GameDataProvider _gameDataProvider;
+        private WarningWindow _warningWindow;
 
-    private void Awake()
-    {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
-    }
-
-    private void OnEnable()
-    {
-        //nameInput.text = "";
-    }
-
-    public void AddGame()
-    {
-        string newName = nameInput.text;
-        if (string.IsNullOrWhiteSpace(newName))
+        private void Awake()
         {
-            Debug.LogWarning("Новое имя не введено!");
-            return;
+            _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+            _warningWindow = FindAnyObjectByType<WarningWindow>();
         }
+
+        private void OnEnable()
+        {
+            //nameInput.text = "";
+        }
+
+        public void AddGame()
+        {
+            string newName = nameInput.text.Trim();
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                _warningWindow.OpenWarning("Новое название не введено!");
+                return;
+            }
         
-        _gameDataProvider.AddGame(newName);
-        nameInput.text = "";
+            _gameDataProvider.AddGame(newName);
+            nameInput.text = "";
+        }
     }
 }

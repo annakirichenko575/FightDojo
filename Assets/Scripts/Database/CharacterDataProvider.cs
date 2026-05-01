@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FightDojo.Database;
 using Services;
+using FightDojo.UI.Database.Character;
 using UnityEngine;
 
 public class CharacterDataProvider : MonoBehaviour

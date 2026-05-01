@@ -1,71 +1,73 @@
 using TMPro;
-using FightDojo.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ComboItemView : MonoBehaviour, IPointerClickHandler
+namespace FightDojo.UI.Database.Combo
 {
-    [SerializeField] private TMP_Text _text;
-    [SerializeField] private GameObject _background;
+    public class ComboItemView : MonoBehaviour, IPointerClickHandler
+    {
+        [SerializeField] private TMP_Text _text;
+        [SerializeField] private GameObject _background;
     
-    private int _id;
-    private ComboDataProvider comboDataProvider;
+        private int _id;
+        private ComboDataProvider comboDataProvider;
 
-    public int GetId => _id;
+        public int GetId => _id;
 
-    public void Initialize(int id, string creatorName, string description, string tags, ComboDataProvider comboDataProvider)
-    {
-        _id = id;
-        Debug.Log(creatorName + ", " + description + ", " + tags);
-        _text.text = $"{ShortText(creatorName, 22)} " +
-                     $"{ShortText(description,  40)} " +
-                     $"{ShortText(tags,  23)}\n";
-        this.comboDataProvider = comboDataProvider;
-        Unselect();
-    }
-
-    public void Highlight() =>
-        _background.SetActive(true);
-
-    public void Unselect() =>
-        _background.SetActive(false);
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // eventData.clickCount автоматически считает клики в пределах времени двойного клика Unity
-        if (eventData.clickCount == 2 
-            && eventData.button == PointerEventData.InputButton.Left)
+        public void Initialize(int id, string creatorName, string description, string tags, ComboDataProvider comboDataProvider)
         {
-            Debug.Log("Двойной клик!");
-            OnDoubleClick();
+            _id = id;
+            Debug.Log(creatorName + ", " + description + ", " + tags);
+            _text.text = $"{ShortText(creatorName, 22)} " +
+                         $"{ShortText(description,  40)} " +
+                         $"{ShortText(tags,  23)}\n";
+            this.comboDataProvider = comboDataProvider;
+            Unselect();
         }
-        else if (eventData.clickCount == 1)
-        {
-            Debug.Log("Одиночный клик");
-            Debug.Log($"Clicked ComboItem id={_id}");
-            comboDataProvider.SelectCombo(_id);
-        } 
-    }
 
-    private void OnDoubleClick()
-    {
-        CanvasRoots canvasRoots = FindAnyObjectByType<CanvasRoots>();
-        canvasRoots.OpenComboCanvas();
-    }
+        public void Highlight() =>
+            _background.SetActive(true);
 
-    private string ShortText(string text, int maxLength)
-    {
-        if (string.IsNullOrEmpty(text))
-            return "";
-        
-        Debug.Log("Sub");
-        if (text.Length > maxLength)
+        public void Unselect() =>
+            _background.SetActive(false);
+
+        public void OnPointerClick(PointerEventData eventData)
         {
-            text = text.Substring(0, maxLength);
+            // eventData.clickCount автоматически считает клики в пределах времени двойного клика Unity
+            if (eventData.clickCount == 2 
+                && eventData.button == PointerEventData.InputButton.Left)
+            {
+                Debug.Log("Двойной клик!");
+                OnDoubleClick();
+            }
+            else if (eventData.clickCount == 1)
+            {
+                Debug.Log("Одиночный клик");
+                Debug.Log($"Clicked ComboItem id={_id}");
+                comboDataProvider.SelectCombo(_id);
+            } 
         }
-        string split = text.Split('\n')[0].TrimEnd('\r');
-        Debug.Log(split);
+
+        private void OnDoubleClick()
+        {
+            CanvasRoots canvasRoots = FindAnyObjectByType<CanvasRoots>();
+            canvasRoots.OpenComboCanvas();
+        }
+
+        private string ShortText(string text, int maxLength)
+        {
+            if (string.IsNullOrEmpty(text))
+                return "";
         
-        return split;
+            Debug.Log("Sub");
+            if (text.Length > maxLength)
+            {
+                text = text.Substring(0, maxLength);
+            }
+            string split = text.Split('\n')[0].TrimEnd('\r');
+            Debug.Log(split);
+        
+            return split;
+        }
     }
 }

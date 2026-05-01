@@ -1,38 +1,42 @@
-using System;
-using FightDojo.Database;
+using FightDojo.UI.Windows;
 using TMPro;
 using UnityEngine;
 
-public class UpdateGameNameButton : MonoBehaviour
+namespace FightDojo.UI.Database.Game
 {
-    [SerializeField] private TMP_InputField nameInput;
-
-    private GameDataProvider _gameDataProvider;
-
-    private void Awake()
+    public class UpdateGameNameButton : MonoBehaviour
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
-    }
+        [SerializeField] private TMP_InputField nameInput;
 
-    private void OnEnable()
-    {
-        _gameDataProvider.CurrentGame(out Game gameData);
-        nameInput.text = gameData.Name;
-    }
+        private GameDataProvider _gameDataProvider;
+        private WarningWindow _warningWindow;
 
-    public void UpdateName()
-    {
-        string newName = nameInput.text;
-        if (string.IsNullOrWhiteSpace(newName))
+        private void Awake()
         {
-            Debug.LogWarning("Новое имя не введено!");
-            return;
+            _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+            _warningWindow = FindAnyObjectByType<WarningWindow>();
         }
 
-        // 3) обновляем в БД
-        _gameDataProvider.UpdateGameName(newName);
+        private void OnEnable()
+        {
+            _gameDataProvider.CurrentGame(out FightDojo.Database.Game gameData);
+            nameInput.text = gameData.Name;
+        }
 
-        // очистить поля
-        nameInput.text = "";
+        public void UpdateName()
+        {
+            string newName = nameInput.text.Trim();
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                _warningWindow.OpenWarning("Новое название не введено!");
+                return;
+            }
+
+            // 3) обновляем в БД
+            _gameDataProvider.UpdateGameName(newName);
+
+            // очистить поля
+            nameInput.text = "";
+        }
     }
 }

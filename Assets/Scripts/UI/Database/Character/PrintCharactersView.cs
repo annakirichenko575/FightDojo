@@ -1,42 +1,44 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FightDojo.Database;
 using Infrastructure.AssetManagement;
 using Services;
 using UnityEngine;
 
-public class PrintCharactersView : MonoBehaviour
+namespace FightDojo.UI.Database.Character
 {
-    [SerializeField] private Transform _content;
-    private CharacterDataProvider characterDataProvider;
-
-    IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
-
-    public void Initialize(CharacterDataProvider gameDataProvider)
+    public class PrintCharactersView : MonoBehaviour
     {
-        this.characterDataProvider = gameDataProvider;
-    }
+        [SerializeField] private Transform _content;
+        private CharacterDataProvider characterDataProvider;
 
-    public Dictionary<int, CharacterItemView> PrintCharacters(ReadOnlyCollection<Character> characters)
-    {
-        Dictionary<int, CharacterItemView> characterItemViews = new Dictionary<int, CharacterItemView>();
+        IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
 
-        foreach (Transform item in _content)
+        public void Initialize(CharacterDataProvider gameDataProvider)
         {
-            GameObject.Destroy(item.gameObject);
+            this.characterDataProvider = gameDataProvider;
         }
 
-        if (characters == null || characters.Count == 0)
+        public Dictionary<int, CharacterItemView> PrintCharacters(ReadOnlyCollection<FightDojo.Database.Character> characters)
+        {
+            Dictionary<int, CharacterItemView> characterItemViews = new Dictionary<int, CharacterItemView>();
+
+            foreach (Transform item in _content)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+
+            if (characters == null || characters.Count == 0)
+                return characterItemViews;
+
+            foreach (var character in characters)
+            {
+                GameObject item = AssetProvider.Instantiate(AssetPath.CharacterItemPath, _content);
+                CharacterItemView itemView = item.GetComponent<CharacterItemView>();
+                itemView.Initialize(character.Id, character.Name, characterDataProvider);
+                characterItemViews.Add(character.Id, itemView);
+            }
+
             return characterItemViews;
-
-        foreach (var character in characters)
-        {
-            GameObject item = AssetProvider.Instantiate(AssetPath.CharacterItemPath, _content);
-            CharacterItemView itemView = item.GetComponent<CharacterItemView>();
-            itemView.Initialize(character.Id, character.Name, characterDataProvider);
-            characterItemViews.Add(character.Id, itemView);
         }
-
-        return characterItemViews;
     }
 }

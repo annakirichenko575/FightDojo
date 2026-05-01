@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class DeleteGameButton : MonoBehaviour
+namespace FightDojo.UI.Database.Game
 {
-    private GameDataProvider _gameDataProvider;
-
-    private void Awake()
+    public class DeleteGameButton : MonoBehaviour
     {
-        _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
-    }
+        private GameDataProvider _gameDataProvider;
 
-    public void DeleteGame()
-    {
-        _gameDataProvider.DeleteGame();
+        private void Awake()
+        {
+            _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+        }
+
+        public void DeleteGame()
+        {
+            _gameDataProvider.DeleteGame();
+        }
     }
 }
