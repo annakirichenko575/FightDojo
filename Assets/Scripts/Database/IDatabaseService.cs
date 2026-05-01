@@ -24,6 +24,7 @@ namespace FightDojo.Database
         Character GetCharacter(int id);
         List<DatabaseService.ComboWithCharacter> GetCombosWithCharacterName(int gameId);
         string PersistentPath { get; }
+        string DatabasePath { get; }
         bool ExportDatabase(string exportPath);
         void MergeDatabases(string secondDbPath);
         bool OpenDatabase(string path);

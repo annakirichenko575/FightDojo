@@ -15,6 +15,7 @@ namespace FightDojo.Database
         private string _persistentPath;
 
         public string PersistentPath => Application.persistentDataPath;
+        public string DatabasePath { get; private set; }
 
         public DatabaseService()
         {
@@ -23,17 +24,21 @@ namespace FightDojo.Database
 
         private void InitializeDatabase()
         {
-            _persistentPath = Path.IsPathRooted(dbName) ? dbName : Path.Join(Application.persistentDataPath, dbName);
+            _persistentPath = Path.IsPathRooted(dbName) 
+                ? dbName 
+                : Path.Combine(Application.persistentDataPath, dbName);
             InitializeDatabase(_persistentPath);
         }
 
         private void InitializeDatabase(string dbPath)
         {
+            dbPath = Path.GetFullPath(dbPath);
             bool dbExists = File.Exists(dbPath);
             try
             {
                 _connection = new SQLiteConnection(dbPath);
-
+                DatabasePath = dbPath;
+                
                 // создаём таблицы только если база была новой (или пустой)
                 if (!dbExists)
                 {

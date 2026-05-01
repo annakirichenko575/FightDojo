@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FightDojo.Database;
+using FightDojo.UI.Database.Game;
 using Services;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class GameDataProvider : MonoBehaviour
 
     private PrintGamesView _printGamesView;
     private CharacterDataProvider _characterDataProvider;
-
+    private DbNameView _dbNameView;
     private int _selectedGameId;
 
     public bool HasSelectedGame => _selectedGameId > 0;
@@ -19,6 +20,10 @@ public class GameDataProvider : MonoBehaviour
 
     private void Start()
     {
+        _dbNameView = FindAnyObjectByType<DbNameView>();
+        _dbNameView.Initialize(_dbService);
+        _dbNameView.PrintDbPath();
+        
         _printGamesView = FindAnyObjectByType<PrintGamesView>();
         _printGamesView.Initialize(this);
 
@@ -81,6 +86,7 @@ public class GameDataProvider : MonoBehaviour
 
     public void RefreshGames()
     {
+        _dbNameView.PrintDbPath();
         _games = _dbService.GetAllGames();
         _gameItemViews = _printGamesView.PrintGames(GetAllGameNames());
         SelectGame(_selectedGameId);
