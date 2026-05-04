@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7861168002660143641}
   - component: {fileID: 3743102638352856765}
+  - component: {fileID: 1114645137092863781}
   - component: {fileID: 2502586119492800453}
   m_Layer: 5
   m_Name: KeyText
@@ -46,6 +47,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1727497624087470239}
   m_CullTransparentMesh: 1
+--- !u!114 &1114645137092863781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727497624087470239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b61f24545ef46d47bfc8f6d9027d77f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultFont: {fileID: 11400000, guid: 54a60edf951bce0419931b71da32e47c, type: 2}
+  secondFont: {fileID: 11400000, guid: 21356f3585026ae44ba696021fc20bc3, type: 2}
 --- !u!114 &2502586119492800453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,8 +83,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0424"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 74093174efaa51d45a351d964cd91991, type: 2}
-  m_sharedMaterial: {fileID: -1202498976076319182, guid: 74093174efaa51d45a351d964cd91991, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54a60edf951bce0419931b71da32e47c, type: 2}
+  m_sharedMaterial: {fileID: -7541942982088346068, guid: 54a60edf951bce0419931b71da32e47c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

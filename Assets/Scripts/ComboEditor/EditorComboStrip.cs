@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace FightDojo
 {
@@ -137,9 +136,7 @@ namespace FightDojo
             recordedKeys.UpdateKeyName(currentStripItemView.Id, inputKeyData.KeyName);
 
             // Сразу обновим текст на выбранном объекте, без пересборки стрипа
-            TMP_Text txt = currentStripItemView.GetComponent<TMP_Text>();
-            if (txt != null)
-                txt.text = inputKeyData.KeyName;
+            currentStripItemView.UpdateKey(inputKeyData.KeyName);
         }
 
         public void BuildStrip()

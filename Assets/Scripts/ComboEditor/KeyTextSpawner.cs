@@ -24,7 +24,7 @@ namespace FightDojo
     {
       Vector2 timeOffset = GetTimeOffset(time);
       GameObject keyGO = assetProvider.Instantiate(AssetPath.KeyTextPath, parent);
-      StripItemView stripItem = keyGO.AddComponent<StripItemView>();
+      StripItemView stripItem = keyGO.GetComponent<StripItemView>();
       stripItem.Initialize(id, keyName, time, action, this, isInput);
       return keyGO;
     }
