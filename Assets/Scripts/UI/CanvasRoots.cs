@@ -11,6 +11,8 @@ namespace FightDojo.UI
     [SerializeField] private GameObject _dbCanvas;
     [SerializeField] private GameObject _comboCanvas;
     [SerializeField] private ComboDataProvider _comboProvider;
+    [SerializeField] private CharacterDataProvider _characterProvider;
+    [SerializeField] private GameDataProvider _gameProvider;
     [SerializeField] private EditorComboStrip _editorComboStrip;
 
     public void Start()
@@ -27,10 +29,14 @@ namespace FightDojo.UI
     public void OpenComboCanvas()
     {
       _comboProvider.CurrentCombo(out Combos combos);
+      _characterProvider.CurrentCharacter(out Character character);
+      _gameProvider.CurrentGame(out Game game);
       Debug.Log(combos);
       IRecordedKeysService recordedKeys = 
         AllServices.Container.Single<IRecordedKeysService>();
       recordedKeys.LoadJson(combos.Combo);
+      ICurrentComboInfoService currentComboInfo = AllServices.Container.Single<ICurrentComboInfoService>();
+      currentComboInfo.UpdateComboInfo(combos.Id, combos.CreatorName, character.Name, game.Name);
       _editorComboStrip.Open();
       _dbCanvas.SetActive(false);
       _comboCanvas.SetActive(true);

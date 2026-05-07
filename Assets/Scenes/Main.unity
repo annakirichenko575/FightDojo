@@ -169,6 +169,8 @@ MonoBehaviour:
   _dbCanvas: {fileID: 206726437}
   _comboCanvas: {fileID: 2032055900}
   _comboProvider: {fileID: 1245167920}
+  _characterProvider: {fileID: 1245167919}
+  _gameProvider: {fileID: 1245167916}
   _editorComboStrip: {fileID: 432825171}
 --- !u!1 &11207421
 GameObject:

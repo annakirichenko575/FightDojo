@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FightDojo.AudioService;
 using FightDojo.Data;
 using FightDojo.UI.Windows;
@@ -31,13 +30,17 @@ namespace FightDojo
         private IAudioMasterService audioMaster;
         private CountdownInputTimer countdownTimer;
         private ComboWindow underWindowChecker;
+        
+        private ComboQuality comboQuality;
 
 
         public bool IsRecording => isRecording;
 
         public void Initialize(Vector2 offset, float stripScale,
-            RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner, StripWidthSync stripWidthSync,
-            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, ComboWindow underWindowChecker)
+            RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner,
+            StripWidthSync stripWidthSync,
+            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, ComboWindow underWindowChecker,
+            ICurrentComboInfoService currentComboInfo)
         {
             this.audioMaster = audioMaster;
             this.carriage = carriage;
@@ -50,6 +53,7 @@ namespace FightDojo
             this.recordedKeys = recordedKeys;
             this.countdownTimer = new CountdownInputTimer(keyInputReader, audioMaster);
             this.underWindowChecker = underWindowChecker;
+            this.comboQuality = new ComboQuality(currentComboInfo, this.recordedKeys);
         }
 
         private void Update()
@@ -178,6 +182,7 @@ namespace FightDojo
             if (recordedKeys.FindApproximately(keyData.KeyName, keyData.Time, tolerance))
             {
                 stripItemView.SetCorrectColor();
+                comboQuality.Correct();
             }
             else
             {
@@ -189,6 +194,8 @@ namespace FightDojo
         // Запуск записи: очистка UI и сброс таймера
         private void StartRecording()
         {
+            comboQuality.Reset();
+            
             isRecording = true;
             finishRecordTime = recordedKeys.GetMaxTime() + 0.5f;
             keyTimes = recordedKeys.GetKeyTimes();
@@ -212,7 +219,8 @@ namespace FightDojo
         private void StopRecording()
         {
             isRecording = false;
-            Debug.Log("InputCombo recording stopped");
+            float quality = comboQuality.CalculateQuality();
+            Debug.Log("InputCombo recording stopped " + quality);
         }
 
         private StripItemView BuildStripItem(KeyData keyData, Transform parent)

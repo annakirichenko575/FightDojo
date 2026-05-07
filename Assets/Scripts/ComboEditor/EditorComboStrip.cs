@@ -6,7 +6,6 @@ using FightDojo.UI.Focus;
 using FightDojo.UI.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
 using UnityEngine.EventSystems;
 
 namespace FightDojo
@@ -56,6 +55,7 @@ namespace FightDojo
             carriage.Initialize(contentParent);
             IAssetProvider assetProvider = AllServices.Container.Single<IAssetProvider>();
             IAudioMasterService audioMaster = AllServices.Container.Single<IAudioMasterService>();
+            ICurrentComboInfoService currentComboInfo = AllServices.Container.Single<ICurrentComboInfoService>();
 
             keyTextSpawner = new KeyTextSpawner(stripScale, leftOffset, assetProvider);
 
@@ -65,7 +65,8 @@ namespace FightDojo
             
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, inputContentParent, 
-                carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster, inputComboUnderWindowChecker);
+                carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster, 
+                inputComboUnderWindowChecker, currentComboInfo);
             
             timeline.Initialize(assetProvider, contentParent, (int)leftOffset.x);
             

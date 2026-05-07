@@ -17,5 +17,6 @@ namespace FightDojo.Data
     bool FindApproximately(string keyName, float targetTime, float tolerance);
     float GetMaxTime();
     List<float> GetKeyTimes();
+    int Count { get; }
   }
 }

@@ -12,6 +12,8 @@ namespace FightDojo.Data
 
         private int _maxId = 0;
         
+        public int Count => _editorStrip.Count;
+        
         public RecordedKeys(List<KeyData> keys)
         {
             Initialize(keys);

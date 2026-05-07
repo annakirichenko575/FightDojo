@@ -7,6 +7,7 @@ using Services;
 using Services.Randomizer;
 using UnityEngine;
 using System.Globalization;
+using FightDojo;
 
 namespace Infrastructure
 {
@@ -31,6 +32,8 @@ namespace Infrastructure
         new RecordedKeys(new List<KeyData>()));
       _services.RegisterSingle<IAudioMasterService>(
         new AudioMasterService(_services.Single<IAssetProvider>()));
+      _services.RegisterSingle<ICurrentComboInfoService>(
+        new CurrentComboInfoService());
     }
   }
 }
