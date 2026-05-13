@@ -23,9 +23,8 @@ namespace FightDojo
         [SerializeField] private RectTransform inputContentParent;
         [SerializeField] private Timeline timeline;
         [SerializeField] private FocusPanel focusPanel;
-        [SerializeField] private ComboWindow inputComboUnderWindowChecker;
+        [SerializeField] private InputComboUnderWindowChecker inputComboUnderWindowChecker;
         
-
         private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
         private InputComboBuilder inputComboStripBuilder;

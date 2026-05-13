@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace FightDojo.UI.Windows
@@ -10,8 +9,6 @@ namespace FightDojo.UI.Windows
         [SerializeField] private GameObject _updateWindow;
         [SerializeField] private GameObject _deleteWindow;
         private ComboDataProvider _comboDataProvider;
-
-        public bool IsOpened => _wrap.activeSelf;
 
         private void Awake()
         {

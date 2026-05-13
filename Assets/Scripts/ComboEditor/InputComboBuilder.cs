@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FightDojo.ComboEditor.Graph;
 using FightDojo.AudioService;
 using FightDojo.Data;
 using FightDojo.UI.Windows;
@@ -29,7 +30,7 @@ namespace FightDojo
         List<float> keyTimes = new List<float>();
         private IAudioMasterService audioMaster;
         private CountdownInputTimer countdownTimer;
-        private ComboWindow underWindowChecker;
+        private InputComboUnderWindowChecker underWindowChecker;
         
         private ComboQuality comboQuality;
 
@@ -39,7 +40,8 @@ namespace FightDojo
         public void Initialize(Vector2 offset, float stripScale,
             RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner,
             StripWidthSync stripWidthSync,
-            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, ComboWindow underWindowChecker,
+            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, 
+            InputComboUnderWindowChecker underWindowChecker,
             ICurrentComboInfoService currentComboInfo)
         {
             this.audioMaster = audioMaster;

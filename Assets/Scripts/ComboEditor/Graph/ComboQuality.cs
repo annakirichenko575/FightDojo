@@ -3,16 +3,17 @@ using System.IO;
 using FightDojo.Data;
 using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor.Graph
 {
   public class ComboQuality
   {
+    public static readonly string Path = Application.persistentDataPath + "/combo_history.csv";
+    
     private readonly ICurrentComboInfoService info;
     private readonly IRecordedKeysService recordedKeys;
     
     private int correctPress;
     private int allKeys;
-    private string path = Application.persistentDataPath + "/combo_history.csv";
 
     public ComboQuality(ICurrentComboInfoService currentComboInfo, IRecordedKeysService recordedKeys)
     {
@@ -35,17 +36,20 @@ namespace FightDojo
     public float CalculateQuality()
     {
       float quality = (float)correctPress / allKeys;
-      SaveCombo(info.ComboId, info.Game, info.Character, info.Author, quality);
+      if (quality > 0f)
+      {
+        SaveCombo(info.ComboId, info.Game, info.Character, info.Author, quality);
+      }
       return quality;
     }
 
     private void CreateHeaderIfNotExists()
     {
-      if (!File.Exists(path))
+      if (!File.Exists(Path))
       {
-        File.WriteAllText(path, "ComboID;Date;Game;Character;Author;Quality%\n");
+        File.WriteAllText(Path, "ComboID;Date;Game;Character;Author;Quality%\n");
       }
-      Debug.Log(path);
+      Debug.Log(Path);
     }
 
     private void SaveCombo(int comboId, string game,
@@ -55,7 +59,7 @@ namespace FightDojo
       string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
       string line = $"\"{comboId}\";\"{date}\";\"{game}\";\"{character}\";\"{comboAuthor}\";{qualityPercent:F4}";
         
-      File.AppendAllText(path, line + "\n");
+      File.AppendAllText(Path, line + "\n");
         
       Debug.Log($"Сохранено: {comboAuthor} — {qualityPercent:F4}%");
     }
