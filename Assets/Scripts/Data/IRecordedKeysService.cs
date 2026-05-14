@@ -19,6 +19,5 @@ namespace FightDojo.Data
     List<float> GetKeyTimes();
     int Count { get; }
     void RecalculateTime();
-    float GetMinTime();
   }
 }

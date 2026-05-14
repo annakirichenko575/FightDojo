@@ -27,7 +27,6 @@ namespace FightDojo.Data
             if (keys.Count == 0)
                 return;
             
-            float minTime = keys.Min(e => e.Time);
             for (int i = 0; i < keys.Count; i++)
             {
                 KeyData key = keys[i];
@@ -35,7 +34,6 @@ namespace FightDojo.Data
                 {
                     _maxId = key.Id;
                 }
-                key.Time -= minTime;
                 _editorStrip.Add(key.Id, key);
             }
         }
@@ -50,7 +48,6 @@ namespace FightDojo.Data
                 if (_editorStrip.Count == 0)
                     return;
                 
-                Dictionary<int, KeyData>.ValueCollection keys = _editorStrip.Values;
                 float minTime = _editorStrip.Values.Min(e => e.Time);
                 foreach (KeyValuePair<int, KeyData> key in _editorStrip)
                 {
@@ -95,11 +92,6 @@ namespace FightDojo.Data
                 ? _editorStrip.Values.Max(x => x.Time)
                 : 0f;
 
-        public float GetMinTime() =>
-            _editorStrip.Values.Count > 0
-                ? _editorStrip.Values.Min(x => x.Time)
-                : 0f;
-        
         public bool FindApproximately(string keyName, float targetTime, float tolerance)
         {
             foreach (var x in _editorStrip.Values)

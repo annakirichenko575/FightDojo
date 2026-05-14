@@ -95,7 +95,8 @@ namespace FightDojo
 
         public void MoveKeysToLeftBorder()
         {
-            
+            recordedKeys.RecalculateTime();
+            Open();
         }
 
         private void AddKey()
@@ -110,21 +111,9 @@ namespace FightDojo
             float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
             keyData.Time = time;
             recordedKeys.Add(keyData); //insert correct id
-            if (recordedKeys.Count == 1)
-            {
-                recordedKeys.RecalculateTime();
-                Open();
-                StripItemView stripItemView = contentParent.GetComponentInChildren<StripItemView>();
-                SelectNewStripItem(stripItemView);
-                carriage.SetPosition(keyTextSpawner.GetTimeOffset(0f).x);
-                carriageScroller.Scroll();
-            }
-            else
-            {
-                StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
-                comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
-                SelectNewStripItem(stripItemView);
-            }
+            StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
+            comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
+            SelectNewStripItem(stripItemView);
         }
 
         private void DeleteKey()
@@ -138,11 +127,6 @@ namespace FightDojo
                 recordedKeys.Delete(currentStripItemView.Id);
                 Destroy(currentStripItemView.gameObject);
                 currentStripItemView = null;
-                if (recordedKeys.GetMinTime() > 0f)
-                {
-                    recordedKeys.RecalculateTime();
-                    Open();
-                }
             }
         }
 
