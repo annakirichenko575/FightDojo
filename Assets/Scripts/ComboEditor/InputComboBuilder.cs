@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FightDojo.ComboEditor.Graph;
 using FightDojo.AudioService;
 using FightDojo.Data;
+using FightDojo.UI;
 using FightDojo.UI.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,10 +29,11 @@ namespace FightDojo
         private StripWidthSync stripWidthSync;
         private IRecordedKeysService recordedKeys;
         private float finishRecordTime = 0;
-        List<float> keyTimes = new List<float>();
+        private List<float> keyTimes = new List<float>();
         private IAudioMasterService audioMaster;
         private CountdownInputTimer countdownTimer;
         private InputComboUnderWindowChecker underWindowChecker;
+        private CarriageScroller carriageScroller;
         
         private ComboQuality comboQuality;
 
@@ -40,9 +43,10 @@ namespace FightDojo
         public void Initialize(Vector2 offset, float stripScale,
             RectTransform contentParent, Carriage carriage, KeyTextSpawner keyTextSpawner,
             StripWidthSync stripWidthSync,
-            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster, 
+            IRecordedKeysService recordedKeys, IAudioMasterService audioMaster,
             InputComboUnderWindowChecker underWindowChecker,
-            ICurrentComboInfoService currentComboInfo)
+            ICurrentComboInfoService currentComboInfo, 
+            CarriageScroller carriageScroller)
         {
             this.audioMaster = audioMaster;
             this.carriage = carriage;
@@ -56,12 +60,21 @@ namespace FightDojo
             this.countdownTimer = new CountdownInputTimer(keyInputReader, audioMaster);
             this.underWindowChecker = underWindowChecker;
             this.comboQuality = new ComboQuality(currentComboInfo, this.recordedKeys);
+            this.carriageScroller = carriageScroller;
         }
 
         private void Update()
         {
             RecordUpdate();
             CarriageUpdate();
+        }
+
+        private void LateUpdate()
+        {
+            if (IsRecording == false)
+                return;
+        
+            carriageScroller.Scroll();
         }
 
         public void UpdateContentWidth()

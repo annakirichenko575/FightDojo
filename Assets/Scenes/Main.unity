@@ -207,7 +207,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0008210372, y: -0.0000037524742}
+  m_AnchoredPosition: {x: 0.0008210372, y: -0.000036656857}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &11207423
@@ -5923,7 +5923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000107041145, y: -0.00002002716}
+  m_AnchoredPosition: {x: 0.000107041145, y: -0.000017642975}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &337877759
@@ -7273,6 +7273,7 @@ MonoBehaviour:
   timeline: {fileID: 623008643}
   focusPanel: {fileID: 284275984}
   inputComboUnderWindowChecker: {fileID: 1588363931}
+  carriageScroller: {fileID: 432825174}
 --- !u!114 &432825172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7312,7 +7313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carriage: {fileID: 1310874717}
-  _inputComboBuilder: {fileID: 432825170}
   _scrollRect: {fileID: 1859986515}
 --- !u!1 &442997598
 GameObject:
@@ -11752,7 +11752,7 @@ GameObject:
   m_Component:
   - component: {fileID: 708971707}
   - component: {fileID: 708971711}
-  - component: {fileID: 708971710}
+  - component: {fileID: 708971712}
   - component: {fileID: 708971709}
   - component: {fileID: 708971708}
   m_Layer: 5
@@ -11833,7 +11833,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 708971710}
+  m_TargetGraphic: {fileID: 708971712}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -11849,7 +11849,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &708971710
+--- !u!222 &708971711
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708971706}
+  m_CullTransparentMesh: 1
+--- !u!114 &708971712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11879,14 +11887,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &708971711
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708971706}
-  m_CullTransparentMesh: 1
 --- !u!1 &714741902
 GameObject:
   m_ObjectHideFlags: 0
@@ -31037,7 +31037,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 83019168}
   m_HandleRect: {fileID: 83019167}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -32858,7 +32858,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000107041145, y: -0.0000019073486}
+  m_AnchoredPosition: {x: 0.000107041145, y: -0.0000047683716}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1849958573

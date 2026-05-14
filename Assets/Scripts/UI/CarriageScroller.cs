@@ -7,16 +7,12 @@ namespace FightDojo.UI
     public class CarriageScroller : MonoBehaviour
     {
         [SerializeField] private Carriage _carriage;
-        [SerializeField] private InputComboBuilder _inputComboBuilder;
         [SerializeField] private ScrollRect _scrollRect;
     
         private float _smoothSpeed = 0.18f;
 
-        private void LateUpdate()
+        public void Scroll()
         {
-            if (_inputComboBuilder.IsRecording == false)
-                return;
-        
             float viewportWidth = _scrollRect.viewport.rect.width;
             float contentWidth  = _scrollRect.content.rect.width;
             if (contentWidth <= viewportWidth) 

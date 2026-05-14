@@ -2,6 +2,7 @@ using FightDojo.AudioService;
 using Infrastructure.AssetManagement;
 using Services;
 using FightDojo.Data;
+using FightDojo.UI;
 using FightDojo.UI.Focus;
 using FightDojo.UI.Windows;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace FightDojo
         [SerializeField] private Timeline timeline;
         [SerializeField] private FocusPanel focusPanel;
         [SerializeField] private InputComboUnderWindowChecker inputComboUnderWindowChecker;
+        [SerializeField] private CarriageScroller carriageScroller;
         
         private IRecordedKeysService recordedKeys;
         private EditorComboStripBuilder comboStripBuilder;
@@ -65,7 +67,7 @@ namespace FightDojo
             inputComboStripBuilder = GetComponent<InputComboBuilder>();
             inputComboStripBuilder.Initialize(leftOffset, stripScale, inputContentParent, 
                 carriage, keyTextSpawner, stripWidthSync, recordedKeys, audioMaster, 
-                inputComboUnderWindowChecker, currentComboInfo);
+                inputComboUnderWindowChecker, currentComboInfo, carriageScroller);
             
             timeline.Initialize(assetProvider, contentParent, (int)leftOffset.x);
             
@@ -91,6 +93,11 @@ namespace FightDojo
             }
         }
 
+        public void MoveKeysToLeftBorder()
+        {
+            
+        }
+
         private void AddKey()
         {
             if (Keyboard.current == null || currentStripItemView != null)
@@ -103,9 +110,21 @@ namespace FightDojo
             float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
             keyData.Time = time;
             recordedKeys.Add(keyData); //insert correct id
-            StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
-            comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
-            SelectNewStripItem(stripItemView);
+            if (recordedKeys.Count == 1)
+            {
+                recordedKeys.RecalculateTime();
+                Open();
+                StripItemView stripItemView = contentParent.GetComponentInChildren<StripItemView>();
+                SelectNewStripItem(stripItemView);
+                carriage.SetPosition(keyTextSpawner.GetTimeOffset(0f).x);
+                carriageScroller.Scroll();
+            }
+            else
+            {
+                StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
+                comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
+                SelectNewStripItem(stripItemView);
+            }
         }
 
         private void DeleteKey()
@@ -116,9 +135,14 @@ namespace FightDojo
 
             if (Keyboard.current != null && Keyboard.current.deleteKey.wasPressedThisFrame)// вынести в Input модуль
             {
-                Delete(currentStripItemView.Id);
+                recordedKeys.Delete(currentStripItemView.Id);
                 Destroy(currentStripItemView.gameObject);
                 currentStripItemView = null;
+                if (recordedKeys.GetMinTime() > 0f)
+                {
+                    recordedKeys.RecalculateTime();
+                    Open();
+                }
             }
         }
 
@@ -151,7 +175,6 @@ namespace FightDojo
         // удалить элемент из данных
         public void Delete(int id)
         {
-            recordedKeys.Delete(id);
         }
 
         public void UpdateTimeByX(int id, float x)

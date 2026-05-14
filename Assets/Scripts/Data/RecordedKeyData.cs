@@ -11,7 +11,7 @@ namespace FightDojo.Data
         private Dictionary<int, KeyData> _editorStrip = new Dictionary<int, KeyData>();
 
         private int _maxId = 0;
-        
+
         public int Count => _editorStrip.Count;
         
         public RecordedKeys(List<KeyData> keys)
@@ -23,18 +23,41 @@ namespace FightDojo.Data
         {
             _maxId = 0;
             _editorStrip.Clear();
+            
+            if (keys.Count == 0)
+                return;
+            
+            float minTime = keys.Min(e => e.Time);
             for (int i = 0; i < keys.Count; i++)
             {
-                if (_maxId < keys[i].Id)
+                KeyData key = keys[i];
+                if (_maxId < key.Id)
                 {
-                    _maxId = keys[i].Id;
+                    _maxId = key.Id;
                 }
-                _editorStrip.Add(keys[i].Id, keys[i]);
+                key.Time -= minTime;
+                _editorStrip.Add(key.Id, key);
             }
         }
 
         public KeyData GetEditorStripItem(int i) => 
             new KeyData(_editorStrip[i]);
+
+        public void RecalculateTime()
+        {
+            foreach (KeyValuePair<int, KeyData> item in _editorStrip)
+            {
+                if (_editorStrip.Count == 0)
+                    return;
+                
+                Dictionary<int, KeyData>.ValueCollection keys = _editorStrip.Values;
+                float minTime = _editorStrip.Values.Min(e => e.Time);
+                foreach (KeyValuePair<int, KeyData> key in _editorStrip)
+                {
+                    key.Value.Time -= minTime;
+                }
+            }
+        }
 
         public void Add(KeyData keyData)
         {
@@ -46,7 +69,6 @@ namespace FightDojo.Data
         public void Delete(int id)
         {
             Debug.Log("Delete" + id + " " + _editorStrip[id].Id);
-            
             _editorStrip.Remove(id);
         }
 
@@ -73,6 +95,11 @@ namespace FightDojo.Data
                 ? _editorStrip.Values.Max(x => x.Time)
                 : 0f;
 
+        public float GetMinTime() =>
+            _editorStrip.Values.Count > 0
+                ? _editorStrip.Values.Min(x => x.Time)
+                : 0f;
+        
         public bool FindApproximately(string keyName, float targetTime, float tolerance)
         {
             foreach (var x in _editorStrip.Values)
