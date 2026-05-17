@@ -190,7 +190,7 @@ namespace FightDojo
         private void InputRead()
         {
             KeyData keyData = keyInputReader.CheckKeys();
-            if (keyData == null || keyData.Action != KeyData.IsPressedAction)
+            if (keyData == null || keyData.Action != KeyData.PressedActionName)
                 return;
             
             StripItemView stripItemView = BuildStripItem(keyData, contentParent);

@@ -105,7 +105,7 @@ namespace FightDojo
                 return;
 
             KeyData keyData = keyInputReader.CheckKeys();
-            if (keyData == null || keyData.Action != KeyData.IsPressedAction)
+            if (keyData == null || keyData.Action != KeyData.PressedActionName)
                 return;
 
             float time = keyTextSpawner.GetTimeByPosition(carriage.Rect.anchoredPosition.x);
@@ -137,7 +137,7 @@ namespace FightDojo
 
             KeyData inputKeyData = keyInputReader.CheckKeys();
 
-            if (inputKeyData == null || inputKeyData.Action != KeyData.IsPressedAction)
+            if (inputKeyData == null || inputKeyData.Action != KeyData.PressedActionName)
                 return;
 
             // Берём KeyData выбранного элемента и меняем KeyName

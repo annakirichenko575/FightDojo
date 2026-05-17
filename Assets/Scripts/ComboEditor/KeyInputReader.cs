@@ -161,9 +161,9 @@ namespace FightDojo
         {
             action = null;
             if (key.wasPressedThisFrame)
-                action = KeyData.IsPressedAction;
+                action = KeyData.PressedActionName;
             if (key.wasReleasedThisFrame)
-                action = KeyData.IsReleaseAction;
+                action = KeyData.ReleaseActionName;
             return action != null;
         }
 

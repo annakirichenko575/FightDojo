@@ -140,8 +140,8 @@ namespace FightDojo.Data
     [Serializable]
     public class KeyData
     {
-        public const string IsPressedAction = "press";
-        public const string IsReleaseAction = "release";
+        public const string PressedActionName = "press";
+        public const string ReleaseActionName = "release";
 
         public int Id;
         public string Action;

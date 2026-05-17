@@ -91,7 +91,7 @@ namespace FightDojo
 
         private void SetColor(Color PressColor, Color ReleaseColor)
         {
-            keyText.color = (action == KeyData.IsPressedAction)
+            keyText.color = (action == KeyData.PressedActionName)
                 ? new Color(PressColor.r, PressColor.g, PressColor.b, 0.5f)
                 : new Color(ReleaseColor.r, ReleaseColor.g, ReleaseColor.b, 0.5f);
         }
