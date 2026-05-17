@@ -12,13 +12,17 @@ namespace FightDojo.Data.AutoKeyboard
             List<KeyData> keys = new List<KeyData>();
             foreach (RecordedEvent recordedEvent in recordData.recorded_events_v2)
             {
-                if (recordedEvent.action_canonical == KeyData.ReleaseActionName)
-                    continue;
-                    
-                keys.Add(new KeyData(i, recordedEvent.action_canonical, time, recordedEvent.key_name_display));
-                i++;
-                time += recordedEvent.delay_ms / 1000f;
+                if (i > 0)
+                {
+                    time += recordedEvent.delay_ms / 1000f;
+                }
+                if (recordedEvent.action_canonical == KeyData.PressedActionName)
+                {
+                    keys.Add(new KeyData(i, recordedEvent.action_canonical, time, recordedEvent.key_name_display));
+                    i++;
+                }
             }
+
             return new RecordedKeys(keys);
         }
         
