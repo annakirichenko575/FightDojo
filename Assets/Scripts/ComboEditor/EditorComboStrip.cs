@@ -34,6 +34,8 @@ namespace FightDojo
         private KeyInputReader keyInputReader = new KeyInputReader();
         private KeyTextSpawner keyTextSpawner;
         private bool isInitialized = false;
+        
+        public bool IsChanged { get; private set; }
 
         private void Start()
         {
@@ -45,6 +47,7 @@ namespace FightDojo
             Initialize();
             inputComboStripBuilder.ClearContent();
             BuildStrip();
+            IsChanged = false;
         }
 
         private void Initialize()
@@ -114,6 +117,8 @@ namespace FightDojo
             StripItemView stripItemView = comboStripBuilder.BuildStripItem(keyData);
             comboStripBuilder.ResizeContent(recordedKeys.GetKeys());
             SelectNewStripItem(stripItemView);
+
+            IsChanged = true;
         }
 
         private void DeleteKey()
@@ -127,6 +132,8 @@ namespace FightDojo
                 recordedKeys.Delete(currentStripItemView.Id);
                 Destroy(currentStripItemView.gameObject);
                 currentStripItemView = null;
+                
+                IsChanged = true;
             }
         }
 
@@ -145,6 +152,8 @@ namespace FightDojo
 
             // Сразу обновим текст на выбранном объекте, без пересборки стрипа
             currentStripItemView.UpdateKey(inputKeyData.KeyName);
+            
+            IsChanged = true;
         }
 
         public void BuildStrip()
@@ -165,6 +174,8 @@ namespace FightDojo
         {
             recordedKeys.UpdateKeyTime(id, (x - leftOffset.x) / stripScale);
             BuildStrip();
+            
+            IsChanged = true;
         }
 
         public void MoveCarriage(PointerEventData eventData)
