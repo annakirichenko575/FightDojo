@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FightDojo.ComboEditor.Graph;
 using FightDojo.AudioService;
 using FightDojo.Data;

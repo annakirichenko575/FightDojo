@@ -10,6 +10,7 @@ namespace FightDojo.ComboEditor.Graph
     public class ComboHistoryLoader  
     {
         private List<ComboQualityData> allCombos = new List<ComboQualityData>();
+        private ComboHistoryValidator validator = new ComboHistoryValidator();
 
         public class ComboQualityData
         {
@@ -27,6 +28,11 @@ namespace FightDojo.ComboEditor.Graph
         {
             if (!File.Exists(path)) 
                 return;
+
+            if (allCombos.Count == 0)
+            {
+                validator.Clean(path);
+            }
             
             allCombos.Clear();
 
@@ -58,7 +64,6 @@ namespace FightDojo.ComboEditor.Graph
             
             foreach (var item in points)
                 Debug.Log(item.x);
-            Debug.Log("!!!!!!!!!");
             
             if (points.Count == 0) 
                 return points;
