@@ -41,18 +41,26 @@ namespace FightDojo.ComboEditor.Graph
             for (int i = 1; i < lines.Length; i++) // пропускаем заголовок
             {
                 string[] values = lines[i].Split(';');
-                if (values.Length < 6) continue;
+                if (values.Length < 6) 
+                    continue;
 
-                ComboQualityData qualityData = new ComboQualityData
+                try
                 {
-                    ComboID = int.Parse(values[0].Trim('"')),
-                    DateTicks = DateTime.Parse(values[1].Trim('"')).Ticks,
-                    Game = values[2].Trim('"'),
-                    Character = values[3].Trim('"'),
-                    Author = values[4].Trim('"'),
-                    Quality = float.Parse(values[5])
-                };
-                allCombos.Add(qualityData);
+                    ComboQualityData qualityData = new ComboQualityData
+                    {
+                        ComboID = int.Parse(values[0].Trim('"')),
+                        DateTicks = DateTime.Parse(values[1].Trim('"')).Ticks,
+                        Game = values[2].Trim('"'),
+                        Character = values[3].Trim('"'),
+                        Author = values[4].Trim('"'),
+                        Quality = float.Parse(values[5])
+                    };
+                    allCombos.Add(qualityData);
+                }
+                catch
+                {
+                    continue;
+                }
             }
 
             allCombos = allCombos.OrderBy(e => e.DateTicks).ToList();
