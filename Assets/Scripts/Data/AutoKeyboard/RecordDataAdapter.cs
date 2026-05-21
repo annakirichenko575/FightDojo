@@ -12,6 +12,10 @@ namespace FightDojo.Data.AutoKeyboard
             List<KeyData> keys = new List<KeyData>();
             foreach (RecordedEvent recordedEvent in recordData.recorded_events_v2)
             {
+                if (recordedEvent.delay_ms < 0f 
+                    || string.IsNullOrWhiteSpace(recordedEvent.key_name_display))
+                    continue;
+                    
                 if (i > 0)
                 {
                     time += recordedEvent.delay_ms / 1000f;

@@ -3,19 +3,21 @@ using FightDojo;
 using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
 using FightDojo.Database;
+using FightDojo.UI.Windows;
 using Services;
 using SimpleFileBrowser;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ImportAutoKeyboardJsonFilePicker : MonoBehaviour
 {
   private EditorComboStrip _editorComboStrip;
-  
-  private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
+  private WarningWindow _warningWindow;
   
   private void Awake()
   {
       _editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
+      _warningWindow = FindAnyObjectByType<WarningWindow>();
   }
 
   public void OpenFileDialog()
@@ -49,11 +51,19 @@ public class ImportAutoKeyboardJsonFilePicker : MonoBehaviour
     Debug.Log( "Выбран файл: " + selectedPath );
     
     JsonLoader jsonLoader = new JsonLoader();
-    RecordedKeys tempRecordedKeys = RecordDataAdapter.Adapt(jsonLoader.Load(selectedPath));
-    string adaptedJson = tempRecordedKeys.ToJson();
-    IRecordedKeysService recordedKeys = 
-      AllServices.Container.Single<IRecordedKeysService>();
-    recordedKeys.LoadJson(adaptedJson);
-    _editorComboStrip.Open();
+    if (jsonLoader.TryLoad(selectedPath, out RecordData recordData)
+        && recordData != null && recordData.Validate())
+    {
+      RecordedKeys tempRecordedKeys = RecordDataAdapter.Adapt(recordData);
+      string adaptedJson = tempRecordedKeys.ToJson();
+      IRecordedKeysService recordedKeys = 
+        AllServices.Container.Single<IRecordedKeysService>();
+      recordedKeys.LoadJson(adaptedJson);
+      _editorComboStrip.Open();
+    }
+    else
+    {
+      _warningWindow.OpenWarning("Ошибка импорта json");
+    }
   }
 }
