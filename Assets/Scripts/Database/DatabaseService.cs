@@ -2,6 +2,7 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace FightDojo.Database
@@ -19,43 +20,52 @@ namespace FightDojo.Database
 
         public DatabaseService()
         {
-            InitializeDatabase();
+            TryInitializeDatabase();
         }
 
-        private void InitializeDatabase()
+        private bool TryInitializeDatabase()
         {
             _persistentPath = Path.IsPathRooted(dbName) 
                 ? dbName 
                 : Path.Combine(Application.persistentDataPath, dbName);
-            InitializeDatabase(_persistentPath);
+            return TryInitializeDatabase(_persistentPath);
         }
 
-        private void InitializeDatabase(string dbPath)
+        private bool TryInitializeDatabase(string dbPath)
         {
             dbPath = Path.GetFullPath(dbPath);
             bool dbExists = File.Exists(dbPath);
             try
             {
-                _connection = new SQLiteConnection(dbPath);
-                DatabasePath = dbPath;
-                
-                // создаём таблицы только если база была новой (или пустой)
-                if (!dbExists)
+                SQLiteConnection newConnection = new SQLiteConnection(dbPath);
+
+                if (dbExists)
                 {
-                    _connection.CreateTable<Game>();
-                    _connection.CreateTable<Character>();
-                    _connection.CreateTable<Combos>();
-                    Debug.Log("Создана новая база данных: " + dbPath);
+                    bool valid = ValidateTable<Game>(newConnection)
+                                 && ValidateTable<Character>(newConnection)
+                                 && ValidateTable<Combos>(newConnection);
+
+                    if (!valid)
+                        throw new Exception("Схема базы данных не совпадает с ожидаемой");
+                    
+                    Debug.Log("База уже существует: " + dbPath);
                 }
                 else
                 {
-                    // можно добавить проверку наличия таблиц, если нужно
-                    Debug.Log("База уже существует: " + dbPath);
+                    newConnection.CreateTable<Game>();
+                    newConnection.CreateTable<Character>();
+                    newConnection.CreateTable<Combos>();
+                    Debug.Log("Создана новая база данных: " + dbPath);
                 }
+
+                _connection = newConnection;
+                DatabasePath = dbPath;
+                return true;
             }
             catch (Exception ex)
             {
                 Debug.LogError("Ошибка инициализации базы: " + ex.Message);
+                return false;
             }
         }
 
@@ -308,7 +318,7 @@ namespace FightDojo.Database
             //_connection.Execute("PRAGMA foreign_keys = ON;");
         }
 
-        public bool OpenDatabase(string path)
+        public bool TryOpenDatabase(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -316,22 +326,15 @@ namespace FightDojo.Database
                 return false;
             }
 
-            try
+            SQLiteConnection tempConnection = _connection;
+            if (TryInitializeDatabase(path))
             {
-                SQLiteConnection tempConnection = _connection;
-                InitializeDatabase(path);
-                if (tempConnection != null)
-                {
-                    tempConnection.Close();
-                }
+                tempConnection?.Close();
                 Debug.Log($"База данных успешно открыта → {path} ");
                 return true;
             }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Ошибка при открытии базы в {path}\n{ex.Message}\n{ex.StackTrace}");
-                return false;
-            } 
+
+            return false;
         }
 
         public void Dispose()
@@ -339,7 +342,43 @@ namespace FightDojo.Database
             _connection?.Close();
             _connection = null;
         }
+        
+        private bool ValidateTable<T>(SQLiteConnection connection)
+        {
+            var map = connection.GetMapping<T>();
+            var tableName = map.TableName;
 
+            // получаем реальные колонки из базы
+            var cols = connection
+                .Query<TableInfo>($"PRAGMA table_info({tableName})")
+                .Select(c => c.name)
+                .ToHashSet();
+
+            if (cols.Count == 0)
+            {
+                Debug.LogError($"Таблица '{tableName}' отсутствует в базе");
+                return false;
+            }
+
+            // проверяем что все колонки модели присутствуют
+            foreach (var col in map.Columns)
+            {
+                if (!cols.Contains(col.Name))
+                {
+                    Debug.LogError($"'{tableName}': колонка '{col.Name}' отсутствует");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // вспомогательный класс для PRAGMA
+        private class TableInfo
+        {
+            public string name { get; set; }
+        }
+        
         public class ComboWithCharacter
         {
             public int Id { get; set; }

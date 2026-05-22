@@ -17,7 +17,7 @@ namespace FightDojo.UI.Database.Combo
         public void Initialize(int id, string creatorName, string description, string tags, ComboDataProvider comboDataProvider)
         {
             _id = id;
-            Debug.Log(creatorName + ", " + description + ", " + tags);
+            //Debug.Log(creatorName + ", " + description + ", " + tags);
             _text.text = $"{ShortText(creatorName, 22)} " +
                          $"{ShortText(description,  40)} " +
                          $"{ShortText(tags,  23)}\n";
@@ -59,13 +59,13 @@ namespace FightDojo.UI.Database.Combo
             if (string.IsNullOrEmpty(text))
                 return "";
         
-            Debug.Log("Sub");
+            //Debug.Log("Sub");
             if (text.Length > maxLength)
             {
                 text = text.Substring(0, maxLength);
             }
             string split = text.Split('\n')[0].TrimEnd('\r');
-            Debug.Log(split);
+            //Debug.Log(split);
         
             return split;
         }

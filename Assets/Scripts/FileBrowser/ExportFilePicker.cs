@@ -1,44 +1,45 @@
-using System;
 using FightDojo.Database;
 using Services;
 using SimpleFileBrowser;
 using UnityEngine;
 
-public class ExportFilePicker : MonoBehaviour
+namespace FightDojo.FilePiker
 {
-    
-    private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
-
-    // Вызывай эту функцию, например, по кнопке "Сохранить"
-    public void ExportFile()
+    public class ExportFilePicker : MonoBehaviour
     {
-        FileBrowser.SetFilters( 
-          true,
-          new FileBrowser.Filter( "DB", ".db")
-        );
-        FileBrowser.SetDefaultFilter("DB");
-        FileBrowser.ShowSaveDialog( 
-            ( string[] paths ) => { OnFileSelected( paths ); },   // успех
-            () => { Debug.Log( "Отмена сохранения" ); },              // отмена
-            FileBrowser.PickMode.Files,                               // сохраняем файл (не папку)
-            false,                                                    // только один файл
-            _dbService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
-            "MyExport.db",                                           // предложенное имя файла по умолчанию
-            "Сохранить файл",                                         // заголовок окна
-            "Сохранить"                                               // текст кнопки
-        );
-    }
+        private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
 
-    private void OnFileSelected( string[] paths )
-    {
-        if( paths == null || paths.Length == 0 )
+        // Вызывай эту функцию, например, по кнопке "Сохранить"
+        public void ExportFile()
         {
-            Debug.Log( "Сохранение отменено" );
-            return;
+            FileBrowser.SetFilters( 
+                true,
+                new FileBrowser.Filter( "DB", ".db")
+            );
+            FileBrowser.SetDefaultFilter("DB");
+            FileBrowser.ShowSaveDialog( 
+                ( string[] paths ) => { OnFileSelected( paths ); },   // успех
+                () => { Debug.Log( "Отмена сохранения" ); },              // отмена
+                FileBrowser.PickMode.Files,                               // сохраняем файл (не папку)
+                false,                                                    // только один файл
+                DBService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
+                "MyExport.db",                                           // предложенное имя файла по умолчанию
+                "Сохранить файл",                                         // заголовок окна
+                "Сохранить"                                               // текст кнопки
+            );
         }
 
-        string savePath = paths[0];  // ← вот он — полный путь, куда сохранять
-        Debug.Log( $"Сохраняем в: {savePath}" );
-        _dbService.ExportDatabase(savePath);
+        private void OnFileSelected( string[] paths )
+        {
+            if( paths == null || paths.Length == 0 )
+            {
+                Debug.Log( "Сохранение отменено" );
+                return;
+            }
+
+            string savePath = paths[0];  // ← вот он — полный путь, куда сохранять
+            Debug.Log( $"Сохраняем в: {savePath}" );
+            DBService.ExportDatabase(savePath);
+        }
     }
 }

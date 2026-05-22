@@ -144,7 +144,7 @@ public class ComboDataProvider : MonoBehaviour
     public void RefreshCombos()
     {
         _combos = _dbService.GetCombosByCharacter(_selectedCharacterId);
-        _combos.ForEach(c => Debug.Log(c.Id + " " + c.CreatorName));
+        //_combos.ForEach(c => Debug.Log(c.Id + " " + c.CreatorName));
         _comboItemViews = _printCombosView.PrintCombos(GetAllCombos());
         SelectCombo(_selectedComboId);
     }

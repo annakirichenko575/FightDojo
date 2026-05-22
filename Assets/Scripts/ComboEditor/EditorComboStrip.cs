@@ -47,6 +47,10 @@ namespace FightDojo
             Initialize();
             inputComboStripBuilder.ClearContent();
             BuildStrip();
+            
+            carriage.SetPosition(keyTextSpawner.GetTimeOffset(0f).x);
+            carriageScroller.AtStartPosition();
+            
             IsChanged = false;
         }
 

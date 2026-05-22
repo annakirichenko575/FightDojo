@@ -1,4 +1,3 @@
-using FightDojo;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +6,21 @@ namespace FightDojo.UI
     public class CarriageScroller : MonoBehaviour
     {
         [SerializeField] private Carriage _carriage;
-        [SerializeField] private ScrollRect _scrollRect;
+        [SerializeField] private ScrollRect _scrollRectEditor;
+        [SerializeField] private ScrollRect _scrollRectInput;
     
         private float _smoothSpeed = 0.18f;
 
+        public void AtStartPosition()
+        {
+            _scrollRectInput.horizontalNormalizedPosition = 0f;
+            _scrollRectEditor.horizontalNormalizedPosition = 0f;
+        }
+        
         public void Scroll()
         {
-            float viewportWidth = _scrollRect.viewport.rect.width;
-            float contentWidth  = _scrollRect.content.rect.width;
+            float viewportWidth = _scrollRectInput.viewport.rect.width;
+            float contentWidth  = _scrollRectInput.content.rect.width;
             if (contentWidth <= viewportWidth) 
                 return;
         
@@ -22,9 +28,9 @@ namespace FightDojo.UI
             float offset = viewportWidth / 2f;
             float desiredNorm = (carriageX - offset) / (contentWidth - viewportWidth);
             desiredNorm = Mathf.Clamp01(desiredNorm);
-            float currentNorm = _scrollRect.horizontalNormalizedPosition;
+            float currentNorm = _scrollRectInput.horizontalNormalizedPosition;
             _smoothSpeed = 0.18f;
-            _scrollRect.horizontalNormalizedPosition =
+            _scrollRectInput.horizontalNormalizedPosition =
                 //Mathf.Lerp(currentNorm, desiredNorm, _smoothSpeed);
                 desiredNorm;
         }
