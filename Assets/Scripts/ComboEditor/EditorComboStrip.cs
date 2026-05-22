@@ -51,6 +51,11 @@ namespace FightDojo
             carriage.SetPosition(keyTextSpawner.GetTimeOffset(0f).x);
             carriageScroller.AtStartPosition();
             
+            ResetChangeFlag();
+        }
+
+        public void ResetChangeFlag()
+        {
             IsChanged = false;
         }
 

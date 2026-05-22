@@ -8,10 +8,12 @@ namespace FightDojo.UI.Database.Combo
     {
         private ComboDataProvider _comboDataProvider;
         private IRecordedKeysService _recordedKeys;
+        private EditorComboStrip _editorComboStrip;
 
         private void Awake()
         {
             _comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
+            _editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
             _recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
         }
 
@@ -19,6 +21,7 @@ namespace FightDojo.UI.Database.Combo
         {
             string json = _recordedKeys.ToJson();
             _comboDataProvider.UpdateComboJson(json);
+            _editorComboStrip.ResetChangeFlag();
             Debug.Log(json);
         }
     }
