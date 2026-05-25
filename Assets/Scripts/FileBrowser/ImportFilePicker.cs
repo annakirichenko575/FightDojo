@@ -1,4 +1,5 @@
 using FightDojo.Database;
+using FightDojo.UI.Windows;
 using Services;
 using SimpleFileBrowser;
 using UnityEngine;
@@ -8,12 +9,14 @@ namespace FightDojo.FilePiker
   public class ImportFilePicker : MonoBehaviour
   {
     private GameDataProvider _gameDataProvider;
+    private WarningWindow _warningWindow;
   
     private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
   
     private void Awake()
     {
       _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+      _warningWindow = FindFirstObjectByType<WarningWindow>();
     }
 
     public void OpenFileDialog()
@@ -45,7 +48,11 @@ namespace FightDojo.FilePiker
 
       string selectedPath = paths[0];  // ← вот он — выбранный полный путь
       Debug.Log( "Выбран файл: " + selectedPath );
-      DBService.MergeDatabases(selectedPath);
+      if (DBService.TryMergeDatabases(selectedPath) == false)
+      {
+        _warningWindow.OpenWarning("Не удалось импортировать базу");
+      }
+      
       _gameDataProvider.RefreshGames();
     }
   }

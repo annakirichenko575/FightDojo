@@ -1,4 +1,5 @@
 using FightDojo.Database;
+using FightDojo.UI.Windows;
 using Services;
 using SimpleFileBrowser;
 using UnityEngine;
@@ -7,8 +8,15 @@ namespace FightDojo.FilePiker
 {
     public class ExportFilePicker : MonoBehaviour
     {
+        private WarningWindow _warningWindow;
+        
         private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
 
+        private void Awake()
+        {
+          _warningWindow = FindFirstObjectByType<WarningWindow>();
+        }
+      
         // Вызывай эту функцию, например, по кнопке "Сохранить"
         public void ExportFile()
         {
@@ -39,7 +47,10 @@ namespace FightDojo.FilePiker
 
             string savePath = paths[0];  // ← вот он — полный путь, куда сохранять
             Debug.Log( $"Сохраняем в: {savePath}" );
-            DBService.ExportDatabase(savePath);
+            if (DBService.ExportDatabase(savePath) == false)
+            {
+                _warningWindow.OpenWarning("Не удалось экспортировать базу");
+            }
         }
     }
 }

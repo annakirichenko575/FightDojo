@@ -26,7 +26,7 @@ namespace FightDojo.Database
         string PersistentPath { get; }
         string DatabasePath { get; }
         bool ExportDatabase(string exportPath);
-        void MergeDatabases(string secondDbPath);
+        bool TryMergeDatabases(string secondDbPath);
         bool TryOpenDatabase(string path);
         void UpdateComboJson(int id, string comboJson);
         void Dispose();

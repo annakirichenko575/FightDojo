@@ -242,12 +242,29 @@ namespace FightDojo.Database
             }
         } 
        
-        public void MergeDatabases(string secondDbPath)
+        public bool TryMergeDatabases(string secondDbPath)
         {
+            bool isSuccess = true;
             _connection.Execute("PRAGMA foreign_keys = OFF;");
 
             try
             {
+                secondDbPath = Path.GetFullPath(secondDbPath);
+                bool dbExists = File.Exists(secondDbPath);
+
+                if (dbExists == false)
+                    throw new Exception("Импортируемый файл не найден");
+
+                using (SQLiteConnection newConnection = new SQLiteConnection(secondDbPath))
+                {
+                    bool valid = ValidateTable<Game>(newConnection)
+                                 && ValidateTable<Character>(newConnection)
+                                 && ValidateTable<Combos>(newConnection);
+
+                    if (valid == false)
+                        throw new Exception("Схема импортируемой базы данных не совпадает с ожидаемой");
+                }
+
                 _connection.Execute("ATTACH DATABASE ? AS db2;", secondDbPath);
 
                 _connection.RunInTransaction(() =>
@@ -302,6 +319,7 @@ namespace FightDojo.Database
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
+                isSuccess = false;
             }
             finally
             {
@@ -314,8 +332,9 @@ namespace FightDojo.Database
                     Debug.LogError(e.Message);
                 }
             }
-
+            
             //_connection.Execute("PRAGMA foreign_keys = ON;");
+            return isSuccess;
         }
 
         public bool TryOpenDatabase(string path)
