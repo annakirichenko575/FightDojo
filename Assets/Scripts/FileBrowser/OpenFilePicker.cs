@@ -1,3 +1,4 @@
+using System.IO;
 using FightDojo.Database;
 using FightDojo.UI.Windows;
 using Services;
@@ -25,6 +26,10 @@ namespace FightDojo.FilePiker
         // Вызывай эту функцию, например, по кнопке "Сохранить"
         public void OpenFile()
         {
+            string lastPath = DBService.DatabasePath;
+            if (Directory.Exists(lastPath) == false && File.Exists(lastPath) == false)
+                lastPath = DBService.PersistentPath;
+            
             SimpleFileBrowser.FileBrowser.SetFilters( 
                 true,
                 new SimpleFileBrowser.FileBrowser.Filter( "DB", ".db")
@@ -35,7 +40,7 @@ namespace FightDojo.FilePiker
                 () => { Debug.Log( "Отмена открытия" ); },              // отмена
                 SimpleFileBrowser.FileBrowser.PickMode.Files,                               // сохраняем файл (не папку)
                 false,                                                    // только один файл
-                DBService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
+                lastPath,                                                  // начальный путь (null = Documents / стандартная папка)
                 null,                                           // предложенное имя файла по умолчанию
                 "Открыть файл",                                         // заголовок окна
                 "Открыть"                                               // текст кнопки

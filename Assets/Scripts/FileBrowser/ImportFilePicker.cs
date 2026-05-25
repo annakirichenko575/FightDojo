@@ -1,3 +1,4 @@
+using System.IO;
 using FightDojo.Database;
 using FightDojo.UI.Windows;
 using Services;
@@ -10,7 +11,8 @@ namespace FightDojo.FilePiker
   {
     private GameDataProvider _gameDataProvider;
     private WarningWindow _warningWindow;
-  
+    private string _lastPath;
+
     private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
   
     private void Awake()
@@ -21,6 +23,13 @@ namespace FightDojo.FilePiker
 
     public void OpenFileDialog()
     {
+      if (string.IsNullOrWhiteSpace(_lastPath))
+      {
+        _lastPath = DBService.DatabasePath;
+        if (Directory.Exists(_lastPath) == false && File.Exists(_lastPath) == false)
+          _lastPath = DBService.PersistentPath;
+      }
+
       FileBrowser.SetFilters( 
         true,
         new FileBrowser.Filter( "DB", ".db")
@@ -31,7 +40,7 @@ namespace FightDojo.FilePiker
         () => { Debug.Log( "Отмена" ); },                      // отмена
         FileBrowser.PickMode.Files,                            // выбираем файлы (не папки)
         false,                                                 // только один файл
-        DBService.PersistentPath,                                                  // начальный путь (null = Documents / стандартная папка)
+        _lastPath,                                                  // начальный путь (null = Documents / стандартная папка)
         null,                                                  // начальное имя файла
         "Выберите файл",                                       // заголовок окна
         "Ипортировать"                                              // текст кнопки
@@ -48,6 +57,7 @@ namespace FightDojo.FilePiker
 
       string selectedPath = paths[0];  // ← вот он — выбранный полный путь
       Debug.Log( "Выбран файл: " + selectedPath );
+      _lastPath = Path.GetDirectoryName(selectedPath);
       if (DBService.TryMergeDatabases(selectedPath) == false)
       {
         _warningWindow.OpenWarning("Не удалось импортировать базу");

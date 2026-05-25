@@ -1,5 +1,7 @@
+using System.IO;
 using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
+using FightDojo.Database;
 using FightDojo.UI.Windows;
 using Services;
 using SimpleFileBrowser;
@@ -11,6 +13,9 @@ namespace FightDojo.FilePiker
   {
     private EditorComboStrip _editorComboStrip;
     private WarningWindow _warningWindow;
+    private string _lastPath;
+        
+    private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
   
     private void Awake()
     {
@@ -20,6 +25,12 @@ namespace FightDojo.FilePiker
 
     public void OpenFileDialog()
     {
+      if (string.IsNullOrWhiteSpace(_lastPath)
+        || Directory.Exists(_lastPath) == false && File.Exists(_lastPath) == false)
+      {
+          _lastPath = GameDirectory.GetPath();
+      }
+      
       FileBrowser.SetFilters( 
         true,
         new FileBrowser.Filter( "JSON", ".json")
@@ -30,7 +41,7 @@ namespace FightDojo.FilePiker
         () => { Debug.Log( "Отмена" ); },                      // отмена
         FileBrowser.PickMode.Files,                            // выбираем файлы (не папки)
         false,                                                 // только один файл
-        GameDirectory.GetPath(),                                                  // начальный путь (null = Documents / стандартная папка)
+        _lastPath,                                                  // начальный путь (null = Documents / стандартная папка)
         null,                                                  // начальное имя файла
         "Выберите json файл из AutoKeyboard",                                       // заголовок окна
         "Ипортировать из AutoKeyboard"                                              // текст кнопки
@@ -47,6 +58,7 @@ namespace FightDojo.FilePiker
 
       string selectedPath = paths[0];  // ← вот он — выбранный полный путь
       Debug.Log( "Выбран файл: " + selectedPath );
+      _lastPath = Path.GetDirectoryName(selectedPath);
     
       JsonLoader jsonLoader = new JsonLoader();
       if (jsonLoader.TryLoad(selectedPath, out RecordData recordData)
