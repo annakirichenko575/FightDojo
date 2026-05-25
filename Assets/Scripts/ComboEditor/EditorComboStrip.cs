@@ -50,13 +50,18 @@ namespace FightDojo
             
             carriage.SetPosition(keyTextSpawner.GetTimeOffset(0f).x);
             carriageScroller.AtStartPosition();
-            
+
             ResetChangeFlag();
         }
 
         public void ResetChangeFlag()
         {
             IsChanged = false;
+        }
+
+        public void SetChangeFlag()
+        {
+            IsChanged = true;
         }
 
         private void Initialize()
@@ -109,6 +114,7 @@ namespace FightDojo
         {
             recordedKeys.RecalculateTime();
             Open();
+            SetChangeFlag();
         }
 
         private void AddKey()

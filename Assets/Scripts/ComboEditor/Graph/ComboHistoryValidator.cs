@@ -10,7 +10,7 @@ namespace FightDojo.ComboEditor.Graph
     const string Header     = "ComboID;Date;Game;Character;Author;Quality%";
     const string DateFormat = "yyyy-MM-dd HH:mm:ss";
 
-    public void Clean(string path)
+    public void Clean(string path, int cleanId = -1)
     {
       Debug.Log("Clean svx");
       string tempPath = path + ".tmp";
@@ -23,10 +23,10 @@ namespace FightDojo.ComboEditor.Graph
 
         string firstLine = reader.ReadLine();
         if (firstLine != null && firstLine.Trim() != Header)
-          TryWriteLine(firstLine, writer);
+          TryWriteLine(firstLine, writer, cleanId);
 
         while (!reader.EndOfStream)
-          TryWriteLine(reader.ReadLine(), writer);
+          TryWriteLine(reader.ReadLine(), writer, cleanId);
 
         reader.Close(); writer.Close();
         File.Delete(path);
@@ -35,7 +35,7 @@ namespace FightDojo.ComboEditor.Graph
       catch { File.Delete(tempPath); throw; }
     }
 
-    private void TryWriteLine(string line, StreamWriter writer)
+    private void TryWriteLine(string line, StreamWriter writer, int cleanId)
     {
       if (string.IsNullOrWhiteSpace(line)) 
         return;
@@ -45,7 +45,7 @@ namespace FightDojo.ComboEditor.Graph
         return;
 
       if (!int.TryParse(Strip(fields[0]), out int comboId) 
-          || comboId <= 0) 
+          || comboId <= 0 || comboId == cleanId) 
         return;
       
       if (!DateTime.TryParseExact(Strip(fields[1]), DateFormat,

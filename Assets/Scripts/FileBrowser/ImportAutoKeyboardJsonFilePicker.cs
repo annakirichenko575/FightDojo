@@ -1,4 +1,5 @@
 using System.IO;
+using FightDojo.ComboEditor.Graph;
 using FightDojo.Data;
 using FightDojo.Data.AutoKeyboard;
 using FightDojo.Database;
@@ -14,8 +15,11 @@ namespace FightDojo.FilePiker
     private EditorComboStrip _editorComboStrip;
     private WarningWindow _warningWindow;
     private string _lastPath;
+    private ComboHistoryValidator validator = new ComboHistoryValidator();
         
     private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
+    private ICurrentComboInfoService CurrentComboInfoService => AllServices.Container.Single<ICurrentComboInfoService>();
+    private string ComboQualityPath => ComboQuality.Path;
   
     private void Awake()
     {
@@ -69,7 +73,9 @@ namespace FightDojo.FilePiker
         IRecordedKeysService recordedKeys = 
           AllServices.Container.Single<IRecordedKeysService>();
         recordedKeys.LoadJson(adaptedJson);
+        validator.Clean(ComboQualityPath, CurrentComboInfoService.ComboId);
         _editorComboStrip.Open();
+        _editorComboStrip.SetChangeFlag();
       }
       else
       {
