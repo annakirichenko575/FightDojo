@@ -9,6 +9,7 @@ namespace FightDojo.ComboEditor.ComboEditor.Graph
   public class ComboHistoryLoader
   {
     private List<ComboQualityData> allCombos = new List<ComboQualityData>();
+    private List<ComboQualityData> lastIdCombos = new List<ComboQualityData>();
     private ComboHistoryValidator validator = new ComboHistoryValidator();
 
     public class ComboQualityData
@@ -65,10 +66,69 @@ namespace FightDojo.ComboEditor.ComboEditor.Graph
       allCombos = allCombos.OrderBy(e => e.DateTicks).ToList();
     }
 
-    public List<Vector2> GetNormalizedComboPoints(int comboID)
+    public void CalculateComboHistory(int comboID)
     {
-      var points = GetComboPoints(comboID);
+      lastIdCombos = allCombos.FindAll(x =>
+        x.ComboID == comboID
+        && x.Quality > 0f);
+    }
 
+    public List<Vector2> GetComboPointsAll()
+    {
+      bool hasMultipleDays = lastIdCombos 
+        .Select(x => new DateTime(x.DateTicks).Date)
+        .Distinct()
+        .Count() > 1;
+
+      List<Vector2> points = new List<Vector2>();
+      if (hasMultipleDays)
+      {
+        points = GetComboPoints(GetHistoryByAllDays(lastIdCombos));
+      }
+      else
+      {
+        points = GetComboPoints(lastIdCombos);
+      }
+      return GetNormalizedComboPoints(points);
+    }
+    
+    public List<Vector2> GetComboPointsByDay()
+    {
+      List<Vector2> points = GetComboPoints(
+        GetHistoryByDay(lastIdCombos));
+      return GetNormalizedComboPoints(points);
+    }
+
+    public List<Vector2> GetComboPointsByWeek()
+    {
+      List<Vector2> points = GetComboPoints(
+        GetHistoryByWeek(lastIdCombos));
+      return GetNormalizedComboPoints(points);
+    }
+  
+    public List<Vector2> GetComboPointsByMonth()
+    {
+      List<Vector2> points = GetComboPoints(
+        GetHistoryByMonth(lastIdCombos));
+      return GetNormalizedComboPoints(points);
+    }
+
+    private List<Vector2> GetComboPoints(List<ComboQualityData> history)
+    {
+      if (history.Count == 0)
+        return new List<Vector2>();
+
+      long firstTicks = history[0].DateTicks;
+
+      return history
+        .Select(e => new Vector2(
+          (e.DateTicks - firstTicks) / (float)TimeSpan.TicksPerSecond, // секунды от первой точки
+          e.Quality))
+        .ToList();
+    }
+
+    private List<Vector2> GetNormalizedComboPoints(List<Vector2> points)
+    {
       foreach (var item in points)
         Debug.Log(item.x);
 
@@ -87,26 +147,37 @@ namespace FightDojo.ComboEditor.ComboEditor.Graph
         .ToList();
     }
 
-    public List<ComboQualityData> GetComboHistory(int comboID)
+    private List<ComboQualityData> GetHistoryByDay(List<ComboQualityData> history)
     {
-      return allCombos.FindAll(x =>
-        x.ComboID == comboID
-        && x.Quality > 0f);
+       return history 
+        .Where(x => new DateTime(x.DateTicks).Date == DateTime.Today)
+        .ToList(); 
+    }
+    
+    private List<ComboQualityData> GetHistoryByWeek(List<ComboQualityData> history)
+    {
+       return history 
+        .Where(x => new DateTime(x.DateTicks).Date >= DateTime.Today.AddDays(-7))
+        .GroupBy(x => new DateTime(x.DateTicks).Date)
+        .Select(g => g.OrderBy(x => x.DateTicks).Last())
+        .ToList(); 
     }
 
-    private List<Vector2> GetComboPoints(int comboID)
+    private List<ComboQualityData> GetHistoryByMonth(List<ComboQualityData> history)
     {
-      List<ComboQualityData> history = GetComboHistory(comboID);
-      if (history.Count == 0)
-        return new List<Vector2>();
-
-      long firstTicks = history[0].DateTicks;
-
-      return history
-        .Select(e => new Vector2(
-          (e.DateTicks - firstTicks) / (float)TimeSpan.TicksPerSecond, // секунды от первой точки
-          e.Quality))
-        .ToList();
+      return history 
+        .Where(x => new DateTime(x.DateTicks).Date >= DateTime.Today.AddDays(-30))
+        .GroupBy(x => new DateTime(x.DateTicks).Date)
+        .Select(g => g.OrderBy(x => x.DateTicks).Last())
+        .ToList();  
+    }
+    
+    private List<ComboQualityData> GetHistoryByAllDays(List<ComboQualityData> history)
+    {
+      return history 
+        .GroupBy(x => new DateTime(x.DateTicks).Date)
+        .Select(g => g.OrderBy(x => x.DateTicks).Last())
+        .ToList();  
     }
   }
 }

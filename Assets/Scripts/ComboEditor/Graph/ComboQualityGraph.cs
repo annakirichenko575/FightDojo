@@ -17,16 +17,34 @@ namespace FightDojo.ComboEditor.ComboEditor.Graph
     {
       info = AllServices.Container.Single<ICurrentComboInfoService>();
       historyLoader.LoadCSV(Path);
-      List<Vector2> points =
-        historyLoader.GetNormalizedComboPoints(info.ComboId);
-
-      foreach (var item in historyLoader.GetComboHistory(info.ComboId))
-      {
-        Debug.Log(item.Date + " " + item.DateTicks);
-      }
-
-
+      historyLoader.CalculateComboHistory(info.ComboId);
+      List<Vector2> points = historyLoader.GetComboPointsAll();
       graph.DrawGraph(points);
     }
+
+    public void RedrawGraphAll()
+    {
+      List<Vector2> points = historyLoader.GetComboPointsAll();
+      graph.DrawGraph(points);
+    }
+    
+    public void RedrawGraphByDay()
+    {
+      List<Vector2> points = historyLoader.GetComboPointsByDay();
+      graph.DrawGraph(points);
+    }
+
+    public void RedrawGraphByWeek()
+    {
+      List<Vector2> points = historyLoader.GetComboPointsByWeek();
+      graph.DrawGraph(points);
+    }
+
+    public void RedrawGraphByMonth()
+    {
+      List<Vector2> points = historyLoader.GetComboPointsByMonth();
+      graph.DrawGraph(points);
+    }
+
   }
 }
