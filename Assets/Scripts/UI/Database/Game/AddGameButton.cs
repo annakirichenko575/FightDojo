@@ -1,3 +1,4 @@
+using FightDojo.Database;
 using FightDojo.UI.Windows;
 using TMPro;
 using UnityEngine;
@@ -8,18 +9,13 @@ namespace FightDojo.UI.Database.Game
     {
         public TMP_InputField nameInput;
     
-        private GameDataProvider _gameDataProvider;
-        private WarningWindow _warningWindow;
+        private GameDataProvider gameDataProvider;
+        private WarningWindow warningWindow;
 
         private void Awake()
         {
-            _gameDataProvider = FindAnyObjectByType<GameDataProvider>();
-            _warningWindow = FindAnyObjectByType<WarningWindow>();
-        }
-
-        private void OnEnable()
-        {
-            //nameInput.text = "";
+            gameDataProvider = FindAnyObjectByType<GameDataProvider>();
+            warningWindow = FindAnyObjectByType<WarningWindow>();
         }
 
         public void AddGame()
@@ -27,11 +23,11 @@ namespace FightDojo.UI.Database.Game
             string newName = nameInput.text.Trim();
             if (string.IsNullOrWhiteSpace(newName))
             {
-                _warningWindow.OpenWarning("Новое название не введено!");
+                warningWindow.OpenWarning("Новое название не введено!");
                 return;
             }
         
-            _gameDataProvider.AddGame(newName);
+            gameDataProvider.AddGame(newName);
             nameInput.text = "";
         }
     }

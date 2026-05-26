@@ -1,6 +1,6 @@
-﻿using Services;
+﻿using FightDojo.Services;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public interface ICurrentComboInfoService : IService
   {

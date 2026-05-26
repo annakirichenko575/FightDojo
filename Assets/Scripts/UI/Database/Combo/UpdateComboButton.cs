@@ -11,18 +11,18 @@ namespace FightDojo.UI.Database.Combo
         [SerializeField] private TMP_InputField descriptionInput;
         [SerializeField] private TMP_InputField tagsInput;
     
-        private ComboDataProvider _comboDataProvider;
-        private WarningWindow _warningWindow;
+        private ComboDataProvider comboDataProvider;
+        private WarningWindow warningWindow;
 
         private void Awake()
         {
-            _comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
-            _warningWindow = FindAnyObjectByType<WarningWindow>();
+            comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
+            warningWindow = FindAnyObjectByType<WarningWindow>();
         }
 
         private void OnEnable()
         {
-            _comboDataProvider.CurrentCombo(out Combos comboData);
+            comboDataProvider.CurrentCombo(out Combos comboData);
             nameInput.text = comboData.CreatorName;
             descriptionInput.text = comboData.Description;
             tagsInput.text = comboData.Tags;
@@ -33,11 +33,11 @@ namespace FightDojo.UI.Database.Combo
             string newName = nameInput.text.Trim();
             if (string.IsNullOrWhiteSpace(newName))
             {
-                _warningWindow.OpenWarning("Новое имя автора не введено!");
+                warningWindow.OpenWarning("Новое имя автора не введено!");
                 return;
             }
 
-            _comboDataProvider.UpdateCombo(newName, descriptionInput.text.Trim(), tagsInput.text.Trim());
+            comboDataProvider.UpdateCombo(newName, descriptionInput.text.Trim(), tagsInput.text.Trim());
             nameInput.text = "";
             descriptionInput.text = "";
             tagsInput.text = "";

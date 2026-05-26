@@ -1,28 +1,30 @@
-using FightDojo.Data;
-using Services;
+using FightDojo.ComboEditor;
+using FightDojo.Database;
+using FightDojo.ComboEditor.Data;
+using FightDojo.Services;
 using UnityEngine;
 
 namespace FightDojo.UI.Database.Combo
 {
-    public class SaveComboJsonButton : MonoBehaviour
+  public class SaveComboJsonButton : MonoBehaviour
+  {
+    private ComboDataProvider comboDataProvider;
+    private IRecordedKeysService recordedKeys;
+    private EditorComboStrip editorComboStrip;
+
+    private void Awake()
     {
-        private ComboDataProvider _comboDataProvider;
-        private IRecordedKeysService _recordedKeys;
-        private EditorComboStrip _editorComboStrip;
-
-        private void Awake()
-        {
-            _comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
-            _editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
-            _recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
-        }
-
-        public void SaveCombo()
-        {
-            string json = _recordedKeys.ToJson();
-            _comboDataProvider.UpdateComboJson(json);
-            _editorComboStrip.ResetChangeFlag();
-            Debug.Log(json);
-        }
+      comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
+      editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
+      recordedKeys = AllServices.Container.Single<IRecordedKeysService>();
     }
+
+    public void SaveCombo()
+    {
+      string json = recordedKeys.ToJson();
+      comboDataProvider.UpdateComboJson(json);
+      editorComboStrip.ResetChangeFlag();
+      Debug.Log(json);
+    }
+  }
 }

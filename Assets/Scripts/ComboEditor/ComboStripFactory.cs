@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-
-public class ComboStripFactory
+﻿namespace FightDojo.ComboEditor
 {
+  public class ComboStripFactory
+  {
 
     
+  }
 }

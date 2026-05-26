@@ -1,20 +1,22 @@
-using System;
 using UnityEngine;
 
-public class GameDataInput : MonoBehaviour
+namespace FightDojo.Database
 {
+  public class GameDataInput : MonoBehaviour
+  {
     private GameDataProvider gameDataProvider;
 
     public void Initialize(GameDataProvider gameDataProvider)
     {
-        this.gameDataProvider = gameDataProvider;
+      this.gameDataProvider = gameDataProvider;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Delete))
-        {
-            gameDataProvider.DeleteGame();
-        }
+      if (Input.GetKeyDown(KeyCode.Delete))
+      {
+        gameDataProvider.DeleteGame();
+      }
     }
+  }
 }

@@ -1,11 +1,11 @@
 using FightDojo.Database;
-using Services;
+using FightDojo.Services;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
     public class ExitButton : MonoBehaviour
     {

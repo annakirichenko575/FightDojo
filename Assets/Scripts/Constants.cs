@@ -1,4 +1,4 @@
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
     public static class Constants
     {

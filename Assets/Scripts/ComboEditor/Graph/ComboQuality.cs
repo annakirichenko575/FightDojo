@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using FightDojo.Data;
+using FightDojo.ComboEditor.Data;
 using UnityEngine;
 
-namespace FightDojo.ComboEditor.Graph
+namespace FightDojo.ComboEditor.ComboEditor.Graph
 {
   public class ComboQuality
   {

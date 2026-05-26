@@ -1,7 +1,7 @@
-using Services;
+using FightDojo.Services;
 using UnityEngine;
 
-namespace Infrastructure.AssetManagement
+namespace FightDojo.Infrastructure.AssetManagement
 {
   public interface IAssetProvider:IService
   {

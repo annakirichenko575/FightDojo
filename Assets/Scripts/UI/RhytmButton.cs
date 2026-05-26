@@ -1,5 +1,5 @@
-using FightDojo.AudioService;
-using Services;
+using FightDojo.ComboEditor.AudioService;
+using FightDojo.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +11,13 @@ namespace FightDojo.UI
     [SerializeField] private Sprite _soundOn;
     [SerializeField] private Sprite _soundOff;
   
-    private Image _image;
-    private IAudioMasterService _audioMasterService;
+    private Image image;
+    private IAudioMasterService audioMasterService;
 
     private void Awake()
     {
-      _image = GetComponent<Image>();
-      _audioMasterService = AllServices.Container.Single<IAudioMasterService>();
+      image = GetComponent<Image>();
+      audioMasterService = AllServices.Container.Single<IAudioMasterService>();
     }
 
     private void Start()
@@ -33,18 +33,18 @@ namespace FightDojo.UI
 
     private void ToggleTickMute()
     {
-      if (_audioMasterService.IsTickMuted)
+      if (audioMasterService.IsTickMuted)
       {
-        _audioMasterService.TickUnmute();
+        audioMasterService.TickUnmute();
       }
       else
       {
-        _audioMasterService.TickMute();
+        audioMasterService.TickMute();
       }
     }
 
     private void UpdateImage() => 
-      _image.sprite = _audioMasterService.IsTickMuted 
+      image.sprite = audioMasterService.IsTickMuted 
         ? _soundOff : _soundOn;
   }
 }

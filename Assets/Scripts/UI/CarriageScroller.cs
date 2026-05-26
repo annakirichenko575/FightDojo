@@ -1,3 +1,4 @@
+using FightDojo.ComboEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace FightDojo.UI
         [SerializeField] private ScrollRect _scrollRectEditor;
         [SerializeField] private ScrollRect _scrollRectInput;
     
-        private float _smoothSpeed = 0.18f;
+        private float smoothSpeed = 0.18f;
 
         public void AtStartPosition()
         {
@@ -29,7 +30,7 @@ namespace FightDojo.UI
             float desiredNorm = (carriageX - offset) / (contentWidth - viewportWidth);
             desiredNorm = Mathf.Clamp01(desiredNorm);
             float currentNorm = _scrollRectInput.horizontalNormalizedPosition;
-            _smoothSpeed = 0.18f;
+            smoothSpeed = 0.18f;
             _scrollRectInput.horizontalNormalizedPosition =
                 //Mathf.Lerp(currentNorm, desiredNorm, _smoothSpeed);
                 desiredNorm;

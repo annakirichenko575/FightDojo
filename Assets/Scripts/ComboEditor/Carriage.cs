@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class Carriage : MonoBehaviour
   {

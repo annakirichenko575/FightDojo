@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Infrastructure.AssetManagement;
-using Services;
-using FightDojo.UI.Database.Game;
+using FightDojo.Database;
+using FightDojo.Infrastructure.AssetManagement;
+using FightDojo.Services;
 using UnityEngine;
 
 namespace FightDojo.UI.Database.Game

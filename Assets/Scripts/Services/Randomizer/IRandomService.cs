@@ -1,4 +1,4 @@
-﻿namespace Services.Randomizer
+﻿namespace FightDojo.Services.Randomizer
 {
   public interface IRandomService : IService
   {

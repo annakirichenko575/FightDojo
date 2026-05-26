@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Services;
+using FightDojo.Services;
 
-namespace FightDojo.Data
+namespace FightDojo.ComboEditor.Data
 {
   public interface IRecordedKeysService : IService
   {

@@ -1,44 +1,46 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Infrastructure.AssetManagement;
-using Services;
+using FightDojo.Database;
+using FightDojo.Infrastructure.AssetManagement;
+using FightDojo.Services;
 using UnityEngine;
 
 namespace FightDojo.UI.Database.Character
 {
-    public class PrintCharactersView : MonoBehaviour
+  public class PrintCharactersView : MonoBehaviour
+  {
+    [SerializeField] private Transform _content;
+    private CharacterDataProvider characterDataProvider;
+
+    IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
+
+    public void Initialize(CharacterDataProvider gameDataProvider)
     {
-        [SerializeField] private Transform _content;
-        private CharacterDataProvider characterDataProvider;
-
-        IAssetProvider AssetProvider => AllServices.Container.Single<IAssetProvider>();
-
-        public void Initialize(CharacterDataProvider gameDataProvider)
-        {
-            this.characterDataProvider = gameDataProvider;
-        }
-
-        public Dictionary<int, CharacterItemView> PrintCharacters(ReadOnlyCollection<FightDojo.Database.Character> characters)
-        {
-            Dictionary<int, CharacterItemView> characterItemViews = new Dictionary<int, CharacterItemView>();
-
-            foreach (Transform item in _content)
-            {
-                GameObject.Destroy(item.gameObject);
-            }
-
-            if (characters == null || characters.Count == 0)
-                return characterItemViews;
-
-            foreach (var character in characters)
-            {
-                GameObject item = AssetProvider.Instantiate(AssetPath.CharacterItemPath, _content);
-                CharacterItemView itemView = item.GetComponent<CharacterItemView>();
-                itemView.Initialize(character.Id, character.Name, characterDataProvider);
-                characterItemViews.Add(character.Id, itemView);
-            }
-
-            return characterItemViews;
-        }
+      this.characterDataProvider = gameDataProvider;
     }
+
+    public Dictionary<int, CharacterItemView> PrintCharacters(
+      ReadOnlyCollection<FightDojo.Database.Character> characters)
+    {
+      Dictionary<int, CharacterItemView> characterItemViews = new Dictionary<int, CharacterItemView>();
+
+      foreach (Transform item in _content)
+      {
+        GameObject.Destroy(item.gameObject);
+      }
+
+      if (characters == null || characters.Count == 0)
+        return characterItemViews;
+
+      foreach (var character in characters)
+      {
+        GameObject item = AssetProvider.Instantiate(AssetPath.CharacterItemPath, _content);
+        CharacterItemView itemView = item.GetComponent<CharacterItemView>();
+        itemView.Initialize(character.Id, character.Name, characterDataProvider);
+        characterItemViews.Add(character.Id, itemView);
+      }
+
+      return characterItemViews;
+    }
+  }
 }

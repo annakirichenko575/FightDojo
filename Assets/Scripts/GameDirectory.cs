@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class GameDirectory
   {

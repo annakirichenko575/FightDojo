@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Infrastructure.AssetManagement
+namespace FightDojo.Infrastructure.AssetManagement
 {
   public class AssetProvider : IAssetProvider
   {
@@ -9,7 +9,7 @@ namespace Infrastructure.AssetManagement
       var prefab = Resources.Load<GameObject>(path);
       return Object.Instantiate(prefab, parent);
     }
-    
+
     public GameObject Instantiate(string path, Vector3 at)
     {
       var prefab = Resources.Load<GameObject>(path);

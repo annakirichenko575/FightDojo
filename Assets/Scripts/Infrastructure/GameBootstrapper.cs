@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using FightDojo.AudioService;
-using FightDojo.Data;
+using FightDojo.ComboEditor.AudioService;
+using FightDojo.ComboEditor.Data;
 using FightDojo.Database;
-using Infrastructure.AssetManagement;
-using Services;
-using Services.Randomizer;
+using FightDojo.Infrastructure.AssetManagement;
+using FightDojo.Services;
+using FightDojo.Services.Randomizer;
 using UnityEngine;
 using System.Globalization;
-using FightDojo;
+using FightDojo.ComboEditor;
 
-namespace Infrastructure
+namespace FightDojo.Infrastructure
 {
   public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
   {

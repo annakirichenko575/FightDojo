@@ -4,160 +4,163 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FightDojo.Database;
-using Services;
 using FightDojo.UI.Database.Combo;
+using FightDojo.Services;
 using UnityEngine;
 
-public class ComboDataProvider : MonoBehaviour
+namespace FightDojo.Database
 {
-    private List<Combos> _combos = new List<Combos>();
+  public class ComboDataProvider : MonoBehaviour
+  {
+    private List<Combos> combos = new List<Combos>();
 
-    private Dictionary<int, ComboItemView> _comboItemViews = new Dictionary<int, ComboItemView>();
+    private Dictionary<int, ComboItemView> comboItemViews = new Dictionary<int, ComboItemView>();
 
-    private PrintCombosView _printCombosView;
+    private PrintCombosView printCombosView;
 
-    private int _selectedCharacterId;
-    private int _selectedComboId;
+    private int selectedCharacterId;
+    private int selectedComboId;
 
-    public bool HasSelectedCombo => _selectedComboId > 0;
-    public int Count => _combos.Count;
-    private IDatabaseService _dbService => AllServices.Container.Single<IDatabaseService>();
+    public bool HasSelectedCombo => selectedComboId > 0;
+    public int Count => combos.Count;
+    private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
 
     public void Initialize()
     {
-        _printCombosView = GameObject.FindAnyObjectByType<PrintCombosView>();
-        _printCombosView.Initialize(this);
+      printCombosView = GameObject.FindAnyObjectByType<PrintCombosView>();
+      printCombosView.Initialize(this);
     }
 
     public void AddCombo(string creatorName, string description, string tags)
     {
-        if (_selectedCharacterId == 0)
-            return;
+      if (selectedCharacterId == 0)
+        return;
 
-        Combos combo = new Combos()
-        {
-            CharacterId = _selectedCharacterId,
-            CreatorName = creatorName,
-            Description = description,
-            Tags = tags
-        };
+      Combos combo = new Combos()
+      {
+        CharacterId = selectedCharacterId,
+        CreatorName = creatorName,
+        Description = description,
+        Tags = tags
+      };
 
-        _dbService.AddCombo(combo);
-        _selectedComboId = combo.Id;
-        Debug.Log(combo.Id);
-        RefreshCombos();
+      DBService.AddCombo(combo);
+      selectedComboId = combo.Id;
+      Debug.Log(combo.Id);
+      RefreshCombos();
     }
 
     public void DeleteCombo()
     {
-        if (_selectedComboId == 0)
-            return;
+      if (selectedComboId == 0)
+        return;
 
-        _dbService.DeleteCombo(_selectedComboId);
-        
-        ResetSelectedCombo();
-        RefreshCombos();
+      DBService.DeleteCombo(selectedComboId);
+
+      ResetSelectedCombo();
+      RefreshCombos();
     }
-    
+
     public void UpdateCombo(string newCreatorName, string description, string tags)
     {
-        if (_selectedComboId == 0)
-            return;
+      if (selectedComboId == 0)
+        return;
 
-        _dbService.UpdateCombo(_selectedComboId, newCreatorName, description, tags);
-        RefreshCombos();
+      DBService.UpdateCombo(selectedComboId, newCreatorName, description, tags);
+      RefreshCombos();
     }
 
     public void UpdateComboJson(string comboJson)
     {
-        if (_selectedComboId == 0)
-            return;
+      if (selectedComboId == 0)
+        return;
 
-        _dbService.UpdateComboJson(_selectedComboId, comboJson);
-        RefreshCombos();
+      DBService.UpdateComboJson(selectedComboId, comboJson);
+      RefreshCombos();
     }
-    
+
     public ReadOnlyCollection<Combos> GetAllCombos() =>
-        _combos.AsReadOnly();
+      combos.AsReadOnly();
 
     public void FindByTags(string tags)
     {
-        string[] words = Regex.Split(tags, @"\s+")
-            .Where(w => !string.IsNullOrWhiteSpace(w))
-            .ToArray(); 
-        Debug.Log("WORDS");
-        words.ToList().ForEach(w => Debug.Log(w));
-        List<Combos> result = _combos.Where(combo =>
-            {
-                if (string.IsNullOrWhiteSpace(combo.Tags))
-                    return false;
-
-                HashSet<string> tagsWords = combo.Tags
-                    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                    .ToHashSet(StringComparer.OrdinalIgnoreCase);   // HashSet для быстрого поиска
-
-                return words.All(w => 
-                    tagsWords.Any(tag =>
-                        tag.StartsWith(w, StringComparison.OrdinalIgnoreCase)));
-            })
-            .ToList();
-        Debug.Log("RESULTS");
-        result.ForEach(w => Debug.Log(w.Id + " " + w.Tags));
-
-        _comboItemViews = _printCombosView.PrintCombos(result.AsReadOnly());
-        if (_comboItemViews.Count > 0)
+      string[] words = Regex.Split(tags, @"\s+")
+        .Where(w => !string.IsNullOrWhiteSpace(w))
+        .ToArray();
+      Debug.Log("WORDS");
+      words.ToList().ForEach(w => Debug.Log(w));
+      List<Combos> result = combos.Where(combo =>
         {
-            SelectCombo(_comboItemViews.First().Key);
-        } 
+          if (string.IsNullOrWhiteSpace(combo.Tags))
+            return false;
+
+          HashSet<string> tagsWords = combo.Tags
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase); // HashSet для быстрого поиска
+
+          return words.All(w =>
+            tagsWords.Any(tag =>
+              tag.StartsWith(w, StringComparison.OrdinalIgnoreCase)));
+        })
+        .ToList();
+      Debug.Log("RESULTS");
+      result.ForEach(w => Debug.Log(w.Id + " " + w.Tags));
+
+      comboItemViews = printCombosView.PrintCombos(result.AsReadOnly());
+      if (comboItemViews.Count > 0)
+      {
+        SelectCombo(comboItemViews.First().Key);
+      }
     }
 
     public void SelectCombo(int id)
     {
-        if (id == 0 && _combos.Count > 0)
-        {
-            id = _combos[0].Id;
-        }
-        _selectedComboId = id;
-        HighlightSelectedCombo(_selectedComboId);
-        Debug.Log($"Selected combo id={id}");
+      if (id == 0 && combos.Count > 0)
+      {
+        id = combos[0].Id;
+      }
+
+      selectedComboId = id;
+      HighlightSelectedCombo(selectedComboId);
+      Debug.Log($"Selected combo id={id}");
     }
 
     public void CharacterSelected(int selectedCharacterId)
     {
-        if (_selectedCharacterId == selectedCharacterId)
-        {
-            RefreshCombos();
-            return;
-        }
-        
-        _selectedCharacterId = selectedCharacterId;
-        ResetSelectedCombo();
+      if (this.selectedCharacterId == selectedCharacterId)
+      {
         RefreshCombos();
+        return;
+      }
+
+      this.selectedCharacterId = selectedCharacterId;
+      ResetSelectedCombo();
+      RefreshCombos();
     }
 
-    public void CurrentCombo(out Combos combos) => 
-        combos = _dbService.GetCombo(_selectedComboId);
+    public void CurrentCombo(out Combos combos) =>
+      combos = DBService.GetCombo(selectedComboId);
 
-    public void ResetSelectedCombo() => 
-        _selectedComboId = 0;
+    public void ResetSelectedCombo() =>
+      selectedComboId = 0;
 
     public void RefreshCombos()
     {
-        _combos = _dbService.GetCombosByCharacter(_selectedCharacterId);
-        //_combos.ForEach(c => Debug.Log(c.Id + " " + c.CreatorName));
-        _comboItemViews = _printCombosView.PrintCombos(GetAllCombos());
-        SelectCombo(_selectedComboId);
+      combos = DBService.GetCombosByCharacter(selectedCharacterId);
+      //_combos.ForEach(c => Debug.Log(c.Id + " " + c.CreatorName));
+      comboItemViews = printCombosView.PrintCombos(GetAllCombos());
+      SelectCombo(selectedComboId);
     }
 
     private void HighlightSelectedCombo(int id)
     {
-        foreach (ComboItemView item in _comboItemViews.Values)
-        {
-            item.Unselect();
-        }
+      foreach (ComboItemView item in comboItemViews.Values)
+      {
+        item.Unselect();
+      }
 
-        if (id > 0 && _comboItemViews.ContainsKey(id))
-            _comboItemViews[id].Highlight();
+      if (id > 0 && comboItemViews.ContainsKey(id))
+        comboItemViews[id].Highlight();
     }
-
+  }
 }

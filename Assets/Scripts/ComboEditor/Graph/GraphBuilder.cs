@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FightDojo.ComboEditor.Graph
+namespace FightDojo.ComboEditor.ComboEditor.Graph
 {
     [RequireComponent(typeof(RawImage))]
     public class GraphBuilder : MonoBehaviour

@@ -1,7 +1,7 @@
-﻿using Services;
+﻿using FightDojo.Services;
 using UnityEngine;
 
-namespace FightDojo.AudioService
+namespace FightDojo.ComboEditor.AudioService
 {
   public interface IAudioMasterService : IService
   {

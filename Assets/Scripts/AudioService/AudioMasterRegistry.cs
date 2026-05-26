@@ -1,4 +1,4 @@
-using FightDojo.AudioService;
+using FightDojo.ComboEditor.AudioService;
 using UnityEngine;
 
 public class AudioMasterRegistry : MonoBehaviour

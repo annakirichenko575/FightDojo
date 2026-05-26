@@ -11,27 +11,27 @@ namespace FightDojo.UI
         [SerializeField] private float _minValue = 0.25f;
         [SerializeField] private float _maxValue = 1.75f;
         
-        private TMP_InputField _inputField;
-        private string _lastValidText;
+        private TMP_InputField inputField;
+        private string lastValidText;
         
         public event UnityAction<float> OnValidated;
         
         private void Start()
         { 
-            _inputField = GetComponent<TMP_InputField>();
+            inputField = GetComponent<TMP_InputField>();
             
-            _inputField.contentType = TMP_InputField.ContentType.DecimalNumber;
-            _inputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
+            inputField.contentType = TMP_InputField.ContentType.DecimalNumber;
+            inputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
             
-            _inputField.onValueChanged.AddListener(OnValueChanged);
-            _inputField.onEndEdit.AddListener(OnEndEdit);
+            inputField.onValueChanged.AddListener(OnValueChanged);
+            inputField.onEndEdit.AddListener(OnEndEdit);
 
-            _lastValidText = ToString(_defaultValue);
-            _inputField.text = _lastValidText;
+            lastValidText = ToString(_defaultValue);
+            inputField.text = lastValidText;
         }
 
         public float GetValue() => 
-            TryParse(_inputField.text, out float result) ? result : 0.0f;
+            TryParse(inputField.text, out float result) ? result : 0.0f;
         
         private void OnValueChanged(string text)
         {
@@ -41,10 +41,10 @@ namespace FightDojo.UI
             if (TryParse(text, out float value))
             {
                 float clamped = Mathf.Clamp(value, _minValue, _maxValue);
-                if (ToString(clamped) == _lastValidText)
+                if (ToString(clamped) == lastValidText)
                     return;
                     
-                _lastValidText = ToString(clamped);
+                lastValidText = ToString(clamped);
                 OnValidated?.Invoke(clamped);
             }
         }
@@ -53,13 +53,13 @@ namespace FightDojo.UI
         {
             if (string.IsNullOrEmpty(text) || TryParse(text, out float value) == false)
             {
-                _inputField.text = _lastValidText;
+                inputField.text = lastValidText;
                 return;
             }
 
             float clamped = Mathf.Clamp(value, _minValue, _maxValue);
-            _inputField.text = ToString(clamped);
-            _lastValidText = _inputField.text;
+            inputField.text = ToString(clamped);
+            lastValidText = inputField.text;
             
             OnValidated?.Invoke(clamped);
         }

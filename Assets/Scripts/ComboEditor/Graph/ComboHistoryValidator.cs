@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using UnityEngine;
 
-namespace FightDojo.ComboEditor.Graph
+namespace FightDojo.ComboEditor.ComboEditor.Graph
 {
   public class ComboHistoryValidator
   {

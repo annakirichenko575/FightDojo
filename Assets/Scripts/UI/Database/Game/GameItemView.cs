@@ -1,37 +1,38 @@
+using FightDojo.Database;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace FightDojo.UI.Database.Game
 {
-    public class GameItemView : MonoBehaviour, IPointerClickHandler
+  public class GameItemView : MonoBehaviour, IPointerClickHandler
+  {
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private GameObject _background;
+
+    private int id;
+    private GameDataProvider gameDataProvider;
+
+    public int GetId => id;
+
+    public void Initialize(int id, string gameName, GameDataProvider gameDataProvider)
     {
-        [SerializeField] private TMP_Text _text;
-        [SerializeField] private GameObject _background;
-    
-        private int _id;
-        private GameDataProvider gameDataProvider;
-
-        public int GetId => _id;
-
-        public void Initialize(int id, string gameName, GameDataProvider gameDataProvider)
-        {
-            _id = id;
-            _text.text = $"{gameName}\n";
-            this.gameDataProvider = gameDataProvider;
-            Unselect();
-        }
-
-        public void Highlight() => 
-            _background.SetActive(true);
-
-        public void Unselect() => 
-            _background.SetActive(false);
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            Debug.Log($"Clicked Game id={_id}");
-            gameDataProvider.SelectGame(_id);
-        }
+      this.id = id;
+      _text.text = $"{gameName}\n";
+      this.gameDataProvider = gameDataProvider;
+      Unselect();
     }
+
+    public void Highlight() =>
+      _background.SetActive(true);
+
+    public void Unselect() =>
+      _background.SetActive(false);
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+      Debug.Log($"Clicked Game id={id}");
+      gameDataProvider.SelectGame(id);
+    }
+  }
 }

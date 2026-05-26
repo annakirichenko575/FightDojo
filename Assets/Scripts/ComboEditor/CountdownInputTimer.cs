@@ -1,7 +1,7 @@
-﻿using FightDojo.AudioService;
+﻿using FightDojo.ComboEditor.AudioService;
 using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class CountdownInputTimer 
   {

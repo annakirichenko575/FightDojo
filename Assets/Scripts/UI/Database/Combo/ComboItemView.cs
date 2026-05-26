@@ -1,3 +1,4 @@
+using FightDojo.Database;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,14 +10,14 @@ namespace FightDojo.UI.Database.Combo
         [SerializeField] private TMP_Text _text;
         [SerializeField] private GameObject _background;
     
-        private int _id;
+        private int id;
         private ComboDataProvider comboDataProvider;
 
-        public int GetId => _id;
+        public int GetId => id;
 
         public void Initialize(int id, string creatorName, string description, string tags, ComboDataProvider comboDataProvider)
         {
-            _id = id;
+            this.id = id;
             //Debug.Log(creatorName + ", " + description + ", " + tags);
             _text.text = $"{ShortText(creatorName, 22)} " +
                          $"{ShortText(description,  40)} " +
@@ -43,8 +44,8 @@ namespace FightDojo.UI.Database.Combo
             else if (eventData.clickCount == 1)
             {
                 Debug.Log("Одиночный клик");
-                Debug.Log($"Clicked ComboItem id={_id}");
-                comboDataProvider.SelectCombo(_id);
+                Debug.Log($"Clicked ComboItem id={id}");
+                comboDataProvider.SelectCombo(id);
             } 
         }
 

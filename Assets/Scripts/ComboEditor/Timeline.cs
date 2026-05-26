@@ -1,8 +1,8 @@
-using Infrastructure.AssetManagement;
+using FightDojo.Infrastructure.AssetManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class Timeline : MonoBehaviour
   {
@@ -22,7 +22,7 @@ namespace FightDojo
       _horizontalGroup = GetComponent<HorizontalLayoutGroup>();
       _horizontalGroup.padding.left = _offset;
     }
-    
+
     public void CreateTimeline(float stripScale)
     {
       float minWidth = Mathf.Max(_viewRect.sizeDelta.x, _contentRect.sizeDelta.x);
@@ -56,5 +56,4 @@ namespace FightDojo
       }
     }
   }
-  
 }

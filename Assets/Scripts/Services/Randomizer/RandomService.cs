@@ -1,6 +1,6 @@
 ﻿using Random = UnityEngine.Random;
 
-namespace Services.Randomizer
+namespace FightDojo.Services.Randomizer
 {
   public class RandomService : IRandomService
   {

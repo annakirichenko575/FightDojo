@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonUnselector : MonoBehaviour
+namespace FightDojo.UI
 {
-  public static void Unselect()
+  public class ButtonUnselector : MonoBehaviour
   {
-    EventSystem.current.SetSelectedGameObject(null);
+    public static void Unselect()
+    {
+      EventSystem.current.SetSelectedGameObject(null);
+    }
   }
 }

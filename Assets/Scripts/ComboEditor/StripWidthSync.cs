@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class StripWidthSync
   {
@@ -18,7 +18,7 @@ namespace FightDojo
         _stripWidthReader2 = stripWidth;
       }
     }
-    
+
     public float GetMaxWidth() =>
       Mathf.Max(_stripWidthReader1.GetCurrentWidth(),
         _stripWidthReader2.GetCurrentWidth());

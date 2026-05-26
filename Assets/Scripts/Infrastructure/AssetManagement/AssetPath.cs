@@ -1,4 +1,4 @@
-namespace Infrastructure.AssetManagement
+namespace FightDojo.Infrastructure.AssetManagement
 {
   public static class AssetPath
   {

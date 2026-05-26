@@ -1,19 +1,20 @@
+using FightDojo.Database;
 using UnityEngine;
 
 namespace FightDojo.UI.Database.Combo
 {
-    public class DeleteComboButton : MonoBehaviour
+  public class DeleteComboButton : MonoBehaviour
+  {
+    private ComboDataProvider comboDataProvider;
+
+    private void Awake()
     {
-        private ComboDataProvider _comboDataProvider;
-
-        private void Awake()
-        {
-            _comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
-        }
-
-        public void DeleteCombo()
-        {
-            _comboDataProvider.DeleteCombo();
-        }
+      comboDataProvider = FindAnyObjectByType<ComboDataProvider>();
     }
+
+    public void DeleteCombo()
+    {
+      comboDataProvider.DeleteCombo();
+    }
+  }
 }

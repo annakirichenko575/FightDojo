@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace FightDojo
+namespace FightDojo.ComboEditor
 {
   public class TimelinePartView : MonoBehaviour
   {
@@ -12,5 +12,4 @@ namespace FightDojo
       _time.text = $"{time}:00";
     }
   }
-  
 }

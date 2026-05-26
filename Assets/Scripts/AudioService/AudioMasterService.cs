@@ -1,7 +1,7 @@
-using Infrastructure.AssetManagement;
+using FightDojo.Infrastructure.AssetManagement;
 using UnityEngine;
 
-namespace FightDojo.AudioService
+namespace FightDojo.ComboEditor.AudioService
 {
   public class AudioMasterService : IAudioMasterService
   {

@@ -1,7 +1,7 @@
-using FightDojo;
-using FightDojo.Data;
+using FightDojo.ComboEditor;
+using FightDojo.ComboEditor.Data;
 using FightDojo.Database;
-using Services;
+using FightDojo.Services;
 using UnityEngine;
 
 namespace FightDojo.UI
