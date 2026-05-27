@@ -9,24 +9,24 @@ namespace FightDojo.FilePiker
 {
   public class ExportFilePicker : MonoBehaviour
   {
-    private WarningWindow _warningWindow;
-    private string _lastPath;
+    private WarningWindow warningWindow;
+    private string lastPath;
 
     private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
 
     private void Awake()
     {
-      _warningWindow = FindFirstObjectByType<WarningWindow>();
+      warningWindow = FindFirstObjectByType<WarningWindow>();
     }
 
     // Вызывай эту функцию, например, по кнопке "Сохранить"
     public void ExportFile()
     {
-      if (string.IsNullOrWhiteSpace(_lastPath))
+      if (string.IsNullOrWhiteSpace(lastPath))
       {
-        _lastPath = DBService.DatabasePath;
-        if (Directory.Exists(_lastPath) == false && File.Exists(_lastPath) == false)
-          _lastPath = DBService.PersistentPath;
+        lastPath = DBService.DatabasePath;
+        if (Directory.Exists(lastPath) == false && File.Exists(lastPath) == false)
+          lastPath = DBService.PersistentPath;
       }
 
       FileBrowser.SetFilters(
@@ -39,7 +39,7 @@ namespace FightDojo.FilePiker
         () => { Debug.Log("Отмена сохранения"); }, // отмена
         FileBrowser.PickMode.Files, // сохраняем файл (не папку)
         false, // только один файл
-        _lastPath,
+        lastPath,
         "MyExport.db", // предложенное имя файла по умолчанию
         "Сохранить файл", // заголовок окна
         "Сохранить" // текст кнопки
@@ -56,10 +56,10 @@ namespace FightDojo.FilePiker
 
       string savePath = paths[0]; // ← вот он — полный путь, куда сохранять
       Debug.Log($"Сохраняем в: {savePath}");
-      _lastPath = Path.GetDirectoryName(savePath);
+      lastPath = Path.GetDirectoryName(savePath);
       if (DBService.ExportDatabase(savePath) == false)
       {
-        _warningWindow.OpenWarning("Не удалось экспортировать базу");
+        warningWindow.OpenWarning("Не удалось экспортировать базу");
       }
     }
   }

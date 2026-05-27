@@ -30,5 +30,30 @@ namespace FightDojo.ComboEditor.Data.AutoKeyboard
 
       return new RecordedKeys(keys);
     }
+    
+    public static RecordData Adapt(List<KeyData> keys)
+    {
+      RecordedEvent[] events = new RecordedEvent[keys.Count];
+
+      for (int i = 0; i < keys.Count; i++)
+      {
+        KeyData keyData = keys[i];
+        float prevTime = i > 0 ? keys[i - 1].Time : 0f;
+        float delay = keys[i].Time - prevTime;
+        events[i] = new RecordedEvent
+        {
+          key_obj_s = new KeyObject
+          {
+            type = "keycode_char",
+            value = keyData.KeyName.ToLower()
+          },
+          key_name_display = keyData.KeyName.ToUpper(),
+          action_canonical = keyData.Action,
+          delay_ms = delay * 1000f
+        };
+      }
+
+      return new RecordData { recorded_events_v2 = events };
+    }
   }
 }

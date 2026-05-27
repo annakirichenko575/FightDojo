@@ -11,22 +11,22 @@ namespace FightDojo.FilePiker
 {
   public class ImportAutoKeyboardJsonFilePicker : MonoBehaviour
   {
-    private EditorComboStrip _editorComboStrip;
-    private WarningWindow _warningWindow;
-    private string _lastPath;
+    private EditorComboStrip editorComboStrip;
+    private WarningWindow warningWindow;
+    private string lastPath;
   
     private void Awake()
     {
-      _editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
-      _warningWindow = FindAnyObjectByType<WarningWindow>();
+      editorComboStrip = FindAnyObjectByType<EditorComboStrip>();
+      warningWindow = FindAnyObjectByType<WarningWindow>();
     }
 
     public void OpenFileDialog()
     {
-      if (string.IsNullOrWhiteSpace(_lastPath)
-        || Directory.Exists(_lastPath) == false && File.Exists(_lastPath) == false)
+      if (string.IsNullOrWhiteSpace(lastPath)
+        || Directory.Exists(lastPath) == false && File.Exists(lastPath) == false)
       {
-          _lastPath = GameDirectory.GetPath();
+          lastPath = GameDirectory.GetPath();
       }
       
       FileBrowser.SetFilters( 
@@ -39,7 +39,7 @@ namespace FightDojo.FilePiker
         () => { Debug.Log( "Отмена" ); },                      // отмена
         FileBrowser.PickMode.Files,                            // выбираем файлы (не папки)
         false,                                                 // только один файл
-        _lastPath,                                                  // начальный путь (null = Documents / стандартная папка)
+        lastPath,                                                  // начальный путь (null = Documents / стандартная папка)
         null,                                                  // начальное имя файла
         "Выберите json файл из AutoKeyboard",                                       // заголовок окна
         "Ипортировать из AutoKeyboard"                                              // текст кнопки
@@ -56,7 +56,7 @@ namespace FightDojo.FilePiker
 
       string selectedPath = paths[0];  // ← вот он — выбранный полный путь
       Debug.Log( "Выбран файл: " + selectedPath );
-      _lastPath = Path.GetDirectoryName(selectedPath);
+      lastPath = Path.GetDirectoryName(selectedPath);
     
       JsonLoader jsonLoader = new JsonLoader();
       if (jsonLoader.TryLoad(selectedPath, out RecordData recordData)
@@ -67,12 +67,12 @@ namespace FightDojo.FilePiker
         IRecordedKeysService recordedKeys = 
           AllServices.Container.Single<IRecordedKeysService>();
         recordedKeys.LoadJson(adaptedJson);
-        _editorComboStrip.Open();
-        _editorComboStrip.SetChangeFlag();
+        editorComboStrip.Open();
+        editorComboStrip.SetChangeFlag();
       }
       else
       {
-        _warningWindow.OpenWarning("Ошибка импорта json");
+        warningWindow.OpenWarning("Ошибка импорта json");
       }
     }
   }

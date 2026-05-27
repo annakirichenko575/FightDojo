@@ -8,19 +8,19 @@ namespace FightDojo.FilePiker
 {
   public class OpenFilePicker : MonoBehaviour
   {
-    private GameDataProvider _gameDataProvider;
-    private CharacterDataProvider _characterDataProvider;
-    private ComboDataProvider _comboDataProvider;
-    private WarningWindow _warningWindow;
+    private GameDataProvider gameDataProvider;
+    private CharacterDataProvider characterDataProvider;
+    private ComboDataProvider comboDataProvider;
+    private WarningWindow warningWindow;
 
     private IDatabaseService DBService => AllServices.Container.Single<IDatabaseService>();
 
     private void Awake()
     {
-      _gameDataProvider = FindFirstObjectByType<GameDataProvider>();
-      _characterDataProvider = FindFirstObjectByType<CharacterDataProvider>();
-      _comboDataProvider = FindFirstObjectByType<ComboDataProvider>();
-      _warningWindow = FindFirstObjectByType<WarningWindow>();
+      gameDataProvider = FindFirstObjectByType<GameDataProvider>();
+      characterDataProvider = FindFirstObjectByType<CharacterDataProvider>();
+      comboDataProvider = FindFirstObjectByType<ComboDataProvider>();
+      warningWindow = FindFirstObjectByType<WarningWindow>();
     }
 
     // Вызывай эту функцию, например, по кнопке "Сохранить"
@@ -60,7 +60,7 @@ namespace FightDojo.FilePiker
 
       if (DBService.TryOpenDatabase(path) == false)
       {
-        _warningWindow.OpenWarning("Не удалось открыть базу");
+        warningWindow.OpenWarning("Не удалось открыть базу");
       }
 
       RefreshTables();
@@ -68,12 +68,12 @@ namespace FightDojo.FilePiker
 
     private void RefreshTables()
     {
-      _comboDataProvider.ResetSelectedCombo();
-      _comboDataProvider.RefreshCombos();
-      _characterDataProvider.ResetSelectedCharacter();
-      _characterDataProvider.RefreshCharacters();
-      _gameDataProvider.ResetSelectedGame();
-      _gameDataProvider.RefreshGames();
+      comboDataProvider.ResetSelectedCombo();
+      comboDataProvider.RefreshCombos();
+      characterDataProvider.ResetSelectedCharacter();
+      characterDataProvider.RefreshCharacters();
+      gameDataProvider.ResetSelectedGame();
+      gameDataProvider.RefreshGames();
     }
   }
 }
