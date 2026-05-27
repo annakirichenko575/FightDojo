@@ -76,6 +76,14 @@ namespace FightDojo.ComboEditor
       carriageScroller.Scroll();
     }
 
+    public void ImmediateStopRecording()
+    {
+      if (IsRecording)
+      {
+        StopRecording();
+      }
+    }
+    
     public void UpdateContentWidth()
     {
       float widthX = stripWidthSync.GetMaxWidth();

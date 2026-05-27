@@ -1,3 +1,5 @@
+using System;
+using FightDojo.ComboEditor;
 using FightDojo.ComboEditor.ComboEditor.Graph;
 using UnityEngine;
 
@@ -9,6 +11,13 @@ namespace FightDojo.UI.Windows
     [SerializeField] private GameObject _graphPanel;
     [SerializeField] private ComboQualityGraph _comboQualityGraph;
 
+    private InputComboBuilder inputComboBuilder;
+
+    private void Awake()
+    {
+      inputComboBuilder = FindAnyObjectByType<InputComboBuilder>();
+    }
+
     private void Start()
     {
       Hide();
@@ -16,6 +25,7 @@ namespace FightDojo.UI.Windows
 
     public void OpenGraph()
     {
+      inputComboBuilder.ImmediateStopRecording();
       CloseAllWindows();
       _comboQualityGraph.DrawGraph();
       _graphPanel.SetActive(true);
