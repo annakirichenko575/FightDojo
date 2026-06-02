@@ -36,6 +36,7 @@ namespace FightDojo.ComboEditor.ComboEditor.Graph
     public float CalculateQuality()
     {
       float quality = (float)correctPress / allKeys;
+      quality = Mathf.Clamp(quality, 0, 1);
       if (quality > 0f)
       {
         SaveCombo(info.ComboId, info.Game, info.Character, info.Author, quality);
